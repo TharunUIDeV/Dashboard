@@ -11,10 +11,11 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod",
+    "build": "ng build --prod --base-href /new-dashboard/",
     "test": "ng test --single-run",
     "lint": "ng lint",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "zip": "pack-zip"
   },
   "private": true,
   "dependencies": {
