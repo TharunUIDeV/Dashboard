@@ -13,7 +13,7 @@ fi
 rm -f dist.zip
 
 cd dist
-zip -r dist.zip dist
+zip -r dist.zip *
 if [ $? -ne 0 ]; then
   echo "Zipping the build directory resulted in an error"
   exit 1
