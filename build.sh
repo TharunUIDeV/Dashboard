@@ -12,9 +12,10 @@ fi
 #Zip for shipment, remove if it exists
 rm -f dist.zip
 
-zip -r dist.zip dist/*
+cd dist
+zip -r ../dist.zip *
 if [ $? -ne 0 ]; then
   echo "Zipping the build directory resulted in an error"
   exit 1
 fi
-
+cd ..
