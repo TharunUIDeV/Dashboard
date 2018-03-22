@@ -10,9 +10,10 @@ if [ $? -ne 0 ]; then
   exit 1
 fi
 #Zip for shipment, remove if it exists
-rm -f ../build.zip
-cd build
-zip -r ../build.zip *
+rm -f dist.zip
+
+cd dist
+zip -r ../dist.zip *
 if [ $? -ne 0 ]; then
   echo "Zipping the build directory resulted in an error"
   exit 1
