@@ -13,8 +13,8 @@ fi
 rm -f dist.zip
 
 cd dist
-mkdir $1
- mv !($1) $1/
+mkdir v1
+mv !(v1) v1/
 zip -r ../dist.zip *
 if [ $? -ne 0 ]; then
   echo "Zipping the build directory resulted in an error"
