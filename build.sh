@@ -13,6 +13,16 @@ fi
 rm -f dist.zip
 
 cd dist
+
+mkdir /tmp/files
+
+mv * /tmp/files/
+
+mkdir v1
+
+mv /tmp/files/* v1/
+
+rmdir /tmp/files
 zip -r ../dist.zip *
 if [ $? -ne 0 ]; then
   echo "Zipping the build directory resulted in an error"

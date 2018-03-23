@@ -11,7 +11,7 @@
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build --prod --base-href /new-dashboard/",
+    "build": "ng build --prod --base-href /new-dashboard/v1/",
     "test": "ng test --single-run",
     "lint": "ng lint",
     "e2e": "ng e2e",
