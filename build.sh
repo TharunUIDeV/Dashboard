@@ -14,7 +14,7 @@ rm -f dist.zip
 
 cd dist
 mkdir v1
-mv !(v1) v1/
+find . -type d -not -name v1 -exec mv {} v1/ \;
 zip -r ../dist.zip *
 if [ $? -ne 0 ]; then
   echo "Zipping the build directory resulted in an error"
