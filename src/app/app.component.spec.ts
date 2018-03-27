@@ -22,6 +22,12 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Hello world!');
+    expect(compiled.querySelector('h1').textContent).toContain('Hello World!');
+  }));
+  it('image should be rendered', async(() => {
+    const fixture = TestBed.createComponent(AppComponent);
+    fixture.detectChanges();
+    const compiled = fixture.debugElement.nativeElement;
+    expect(compiled.querySelector('img').src).toContain('assets/images/CVS%20Caremark.png');
   }));
 });
