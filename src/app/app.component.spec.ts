@@ -16,13 +16,13 @@ describe('AppComponent', () => {
   it(`should have as title 'app'`, async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     const app = fixture.debugElement.componentInstance;
-    expect(app.getTitle()).toEqual('Hello World!');
+    expect(app.getTitle()).toEqual('Hello world!');
   }));
   it('should render title in a h1 tag', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Hello World!');
+    expect(compiled.querySelector('h1').textContent).toContain('Hello world!');
   }));
   it('image should be rendered', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
