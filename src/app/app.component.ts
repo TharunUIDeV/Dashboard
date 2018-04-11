@@ -9,7 +9,7 @@ import { Component } from '@angular/core';
 
 export class AppComponent {
 
-  title: String = 'Hello world!';
+  title: String = 'Hello';
 
   getTitle() {
     return this.title;
