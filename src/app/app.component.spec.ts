@@ -22,7 +22,7 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h2').textContent).toContain('Hello world!');
+    expect(compiled.querySelector('h1').textContent).toContain('Hello world!');
   }));
   it('image should be rendered', async(() => {
     const fixture = TestBed.createComponent(AppComponent);
