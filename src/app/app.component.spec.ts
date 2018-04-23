@@ -28,6 +28,6 @@ describe('AppComponent', () => {
     const fixture = TestBed.createComponent(AppComponent);
     fixture.detectChanges();
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('img').src).toContain('assets/images/CVS%20Caremark.png');
+    expect(compiled.querySelector('img').src).toContain('assets/images/CVSCaremark.png');
   }));
 });
