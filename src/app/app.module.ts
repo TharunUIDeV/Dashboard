@@ -1,6 +1,8 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
-
+import {ConfigService} from './service/config.service';
+import {BrowserService} from './service/browser.service';
+import {FrameService} from './service/frame.service';
 
 import { AppComponent } from './app.component';
 
@@ -12,7 +14,7 @@ import { AppComponent } from './app.component';
   imports: [
     BrowserModule
   ],
-  providers: [],
+  providers: [ConfigService, BrowserService, FrameService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
