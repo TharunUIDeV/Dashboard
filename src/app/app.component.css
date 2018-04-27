@@ -9,7 +9,7 @@ html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockqu
   vertical-align: baseline;
 }
 /* HTML5 display-role reset for older browsers */
-article, aside, details, figcaption, figure,
+main,article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, address {
   display: block;
 }
@@ -42,12 +42,6 @@ header {
   overflow: auto;
   padding: 28px 40px 24px;
 }
-header h1 {
-  float: left;
-}
-header h1 a {
-  display: block;
-}
 /*----------------------------------- BODY -------------------------------------*/
 .content-wrapper {
   margin: 36px 20px 30px 40px;
@@ -58,7 +52,7 @@ header h1 a {
     margin-left: 143px;
   }
 }
-.content-wrapper h2 {
+.content-wrapper h1 {
   font-weight: bold;
   font-size: 2.25em;
   padding: 0 0 30px;
@@ -75,7 +69,7 @@ header h1 a {
   overflow: auto;
   padding: 0 0 25px;
 }
-.block-title h3 {
+.block-title h2 {
   float: left;
   font-size: 1.375em;
   padding: 0 20px 0 0;
