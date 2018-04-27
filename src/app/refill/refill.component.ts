@@ -7,7 +7,8 @@ import {TealiumUtagService} from '../service/utag.service';
   styleUrls: ['./refill.component.scss']
 })
 export class RefillComponent implements OnInit {
-  public REFILL_TEXT = 'Refill Prescriptions';
+  public REFILL_TEXT = 'Your Prescriptions';
+  public REFILL_URL_TEXT = 'View prescriptions';
   public webTrends: any;
 
   constructor(private analytics: TealiumUtagService) { }

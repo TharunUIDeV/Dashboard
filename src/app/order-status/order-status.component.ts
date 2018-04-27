@@ -7,7 +7,8 @@ import {TealiumUtagService} from '../service/utag.service';
   styleUrls: ['./order-status.component.scss']
 })
 export class OrderStatusComponent implements OnInit {
-  public ORDER_STATUS_TEXT = 'View Orders';
+  public ORDER_STATUS_TEXT = 'Recent Orders';
+  public ORDER_STATUS_HREF_TEXT = 'View orders';
   public orderStatusWT: any;
   constructor(private analytics: TealiumUtagService) { }
 
