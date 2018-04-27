@@ -7,6 +7,7 @@ import {FrameService} from './service/frame.service';
 import { AppComponent } from './app.component';
 import { RefillComponent } from './refill/refill.component';
 import { OrderStatusComponent } from './order-status/order-status.component';
+import {TealiumUtagService} from "./service/utag.service";
 
 
 @NgModule({
@@ -18,7 +19,7 @@ import { OrderStatusComponent } from './order-status/order-status.component';
   imports: [
     BrowserModule
   ],
-  providers: [ConfigService, BrowserService, FrameService],
+  providers: [ConfigService, BrowserService, FrameService, TealiumUtagService],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
