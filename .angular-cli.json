@@ -6,7 +6,7 @@
   "apps": [
     {
       "root": "src",
-      "outDir": "dist",
+`      "outDir": "dist/new-dashboard/v1",
       "assets": [
         "assets",
         "favicon.ico"
@@ -55,10 +55,6 @@
     }
   },
   "defaults": {
-    "styleExt": "css",
-    "component": {},
-    "serve": {
-      "port": 4200
-    }
+    "styleExt": "scss"
   }
 }

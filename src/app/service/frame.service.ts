@@ -15,7 +15,7 @@ export class FrameService {
     constructor(private browser: BrowserService) {
         console.log(browser.which);
         /*if (!this.parentFrame) {*/
-        if(true) {
+        if(!this.parentFrame) {
             this.parentFrame = <any>window;
         }
         if (this.isInsidePortal()) {

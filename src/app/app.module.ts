@@ -5,11 +5,15 @@ import {BrowserService} from './service/browser.service';
 import {FrameService} from './service/frame.service';
 
 import { AppComponent } from './app.component';
+import { RefillComponent } from './refill/refill.component';
+import { OrderStatusComponent } from './order-status/order-status.component';
 
 
 @NgModule({
   declarations: [
-    AppComponent
+    AppComponent,
+    RefillComponent,
+    OrderStatusComponent
   ],
   imports: [
     BrowserModule
