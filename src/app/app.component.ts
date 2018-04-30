@@ -1,7 +1,5 @@
-import { Component, OnInit, Renderer2, OnDestroy } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {ConfigService} from './service/config.service';
-import {FrameService} from './service/frame.service';
-import {isNullOrUndefined} from "util";
 import {TealiumUtagService} from './service/utag.service';
 
 @Component({
@@ -10,18 +8,9 @@ import {TealiumUtagService} from './service/utag.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
-  screenCenter: any;
-  loading = false;
   title: String = 'Hello world!';
 
-  constructor(private configSvc: ConfigService, private frameSvc: FrameService, private renderer: Renderer2, private analytics: TealiumUtagService) {
-    frameSvc.renderer = renderer;
-    this.screenCenter = this.frameSvc.getScreenCenter();
-    frameSvc.showLoader.subscribe((val) => {
-      this.loading = val;
-    });
-  }
+  constructor(private configSvc: ConfigService, private analytics: TealiumUtagService) {}
 
   ngOnInit(): void {
     const that = this;
