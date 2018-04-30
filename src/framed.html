@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <base href="/">
+    <title>New Dashboard</title>
+    <script src="https://code.jquery.com/jquery-3.2.1.min.js"
+            integrity="sha256-hwg4gsxgFZhOsEEamdOYGBf13FyQuiTwlAQgxVSNgt4=" crossorigin="anonymous"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/iframe-resizer/3.5.14/iframeResizer.js"></script>
+    <script type="text/javascript">
+        var eventMethod = window.addEventListener
+            ? "addEventListener"
+            : "attachEvent";
+        var eventer = window[eventMethod];
+        var messageEvent = eventMethod === "attachEvent"
+            ? "onmessage"
+            : "message";
+        eventer(messageEvent, function (e) {
+            console.log(e.data);
+        });
+        window.portalDataJson = {
+            "apiData": {
+                "apiKey": "769c71df-fd85-4645-92e0-b8003a8a4ef3",
+                "env": "demo",
+                  "apiBaseUrl": "https://devservices-west.caremark.com:11101/",
+//                "apiBaseUrl": "https://sit1pbmservices.caremark.com/",
+                "mfaToken": "M1BBQ4hOp3FFjorAc8tuUGYFeNSztcXgwZHDGXGJaJg1"
+            },
+            "appData": {
+                "DIGITAL_FINGER_PRINT": "123"
+            }
+        };
+    </script>
+</head>
+<body style="text-align: center">
+<iframe width="100%"
+        src="http://localhost:4300/"
+        id="iframe" scrolling="yes">
+
+</iframe>
+<div id="bd" class="clearfix" style="background-color: black;height:100px;"></div>
+<script>
+  iFrameResize({
+    log: false
+  });
+</script>
+
+</body>
+</html>
