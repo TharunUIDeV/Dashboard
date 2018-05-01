@@ -18,4 +18,8 @@ export class OrderStatusComponent implements OnInit {
       link_name: 'Custom: New Dashboard view orders clicked'
     });
   }
+
+  loadOS() {
+    window.parent.location.href = "/wps/myportal/ORDER_STATUS";
+  }
 }
