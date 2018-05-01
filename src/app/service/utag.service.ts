@@ -50,21 +50,22 @@ export class TealiumUtagService {
 
     // Config settings used to build the path to the utag.js file
     setConfig(config: { account: string, profile: string, environment: string }) {
-        if (config.environment === 'demo') {
+      if (config.environment === 'demo') {
             return;
         }
         if (config.account !== undefined && config.profile !== undefined && config.environment !== undefined) {
-            this.script_src = 'https://tags.tiqcdn.com/utag/' + config.account + '/' + config.profile + '/' + config.environment + '/utag.js';
+          this.script_src = 'https://tags.tiqcdn.com/utag/' + config.account + '/' + config.profile + '/' + config.environment + '/utag.js';
         }
     }
 
     // Data layer is optional set of key/value pairs
     track(tealium_event: string, data?: any) {
-        if (this.script_src === '') {
+      if (this.script_src === '') {
             console.log("Tealium config not set.");
             return;
         }
-        console.log(`Tagging Event: ` + tealium_event);
+
+        console.log(`Tagging Event: ${JSON.stringify(tealium_event)}`);
         console.log(data);
 
         if ((<any>window).utag === undefined) {
