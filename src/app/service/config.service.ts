@@ -55,7 +55,7 @@ export class ConfigService {
     init: Function = _.debounce(() => {
       console.log('Inside config service init');
         try {
-            const data = <any>window.parent.portalDataJson;
+            const data = <any>window.parent.portalJson;
             if (data) {
                 this.env = data.apiData.env;
                 this.apiKey = data.apiData.apiKey;
