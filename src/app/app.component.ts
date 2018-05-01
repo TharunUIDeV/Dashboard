@@ -9,7 +9,7 @@ import {isNullOrUndefined} from "util";
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title: String = 'Hello world!';
+  title: String;
   loading = false;
   public environment: string;
 
@@ -20,11 +20,11 @@ export class AppComponent implements OnInit {
   ngOnInit(): void {
     const that = this;
       if (!isNullOrUndefined(this.environment)) {
-        that.analytics.setConfig({
+        setTimeout(that.analytics.setConfig({
           account: 'cvs',
           profile: 'fast',
           environment: that.configSvc.env === 'demo' ? 'sit3' : that.configSvc.env
-        });
+        }), 200);
       } else {
         console.error('config is invalid');
       }
@@ -40,10 +40,11 @@ export class AppComponent implements OnInit {
       key_activity: 'new dashboard view my current dashboard',
       link_name: 'Custom: New Dashboard view my current dashboard clicked'
     });
-    window.parent.location.href="/wps/myportal";
+    window.parent.location.href=this.configSvc.homePageUrl;
   }
 
   getTitle() {
+    this.title = 'Hello '.concat(this.configSvc.participantFirstName);
     return this.title;
   }
 }

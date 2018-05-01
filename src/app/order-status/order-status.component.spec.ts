@@ -1,7 +1,8 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { OrderStatusComponent } from './order-status.component';
-import {TealiumUtagService} from "../service/utag.service";
+import {OrderStatusComponent} from './order-status.component';
+import {TealiumUtagService} from '../service/utag.service';
+import {ConfigService} from "../service/config.service";
 
 describe('OrderStatusComponent', () => {
   let component: OrderStatusComponent;
@@ -10,10 +11,13 @@ describe('OrderStatusComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ OrderStatusComponent ],
-      providers: [TealiumUtagService]
+      declarations: [OrderStatusComponent],
+      providers: [TealiumUtagService, ConfigService,
+        // {provide: ConfigService, useValue: {orderStatusUrl: '/wps/myportal/ORDER_STATUS'}},
+        {provide: window.parent.location.href, useValue: '/'}
+      ]
     })
-    .compileComponents()
+      .compileComponents()
       .then(() => {
         fixture = TestBed.createComponent(OrderStatusComponent);
         component = fixture.componentInstance;

@@ -2,6 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {RefillComponent} from './refill.component';
 import {TealiumUtagService} from '../service/utag.service';
+import {ConfigService} from "../service/config.service";
 
 describe('RefillComponent', () => {
   let component: RefillComponent;
@@ -12,7 +13,8 @@ describe('RefillComponent', () => {
     TestBed.configureTestingModule({
       declarations: [RefillComponent],
       providers: [
-        TealiumUtagService
+        TealiumUtagService,
+        {provide: ConfigService, useValue: {refillRxUrl: '/wps/myportal/REFILL_RX'}}
       ]
     })
       .compileComponents()

@@ -14,7 +14,7 @@ describe('AppComponent', () => {
       ],
       providers: [
         TealiumUtagService,
-        ConfigService
+        {provide: ConfigService, useValue: { participantFirstName: 'John' }}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents()
@@ -27,15 +27,13 @@ describe('AppComponent', () => {
   it('should create the app', async(() => {
     expect(sut).toBeTruthy();
   }));
+
   it(`should have as title 'app'`, async(() => {
-    expect(sut.getTitle()).toEqual('Hello world!');
+    expect(sut.getTitle()).toEqual('Hello John');
   }));
+
   it('should render title in a h1 tag', async(() => {
     const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('h1').textContent).toContain('Hello world!');
-  }));
-  it('image should be rendered', async(() => {
-    const compiled = fixture.debugElement.nativeElement;
-    expect(compiled.querySelector('img').src).toContain('assets/images/CVSCaremark.png');
+    expect(compiled.querySelector('h1').textContent).toContain('John');
   }));
 });

@@ -11,16 +11,12 @@ export class ConfigService {
   public apiKey: string;
   public token: string;
   public apiBaseUrl: string;
-  public participantID: string;
   public participantFirstName: string;
-  // public dsc: string;
-  // public sp: string;
-  // public vp: string;
-  // public ap: string;
+  public orderStatusUrl: string;
+  public refillRxUrl: string;
+  public homePageUrl: string;
 
   ready = new BehaviorSubject(false);
-  // public additionalQuery = 'appName=CMK_WEB&channelName=WEB&deviceID=device12345&deviceToken=device12345&deviceType=AND_MOBILE&lineOfBusiness=PBM&serviceCORS=TRUE&version=1.0';
-
 
   constructor() {
     if (isNullOrUndefined(this.env)) {
@@ -40,20 +36,7 @@ export class ConfigService {
     this.init();
   }
 
-
-  /*getRouteFor(serviceRoute: string, noQuery?: boolean) {
-      let route;
-      if (noQuery) {
-          route = `${this.apiBaseUrl}${serviceRoute}`;
-      } else {
-          route = `${this.apiBaseUrl}${serviceRoute}?apiKey=${this.apiKey}&mfaToken=${this.mfaToken}&serviceName=${serviceRoute.split('/')[1]}&${this.additionalQuery}`;
-      }
-      return route;
-  }*/
-
-
   init: Function = _.debounce(() => {
-    console.log('Inside config service init');
     try {
       const data = <any>window.parent.portalJson;
       if (data) {
@@ -64,8 +47,10 @@ export class ConfigService {
         if (this.apiBaseUrl.includes('devservices-west.caremark.com')) {
           this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
         }
-        this.participantID = data.appData.ParticipantID;
         this.participantFirstName = data.appData.ParticipantFirstName;
+        this.orderStatusUrl = data.appData.OrderStatusUrl;
+        this.refillRxUrl = data.appData.RefillRXUrl;
+        this.homePageUrl = data.appData.HomePageUrl;
       }
     } catch (e) {
       console.log('config service --> init() :' + e);
@@ -76,7 +61,8 @@ export class ConfigService {
 
 
   private validate(): boolean {
-    console.log(`Env => ${this.env}\nParticipant Id => ${this.participantID}\nParticipant Name => ${this.participantFirstName}`);    return !(isNullOrUndefined(this.env) || isNullOrUndefined(this.apiKey)
+    console.log(`Env => ${this.env}\nParticipant Name => ${this.participantFirstName}\nOrder_Status_Url => ${this.orderStatusUrl}\nRefill_Rx_Url => ${this.refillRxUrl}\nHome_Page_Url => ${this.homePageUrl}`);
+    return !(isNullOrUndefined(this.env) || isNullOrUndefined(this.apiKey)
       || isNullOrUndefined(this.apiBaseUrl) || isNullOrUndefined(this.token)) || (!isNullOrUndefined(this.env) && this.env.includes('demo'));
   }
 
