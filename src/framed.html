@@ -28,18 +28,21 @@
                 "mfaToken": "M1BBQ4hOp3FFjorAc8tuUGYFeNSztcXgwZHDGXGJaJg1"
             },
             "appData": {
-                "DIGITAL_FINGER_PRINT": "123"
+                "DIGITAL_FINGER_PRINT": "123",
+                "ParticipantID": "884488872",
+                "ParticipantFirstName": "Williamson",
+                "OrderStatusUrl": "/wps/myportal/ORDER_STATUS",
+                "RefillRXUrl": "/wps/myportal/REFILL_RX",
+                "HomePageUrl": "/wps/myportal/DASHBOARD"
             }
         };
     </script>
 </head>
 <body style="text-align: center">
-<iframe width="100%"
-        src="http://localhost:4300/"
-        id="iframe" scrolling="yes">
-
+<iframe width="970px"
+        src="http://localhost:4300/new-dashboard/v1/?apiKey=769c71df-fd85-4645-92e0-b8003a8a4ef3&env=demo&dsc=res9&sp=res2&vp=res2&ap=res1"
+        id="iframe" scrolling="yes" style="height: 450px">
 </iframe>
-<div id="bd" class="clearfix" style="background-color: black;height:100px;"></div>
 <script>
   iFrameResize({
     log: false
