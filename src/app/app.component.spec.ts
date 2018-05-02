@@ -14,7 +14,7 @@ describe('AppComponent', () => {
       ],
       providers: [
         TealiumUtagService,
-        {provide: ConfigService, useValue: { participantFirstName: 'John' }}
+        {provide: ConfigService, useValue: { participantFirstName: 'JOHN' }}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     }).compileComponents()

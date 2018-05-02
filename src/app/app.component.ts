@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {ConfigService} from './service/config.service';
 import {TealiumUtagService} from './service/utag.service';
 import {isNullOrUndefined} from "util";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -44,7 +45,7 @@ export class AppComponent implements OnInit {
   }
 
   getTitle() {
-    this.title = 'Hello '.concat(this.configSvc.participantFirstName);
+    this.title = 'Hello '.concat(_.upperFirst(_.toLower(this.configSvc.participantFirstName)));
     return this.title;
   }
 }
