@@ -31,7 +31,7 @@ export class AppComponent implements OnInit {
       }
 
     this.analytics.view({
-      Page_Name: 'new dashboard view orders',
+      Page_Name: 'new dashboard',
       Page_Category: 'caremark dashboard'
     });
   }
