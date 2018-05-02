@@ -3,6 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {RefillComponent} from './refill.component';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from "../service/config.service";
+import {RefillService} from './refill.service';
 
 describe('RefillComponent', () => {
   let component: RefillComponent;
@@ -14,7 +15,9 @@ describe('RefillComponent', () => {
       declarations: [RefillComponent],
       providers: [
         TealiumUtagService,
-        {provide: ConfigService, useValue: {refillRxUrl: '/wps/myportal/REFILL_RX'}}
+        {provide: RefillService, useValue: {sdkInstance: window['SDK']}},
+        {provide: ConfigService, useValue: {refillRxUrl: '/wps/myportal/REFILL_RX'},
+        }
       ]
     })
       .compileComponents()
