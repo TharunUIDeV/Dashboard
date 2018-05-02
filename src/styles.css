@@ -91,14 +91,20 @@ header .logo img {
     float: left;
   }
 }
+.block-title a, .with-caret{
+   background:	url(assets/images/caret.png) right center no-repeat;
+   background-size: 11px 18px;
+   display: inline-block;
+   margin-top: 5px;
+   padding: 5px 20px 5px 0;
+   text-decoration: none;
+ }
 .block-title a {
   font-size: .875em;
-  float: left;
-  padding: 10px 0;
 }
 @media only screen and (min-device-width : 768px) {
-  .block-title a {
-    padding: 6px 0 0;
+  .block-title a, .with-caret {
+    margin-top: 0;
   }
 }
 .block p {
