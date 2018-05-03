@@ -9,6 +9,7 @@ declare const window: any;
 export class ConfigService {
   public env: string;
   public apiKey: string;
+  public apiSecret: string;
   public token: string;
   public apiBaseUrl: string;
   public participantFirstName: string;
@@ -42,6 +43,7 @@ export class ConfigService {
       if (data) {
         this.env = data.apiData.env;
         this.apiKey = data.apiData.apiKey;
+        this.apiSecret = data.apiDat.apiSecret;
         this.apiBaseUrl = data.apiData.apiBaseUrl;
         this.token = data.apiData.tokenId;
         if (this.apiBaseUrl.includes('devservices-west.caremark.com')) {
