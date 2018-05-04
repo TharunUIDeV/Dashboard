@@ -14,11 +14,10 @@ export class AppComponent implements OnInit {
   loading = false;
   public environment: string;
 
-  constructor(private configSvc: ConfigService, private analytics: TealiumUtagService) {
-    this.environment = this.configSvc.env === 'demo' ? 'sit3' : this.configSvc.env;
-  }
+  constructor(private configSvc: ConfigService, private analytics: TealiumUtagService) { }
 
   ngOnInit(): void {
+    this.environment = this.configSvc.env === 'demo' ? 'sit3' : this.configSvc.env;
     const that = this;
       if (!isNullOrUndefined(this.environment)) {
         setTimeout(that.analytics.setConfig({
