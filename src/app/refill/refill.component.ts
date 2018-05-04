@@ -18,7 +18,9 @@ export class RefillComponent implements  OnInit{
   constructor(private analytics: TealiumUtagService, private configSvc: ConfigService, private refillService: RefillService) { }
 
   ngOnInit(): void {
-    this.refillService.getRefills();
+    this.refillService.getRefills()
+      .then((data) => {console.log(data);})
+      .catch( (error) => console.log(error));
   }
 
   refillClickTag() {

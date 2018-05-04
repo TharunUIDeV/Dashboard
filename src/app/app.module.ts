@@ -10,6 +10,7 @@ import { RefillComponent } from './refill/refill.component';
 import { OrderStatusComponent } from './order-status/order-status.component';
 import {TealiumUtagService} from './service/utag.service';
 import {RefillService} from './refill/refill.service';
+import {MemberService} from './service/member.service';
 
 export function configServiceFactory(configSvc: ConfigService) {
   return () => configSvc.init;
@@ -29,8 +30,9 @@ export function configServiceFactory(configSvc: ConfigService) {
     {provide: APP_INITIALIZER, useFactory: configServiceFactory, deps: [ConfigService], multi: true},
     BrowserService, FrameService, TealiumUtagService,
     RefillService,
-    { provide: 'CAREMARKSDK_INSTANCE', useFactory: getCareMarkSdk} ],
-
+    { provide: 'CAREMARKSDK_INSTANCE', useFactory: getCareMarkSdk},
+    MemberService,
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
