@@ -52,14 +52,14 @@ header .logo img {
 }
 /*----------------------------------- BODY -------------------------------------*/
 .content-wrapper {
-  margin: 50px 20px 30px 40px;
+  margin: 30px 20px 30px 18px;
   max-width: 625px;
 }
-@media only screen and (min-device-width : 768px) {
+/*@media only screen and (min-device-width : 768px) {
   .content-wrapper {
     margin-left: 70px;
   }
-}
+}*/
 .content-wrapper h1 {
   font-weight: bold;
   font-size: 2.25em;
