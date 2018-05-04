@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TealiumUtagService} from '../service/utag.service';
 
-import {ConfigService} from "../service/config.service";
+import {ConfigService} from '../service/config.service';
 import {RefillService} from './refill.service';
 
 @Component({
@@ -9,7 +9,7 @@ import {RefillService} from './refill.service';
   templateUrl: './refill.component.html',
   styleUrls: ['./refill.component.scss']
 })
-export class RefillComponent implements  OnInit{
+export class RefillComponent implements  OnInit {
   public REFILL_TEXT = 'Your Prescriptions';
   public REFILL_URL_TEXT = 'View prescriptions';
   public webTrends: any;
@@ -19,8 +19,8 @@ export class RefillComponent implements  OnInit{
 
   ngOnInit(): void {
     this.refillService.getRefills()
-      .then((data) => {console.log(data);})
-      .catch( (error) => console.log(error));
+      .then((refills) => {console.log(JSON.stringify(refills)); })
+      .catch( (error) => console.error(error));
   }
 
   refillClickTag() {

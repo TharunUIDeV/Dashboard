@@ -1,13 +1,17 @@
 import {Inject, Injectable} from '@angular/core';
-import {ConfigService} from '../service/config.service';
 import {MemberService} from '../service/member.service';
-import {caremarksdk} from '../types/caremarksdk';
-
+import {ConfigService} from '../service/config.service';
 
 @Injectable()
-export class RefillService {
+export class OrderStatusService {
+
+  constructor(@Inject('CAREMARKSDK_INSTANCE') private sdkInstance: any,
+              private configService: ConfigService,
+              private memberService: MemberService) {
+  }
 
   private param: any = {};
+
 
   // private param: caremarksdk.CommonParam;
 
@@ -16,34 +20,28 @@ export class RefillService {
     this.param.apiKey = this.configService.apiKey;
     this.param.apiSecret = this.configService.apiSecret;
     this.param.tokenId = this.configService.token;
+    this.param.historyCount = 30;
+    this.param.historyMetric = 'days';
+    console.log(JSON.stringify(this.param));
   }
 
-  public getRefills() {
+  public getHistory(): Promise<any> {
 
     return new Promise((resolve, reject) => {
-        this.memberService.getMemberDetails()
+      this.memberService.getMemberDetails()
         .then((memberInfo) => {
           this.setAPIParams();
           this.param.memberInfo = memberInfo;
-          return;
         })
         .then(() => {
-          this.sdkInstance.Drug.getRefills(this.param, (result) => {
+          this.sdkInstance.Order.getHistory(this.param, (result) => {
             if (result.Header.StatusCode === '0000') {
               return resolve(result.Details);
             }
             console.error(JSON.stringify(result.Header));
-            return reject(result.Header);
+            return reject(result);
           });
         });
     });
-
   }
-
-  constructor(@Inject('CAREMARKSDK_INSTANCE') private sdkInstance: any,
-              private configService: ConfigService,
-              private memberService: MemberService) {
-  }
-
-
 }

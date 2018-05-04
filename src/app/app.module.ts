@@ -11,6 +11,7 @@ import { OrderStatusComponent } from './order-status/order-status.component';
 import {TealiumUtagService} from './service/utag.service';
 import {RefillService} from './refill/refill.service';
 import {MemberService} from './service/member.service';
+import {OrderStatusService} from './order-status/order-status.service';
 
 export function configServiceFactory(configSvc: ConfigService) {
   return () => configSvc.init;
@@ -32,6 +33,7 @@ export function configServiceFactory(configSvc: ConfigService) {
     RefillService,
     { provide: 'CAREMARKSDK_INSTANCE', useFactory: getCareMarkSdk},
     MemberService,
+    OrderStatusService,
   ],
   bootstrap: [AppComponent]
 })

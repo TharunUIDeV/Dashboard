@@ -7,28 +7,33 @@ import {caremarksdk} from '../types/caremarksdk';
 export class MemberService {
 
   private param: any = {};
+
   // private param: caremarksdk.CommonParam;
 
   private setAPIParams(): void {
     this.param.env = this.configService.env;
     this.param.apiKey = this.configService.apiKey;
-    this.param.apiSecret =  this.configService.apiSecret;
+    this.param.apiSecret = this.configService.apiSecret;
     this.param.tokenId = this.configService.token;
+    console.log(JSON.stringify(this.param));
   }
 
   public getMemberDetails() {
 
-    return new Promise( (resolve, reject) => {
+    return new Promise((resolve, reject) => {
       if (!this.sdkInstance) {
-        reject('SDK Not Initialized');
+        const error = {error: 'SDK Not Initialized'};
+        console.error(JSON.stringify(error));
+        return reject(error);
       }
 
       this.setAPIParams();
       this.sdkInstance.Member.getDetails(this.param, (result) => {
         if (result.Header.StatusCode === '0000') {
-          resolve(result.Details);
+          return resolve(result.Details);
         }
-        reject(result.Header.StatusDescription);
+        console.error(JSON.stringify(result.Header));
+        return reject(result.Header);
       });
 
     });
@@ -36,5 +41,6 @@ export class MemberService {
   }
 
   constructor(@Inject('CAREMARKSDK_INSTANCE') private sdkInstance: any,
-              private configService: ConfigService) {}
+              private configService: ConfigService) {
+  }
 }
