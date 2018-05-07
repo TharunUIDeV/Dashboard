@@ -43,7 +43,7 @@ export class ConfigService {
       if (data) {
         this.env = data.apiData.env;
         this.apiKey = data.apiData.apiKey;
-        this.apiSecret = data.apiDat.apiSecret;
+        this.apiSecret = data.apiData.apiSecret;
         this.apiBaseUrl = data.apiData.apiBaseUrl;
         this.token = data.apiData.tokenId;
         if (this.apiBaseUrl.includes('devservices-west.caremark.com')) {
