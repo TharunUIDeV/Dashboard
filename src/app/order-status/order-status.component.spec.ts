@@ -3,6 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {OrderStatusComponent} from './order-status.component';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from "../service/config.service";
+import {OrderStatusService} from './order-status.service';
 
 describe('OrderStatusComponent', () => {
   let component: OrderStatusComponent;
@@ -13,6 +14,7 @@ describe('OrderStatusComponent', () => {
     TestBed.configureTestingModule({
       declarations: [OrderStatusComponent],
       providers: [TealiumUtagService, ConfigService,
+        {provide: OrderStatusService, useValue: {sdkInstance: window['SDK']}},
         // {provide: ConfigService, useValue: {orderStatusUrl: '/wps/myportal/ORDER_STATUS'}},
         {provide: window.parent.location.href, useValue: '/'}
       ]

@@ -5,7 +5,7 @@ import { OrderStatusService } from './order-status.service';
 describe('OrderStatusService', () => {
   beforeEach(() => {
     TestBed.configureTestingModule({
-      providers: [OrderStatusService]
+      providers: [{provide: OrderStatusService, useValue: {sdkInstance: window['SDK']}}],
     });
   });
 
