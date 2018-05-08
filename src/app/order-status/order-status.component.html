@@ -2,4 +2,21 @@
   <h2>{{ORDER_STATUS_TEXT}}</h2>
   <a href="#" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}
   </a>
+  <br><br>
+  <div class="table-responsive-lg">
+  <table class="table table-hover">
+    <thead>
+    <tr>
+    </tr>
+    </thead>
+    <tbody>
+    <tr *ngFor="let OrderStatusData of OrderStatusList">
+      <th  scope="row">{{OrderStatusData.OrderNumber}}</th>
+      <td>{{OrderStatusData.OrderedFor}}</td>
+      <td>{{OrderStatusData.RxFills}}</td>
+      <td>{{OrderStatusData.StatusDescription}}</td>
+    </tr>
+    </tbody>
+  </table>
+  </div>
 </div>
