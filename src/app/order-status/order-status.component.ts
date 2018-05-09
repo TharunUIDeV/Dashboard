@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from "../service/config.service";
-import {OrderStatusElement, OrderStatusWidgetService} from './order-status.widget.service';
+import {OrderStatusWidgetElement, OrderStatusService} from './order-status.service';
 
 @Component({
   selector: 'app-order-status',
@@ -12,14 +12,14 @@ export class OrderStatusComponent implements OnInit{
   public ORDER_STATUS_TEXT = 'Recent Orders';
   public ORDER_STATUS_HREF_TEXT = 'View orders';
   public orderStatusWT: any;
-  public OrderStatusList: OrderStatusElement[] = [];
+  public OrderStatusList: OrderStatusWidgetElement[] = [];
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
-              private orderStatusWidgetService: OrderStatusWidgetService) { }
+              private orderStatusService: OrderStatusService) { }
 
   ngOnInit(): void {
-    this.orderStatusWidgetService.getWidgetData().then((widgetdata: OrderStatusElement[]) => {
+    this.orderStatusService.getWidgetData().then((widgetdata: OrderStatusWidgetElement[]) => {
       console.log('Component: Then');
       this.OrderStatusList = widgetdata;
     }).catch((error) => {
