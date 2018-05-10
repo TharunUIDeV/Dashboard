@@ -15,30 +15,19 @@ export class OrderStatusService {
 
   constructor(@Inject('CAREMARKSDK_INSTANCE') private sdkInstance: any,
               private configService: ConfigService,
-              private memberService: MemberService) {
-  }
+              private memberService: MemberService) {}
 
   private param: any = {};
   private widgetData: OrderStatusWidgetElement[] =  [];
   private orderStatusData: any = {};
-
-
-  // private param: caremarksdk.CommonParam;
 
   private setAPIParams(): void {
     this.param.env = this.configService.env;
     this.param.apiKey = this.configService.apiKey;
     this.param.apiSecret = this.configService.apiSecret;
     this.param.tokenId = this.configService.token;
-
-    console.error('TODO: Delete Hardcoded Params');
-    this.param.env = 'SIT1';
-    this.param.apiKey = '769c71df-fd85-4645-92e0-b8003a8a4ef3';
-    this.param.apiSecret = '764588f5-551e-4894-b401-13ad2d61c1cf';
-    this.param.tokenId = 'A3527F2ACA4E339A86E1324A114B3064';
-    this.param.historyCount = 200;
+    this.param.historyCount = 366;
     this.param.historyMetric = 'days';
-    console.log(JSON.stringify(this.param));
   }
 
 
@@ -51,7 +40,7 @@ export class OrderStatusService {
           this.param.memberInfo = memberInfo;
         })
         .then(() => {
-          this.sdkInstance.Order.getHistory(this.param, (result) => {
+          this.sdkInstance.Order.getOrderStatus(this.param, (result) => {
             if (result.Header.StatusCode === '0000') {
               return resolve(result.Details);
             }

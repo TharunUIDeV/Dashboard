@@ -9,8 +9,6 @@ export class RefillService {
 
   private param: any = {};
 
-  // private param: caremarksdk.CommonParam;
-
   private setAPIParams(): void {
     this.param.env = this.configService.env;
     this.param.apiKey = this.configService.apiKey;
@@ -21,7 +19,7 @@ export class RefillService {
   public getRefills() {
 
     return new Promise((resolve, reject) => {
-        this.memberService.getMemberDetails()
+      this.memberService.getMemberDetails()
         .then((memberInfo) => {
           this.setAPIParams();
           this.param.memberInfo = memberInfo;
@@ -42,8 +40,5 @@ export class RefillService {
 
   constructor(@Inject('CAREMARKSDK_INSTANCE') private sdkInstance: any,
               private configService: ConfigService,
-              private memberService: MemberService) {
-  }
-
-
+              private memberService: MemberService) { }
 }

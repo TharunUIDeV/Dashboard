@@ -7,21 +7,11 @@ import {caremarksdk} from '../types/caremarksdk';
 export class MemberService {
 
   private param: any = {};
-
-  // private param: caremarksdk.CommonParam;
-
   private setAPIParams(): void {
     this.param.env = this.configService.env;
     this.param.apiKey = this.configService.apiKey;
     this.param.apiSecret = this.configService.apiSecret;
     this.param.tokenId = this.configService.token;
-
-    console.error('TODO: Delete Hardcoded params');
-    this.param.env = 'SIT1';
-    this.param.apiKey = '769c71df-fd85-4645-92e0-b8003a8a4ef3';
-    this.param.apiSecret = '764588f5-551e-4894-b401-13ad2d61c1cf';
-    this.param.tokenId = '031F0EB4D7E831C6B9722ABFABAC500E';
-    console.log(JSON.stringify(this.param));
   }
 
   public getMemberDetails() {
@@ -47,6 +37,5 @@ export class MemberService {
   }
 
   constructor(@Inject('CAREMARKSDK_INSTANCE') private sdkInstance: any,
-              private configService: ConfigService) {
-  }
+              private configService: ConfigService) { }
 }
