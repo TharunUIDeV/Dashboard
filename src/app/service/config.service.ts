@@ -1,4 +1,4 @@
-import {Injectable} from '@angular/core';
+import {Injectable, APP_INITIALIZER} from '@angular/core';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {isNullOrUndefined} from 'util';
@@ -37,9 +37,10 @@ export class ConfigService {
     this.init();
   }
 
-  init: Function = _.debounce(() => {
+  init: Function = () => {
     try {
       const data = <any>window.parent.portalJson;
+      console.log(`Data from Portal: ${JSON.stringify(data)}`);
       if (data) {
         this.env = data.apiData.env;
         this.apiKey = data.apiData.apiKey;
@@ -59,7 +60,7 @@ export class ConfigService {
     } finally {
       this.ready.next(this.validate());
     }
-  }, 200);
+  };
 
 
   private validate(): boolean {
