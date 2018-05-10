@@ -40,7 +40,6 @@ export class ConfigService {
   init: Function = () => {
     try {
       const data = <any>window.parent.portalJson;
-      console.log(`Data from Portal: ${JSON.stringify(data)}`);
       if (data) {
         this.env = data.apiData.env;
         this.apiKey = data.apiData.apiKey;
