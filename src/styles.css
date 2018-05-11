@@ -1,10 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
-/* You can add global styles to this file, and also import other style files */
 /*----------------------------------- RESET -------------------------------------*/
 html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
+  box-sizing: border-box;
   font-size: 100%;
   font: inherit;
   line-height: 1;
@@ -13,6 +12,7 @@ html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockqu
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, address, main {
+  box-sizing: border-box;
   display: block;
 }
 ol, ul {
@@ -116,4 +116,95 @@ header .logo img {
 }
 .block li {
   padding: 0 0 15px;
+}
+
+.block-item {
+  font-size: .875em;
+}
+.hold-order {
+  padding-bottom: 10px;
+}
+.block-item p em {
+  color: #CC0000;
+  font-weight: bold;
+}
+@media only screen and (min-device-width : 768px) {
+  .block-item {
+    margin-bottom: 10px;
+    margin-left: 20px;
+  }
+}
+
+.important {
+  background:	url(assets/images/warning.png) left center no-repeat;
+  background-size: 20px 20px;
+  display: inline-block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  padding: 5px 25px;
+}
+@media only screen and (min-device-width : 768px) {
+  .hold-order > a {
+    float: right;
+  }
+}
+.hold-order ul {
+  overflow: auto;
+}
+.hold-order li {
+  padding: 5px 0;
+}
+.hold-order li.viewall {
+  padding-bottom: 0;
+}
+@media only screen and (min-device-width : 768px) {
+  .hold-order li {
+    float: left;
+    width: 50%;
+  }
+}
+.block > ul {
+  font-size: .875em;
+}
+@media only screen and (min-device-width : 768px) {
+  .block > ul, .all-orders {
+    margin-left: 20px;
+  }
+}
+.block > ul li {
+  margin-bottom: 10px;
+  overflow: auto;
+}
+.block > ul li span, .block > ul li a {
+  padding: 4px 0;
+}
+.block > ul li a, .block > ul li .placed {
+  color: #000;
+  clear: left;
+  float: left;
+}
+.block > ul li .rx, .block > ul li .status {
+  float: right;
+}
+.block > ul li .status {
+  font-weight: bold;
+}
+.block > ul li .status em {
+  color: #CC0000;
+}
+@media only screen and (min-device-width : 768px) {
+  .block > ul li a {
+    width: 25%;
+  }
+  .block > ul li .placed {
+    clear: none;
+    width: 43%;
+  }
+  .block > ul li .rx {
+    width: 10%;
+  }
+  .block > ul li .status {
+    text-align: right;
+    width: 20%;
+  }
 }

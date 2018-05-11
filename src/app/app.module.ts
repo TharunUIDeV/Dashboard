@@ -12,6 +12,7 @@ import {TealiumUtagService} from './service/utag.service';
 import {RefillService} from './refill/refill.service';
 import {MemberService} from './service/member.service';
 import {OrderStatusService} from './order-status/order-status.service';
+import { AttentionComponent } from './attention/attention.component';
 
 export function configServiceFactory(configSvc: ConfigService) {
   return () => configSvc.init;
@@ -21,7 +22,8 @@ export function configServiceFactory(configSvc: ConfigService) {
   declarations: [
     AppComponent,
     RefillComponent,
-    OrderStatusComponent
+    OrderStatusComponent,
+    AttentionComponent
   ],
   imports: [
     BrowserModule
