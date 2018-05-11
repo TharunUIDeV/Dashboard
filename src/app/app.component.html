@@ -1,10 +1,24 @@
 <main>
-<header>
-    <a href="#" class="navbar-brand"><img src="./assets/images/CVSCaremark.png" alt="CVS Caremark logo - Link to the Homepage" width="100%"></a>
-</header>
-<div class="content-wrapper">
-  <h1>
-    {{getTitle()}}
-  </h1>
-</div>
+  <div *ngIf="loading" id="spinner-container" class="spin-container modal__wrapper js-modal__wrapper"
+       aria-hidden="false" role="dialog" aria-labelledby="modal__title">
+    <div id="pleasewait" class="loadingModal" role="document">
+      <div class="spinner-wrapper">
+        <img class="spinner--preloader" src="assets/images/preloader.png">
+        <p class="spinner--text">Please wait while we are loading your information.</p>
+      </div>
+    </div>
+  </div>
+
+  <div *ngIf="!loading" class="content-wrapper">
+    <h1>
+      {{getTitle()}}
+    </h1>
+    <section class="block">
+      <app-order-status></app-order-status>
+    </section>
+    <section class="block">
+      <app-refill></app-refill>
+    </section>
+    <a href="#" (click)="gotoDashboard()" class="with-caret">Go to full site</a>
+  </div>
 </main>

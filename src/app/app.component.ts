@@ -1,17 +1,50 @@
-import { Component } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
+import {ConfigService} from './service/config.service';
+import {TealiumUtagService} from './service/utag.service';
+import {isNullOrUndefined} from "util";
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
+export class AppComponent implements OnInit {
+  title: String;
+  loading = false;
+  public environment: string;
 
+  constructor(private configSvc: ConfigService, private analytics: TealiumUtagService) { }
 
-export class AppComponent {
+  ngOnInit(): void {
+    this.environment = this.configSvc.env === 'demo' ? 'sit3' : this.configSvc.env;
+    const that = this;
+      if (!isNullOrUndefined(this.environment)) {
+        setTimeout(that.analytics.setConfig({
+          account: 'cvs',
+          profile: 'fast',
+          environment: that.configSvc.env === 'demo' ? 'sit3' : that.configSvc.env
+        }), 200);
+      } else {
+        console.error('config is invalid');
+      }
 
-  title: String = 'Hello world!';
+    this.analytics.view({
+      Page_Name: 'new dashboard',
+      Page_Category: 'caremark dashboard'
+    });
+  }
+
+  gotoDashboard() {
+    this.analytics.link({
+      key_activity: 'new dashboard view my current dashboard',
+      link_name: 'Custom: New Dashboard view my current dashboard clicked'
+    });
+    window.parent.location.href=this.configSvc.homePageUrl;
+  }
 
   getTitle() {
+    this.title = 'Hello '.concat(_.upperFirst(_.toLower(this.configSvc.participantFirstName)));
     return this.title;
   }
 }
