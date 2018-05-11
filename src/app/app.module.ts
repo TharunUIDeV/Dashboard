@@ -9,9 +9,8 @@ import { AppComponent } from './app.component';
 import { RefillComponent } from './refill/refill.component';
 import { OrderStatusComponent } from './order-status/order-status.component';
 import {TealiumUtagService} from './service/utag.service';
-import {RefillService} from './refill/refill.service';
-import {MemberService} from './service/member.service';
-import {OrderStatusService} from './order-status/order-status.service';
+import {CaremarkSdkService} from './service/caremark-sdk.service';
+
 import { AttentionComponent } from './attention/attention.component';
 
 export function configServiceFactory(configSvc: ConfigService) {
@@ -32,10 +31,8 @@ export function configServiceFactory(configSvc: ConfigService) {
   providers: [ConfigService,
     {provide: APP_INITIALIZER, useFactory: configServiceFactory, deps: [ConfigService], multi: true},
     BrowserService, FrameService, TealiumUtagService,
-    RefillService,
+    CaremarkSdkService,
     { provide: 'CAREMARKSDK_INSTANCE', useFactory: getCareMarkSdk},
-    MemberService,
-    OrderStatusService,
   ],
   bootstrap: [AppComponent]
 })

@@ -2,7 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TealiumUtagService} from '../service/utag.service';
 
 import {ConfigService} from '../service/config.service';
-import {RefillService} from './refill.service';
+import {CaremarkSdkService} from '../service/caremark-sdk.service';
 
 @Component({
   selector: 'app-refill',
@@ -15,10 +15,10 @@ export class RefillComponent implements  OnInit {
   public webTrends: any;
 
 
-  constructor(private analytics: TealiumUtagService, private configSvc: ConfigService, private refillService: RefillService) { }
+  constructor(private analytics: TealiumUtagService, private configSvc: ConfigService, private caremarkSdkService: CaremarkSdkService) { }
 
   ngOnInit(): void {
-    this.refillService.getRefills()
+    this.caremarkSdkService.getRefills()
       .then((refills) => {console.log(JSON.stringify(refills)); })
       .catch( (error) => console.error(error));
   }

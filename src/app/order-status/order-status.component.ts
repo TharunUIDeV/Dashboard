@@ -1,14 +1,21 @@
 import {Component, OnInit} from '@angular/core';
 import {TealiumUtagService} from '../service/utag.service';
-import {ConfigService} from "../service/config.service";
-import {OrderStatusWidgetElement, OrderStatusService} from './order-status.service';
+import {ConfigService} from '../service/config.service';
+import {CaremarkSdkService} from '../service/caremark-sdk.service';
+
+interface OrderStatusWidgetElement {
+  OrderNumber: string;
+  OrderedFor: string;
+  RxFills: string;
+  StatusDescription: string;
+}
 
 @Component({
   selector: 'app-order-status',
   templateUrl: './order-status.component.html',
   styleUrls: ['./order-status.component.scss']
 })
-export class OrderStatusComponent implements OnInit{
+export class OrderStatusComponent implements OnInit {
   public ORDER_STATUS_TEXT = 'Recent Orders';
   public ORDER_STATUS_HREF_TEXT = 'View orders';
   public orderStatusWT: any;
@@ -16,16 +23,25 @@ export class OrderStatusComponent implements OnInit{
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
-              private orderStatusService: OrderStatusService) { }
+              private caremarkSdkService: CaremarkSdkService) { }
+
+  public getWidgetData() {
+    this.caremarkSdkService.getOrderStatus().then((historyStatus: any) => {
+      for (const history of historyStatus.Results) {
+        this.OrderStatusList.push({
+          OrderNumber: history.OrderNumber,
+          OrderedFor: history.OrderDate,
+          RxFills: history.PrescriptionList !== undefined ? history.PrescriptionList[0].RxFillList.length : 'No Rx',
+          StatusDescription: history.PrescriptionList !== undefined ? history.PrescriptionList[0].StatusDescription : 'Unknown'
+        });
+      }
+    }).catch((error) => {
+        console.error('Failed to get WidgetData');
+    });
+  }
 
   ngOnInit(): void {
-    this.orderStatusService.getWidgetData().then((widgetdata: OrderStatusWidgetElement[]) => {
-      console.log('Component: Then');
-      this.OrderStatusList = widgetdata;
-    }).catch((error) => {
-      console.log(JSON.stringify(error));
-      this.OrderStatusList = [];
-    });
+    this.getWidgetData();
   }
 
   orderClickTag() {
