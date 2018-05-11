@@ -5,6 +5,7 @@ import {CaremarkDataService} from '../service/caremark-data.service';
 
 interface OrderStatusWidgetElement {
   OrderNumber: string;
+  OrderDate: string;
   OrderedFor: string;
   RxFills: string;
   StatusDescription: string;
@@ -17,7 +18,7 @@ interface OrderStatusWidgetElement {
 })
 export class OrderStatusComponent implements OnInit {
   public ORDER_STATUS_TEXT = 'Recent Orders';
-  public ORDER_STATUS_HREF_TEXT = 'View orders';
+  public ORDER_STATUS_HREF_TEXT = 'View all orders';
   public orderStatusWT: any;
   public OrderStatusList: OrderStatusWidgetElement[] = [];
 
@@ -30,9 +31,13 @@ export class OrderStatusComponent implements OnInit {
       for (const history of historyStatus.Results) {
         this.OrderStatusList.push({
           OrderNumber: history.OrderNumber,
-          OrderedFor: history.OrderDate,
-          RxFills: history.PrescriptionList !== undefined ? history.PrescriptionList[0].RxFillList.length : 'No Rx',
-          StatusDescription: history.PrescriptionList !== undefined ? history.PrescriptionList[0].StatusDescription : 'Unknown'
+          OrderDate: history.OrderDate,
+          OrderedFor: history.PrescriptionList !== undefined ?
+              history.PrescriptionList[0].PatientFirstName + ' ' + history.PrescriptionList[0].PatientLastName : 'Unknown',
+          RxFills: history.PrescriptionList !== undefined ?
+              history.PrescriptionList[0].RxFillList.length : 'No Rx',
+          StatusDescription: history.PrescriptionList !== undefined ?
+              history.PrescriptionList[0].StatusDescription : 'Unknown'
         });
       }
     }).catch((error) => {

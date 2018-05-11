@@ -14,6 +14,7 @@ import {CaremarkDataService} from './service/caremark-data.service';
 import { AttentionComponent } from './attention/attention.component';
 import {CaremarkSdkService} from './service/caremark-sdk.service';
 import {IceSdkService} from './service/ice-sdk.service';
+import { OrderStatusFilterPipe } from './order-status/order-status-filter.pipe';
 
 export function configServiceFactory(configSvc: ConfigService) {
   return () => configSvc.init;
@@ -24,7 +25,8 @@ export function configServiceFactory(configSvc: ConfigService) {
     AppComponent,
     RefillComponent,
     OrderStatusComponent,
-    AttentionComponent
+    AttentionComponent,
+    OrderStatusFilterPipe,
   ],
   imports: [
     BrowserModule
