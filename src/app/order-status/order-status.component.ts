@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
-import {CaremarkSdkService} from '../service/caremark-sdk.service';
+import {CaremarkDataService} from '../service/caremark-data.service';
 
 interface OrderStatusWidgetElement {
   OrderNumber: string;
@@ -23,10 +23,10 @@ export class OrderStatusComponent implements OnInit {
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
-              private caremarkSdkService: CaremarkSdkService) { }
+              private caremarkDataService: CaremarkDataService) { }
 
   public getWidgetData() {
-    this.caremarkSdkService.getOrderStatus().then((historyStatus: any) => {
+    this.caremarkDataService.getOrderStatus().then((historyStatus: any) => {
       for (const history of historyStatus.Results) {
         this.OrderStatusList.push({
           OrderNumber: history.OrderNumber,
@@ -37,6 +37,7 @@ export class OrderStatusComponent implements OnInit {
       }
     }).catch((error) => {
         console.error('Failed to get WidgetData');
+        console.error(JSON.stringify(error));
     });
   }
 

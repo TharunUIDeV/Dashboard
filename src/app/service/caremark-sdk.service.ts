@@ -1,8 +1,9 @@
 import {Inject, Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
+import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
 
 @Injectable()
-export class CaremarkSdkService {
+export class CaremarkSdkService implements CaremarkDataServiceInterface {
 
   private setAuthConfigParams(params): void {
     params.env = this.configService.env;
