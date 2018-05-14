@@ -1,15 +1,15 @@
-<div>
+<div class="recent">
   <div class="block-title">
     <h2>{{ORDER_STATUS_TEXT}}</h2>
     <a href="#" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}
     </a>
+  </div>
     <ul>
       <li *ngFor="let OrderStatusData of OrderStatusList | slice:0:2 | orderStatusFilter">
-        <a href="order">{{OrderStatusData.OrderNumber}}</a>
-        <span class="placed"><em> Placed Order On {{OrderStatusData.OrderDate | date:"MM/dd/yy"}} for {{OrderStatusData.OrderedFor}}</em></span>
-        <span class="rx">{{OrderStatusData.RxFills}}</span>
-        <span class="status">{{OrderStatusData.StatusDescription}}</span>
+        <a href="#">order #{{OrderStatusData.OrderNumber}}</a>
+        <span class="placed"><em> Placed on {{OrderStatusData.OrderDate | date:"MM/dd/yy"}} for {{OrderStatusData.OrderedFor}}</em></span>
+        <span class="rx">{{OrderStatusData.RxFills}} Rx</span>
+        <span class="status"><em>{{OrderStatusData.StatusDescription}}</em></span>
       </li>
     </ul>
-  </div>
 </div>
