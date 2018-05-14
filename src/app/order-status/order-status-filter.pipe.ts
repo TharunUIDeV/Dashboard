@@ -9,7 +9,9 @@ export class OrderStatusFilterPipe implements PipeTransform {
     if (!orders) {
       return orders;
     }
-    return orders.filter((order) => order);
+    return orders.filter((order) => {
+      return order;
+    });
   }
 
 }

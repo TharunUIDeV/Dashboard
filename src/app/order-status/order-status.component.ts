@@ -33,11 +33,11 @@ export class OrderStatusComponent implements OnInit {
           OrderNumber: history.OrderNumber,
           OrderDate: history.OrderDate,
           OrderedFor: history.PrescriptionList !== undefined ?
-              history.PrescriptionList[0].PatientFirstName + ' ' + history.PrescriptionList[0].PatientLastName : 'Unknown',
+              history.PrescriptionList[0].PatientFirstName + ' ' + history.PrescriptionList[0].PatientLastName :  undefined,
           RxFills: history.PrescriptionList !== undefined ?
-              history.PrescriptionList[0].RxFillList.length : 'No Rx',
+              history.PrescriptionList[0].RxFillList.length : undefined,
           StatusDescription: history.PrescriptionList !== undefined ?
-              history.PrescriptionList[0].StatusDescription : 'Unknown'
+              history.PrescriptionList[0].StatusDescription : undefined
         });
       }
     }).catch((error) => {
