@@ -22,6 +22,7 @@ interface AttentionWidgetOrderDetails {
 })
 export class AttentionComponent implements OnInit {
   public AttentionWidgetOrders: AttentionWidgetOrderDetails[] = [];
+  public ORDER_HOLD_STATUS_TEXT = 'On Hold';
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
@@ -32,7 +33,7 @@ export class AttentionComponent implements OnInit {
       for (const history of historyStatus.Results) {
         if (history.PrescriptionList) {
           for (const prescription of history.PrescriptionList) {
-            if (prescription.status.toUpperCase() === 'on hold') {
+            if (prescription.status.toUpperCase() ===  this.ORDER_HOLD_STATUS_TEXT.toUpperCase()) {
               this.AttentionWidgetOrders.push({
                 OrderNumber: history.OrderNumber,
                 OrderDate: history.OrderDate,
