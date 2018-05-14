@@ -4,7 +4,7 @@ import {RefillComponent} from './refill.component';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from "../service/config.service";
 
-describe('RefillComponent', () => {
+xdescribe('RefillComponent', () => {
   let component: RefillComponent;
   let fixture: ComponentFixture<RefillComponent>;
   let mockTealiumUtagService: TealiumUtagService;
