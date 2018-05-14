@@ -3,8 +3,9 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {OrderStatusComponent} from './order-status.component';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from "../service/config.service";
+import {BrowserService} from "../service/browser.service";
 
-xdescribe('OrderStatusComponent', () => {
+describe('OrderStatusComponent', () => {
   let component: OrderStatusComponent;
   let fixture: ComponentFixture<OrderStatusComponent>;
   let mockTealiumUtagService: TealiumUtagService;
@@ -12,7 +13,7 @@ xdescribe('OrderStatusComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrderStatusComponent],
-      providers: [TealiumUtagService, ConfigService,
+      providers: [TealiumUtagService, ConfigService, BrowserService,
         // {provide: ConfigService, useValue: {orderStatusUrl: '/wps/myportal/ORDER_STATUS'}},
         {provide: window.parent.location.href, useValue: '/'}
       ]

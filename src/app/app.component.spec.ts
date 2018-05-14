@@ -1,10 +1,11 @@
 import {TestBed, async, ComponentFixture} from '@angular/core/testing';
 import { AppComponent } from './app.component';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
-import {TealiumUtagService} from "./service/utag.service";
-import {ConfigService} from "./service/config.service";
+import {TealiumUtagService} from './service/utag.service';
+import {ConfigService} from './service/config.service';
+import {BrowserService} from './service/browser.service';
 
-xdescribe('AppComponent', () => {
+describe('AppComponent', () => {
   let sut: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
   beforeEach(async(() => {
@@ -14,6 +15,7 @@ xdescribe('AppComponent', () => {
       ],
       providers: [
         TealiumUtagService,
+        BrowserService,
         {provide: ConfigService, useValue: { participantFirstName: 'JOHN' }}
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
@@ -24,6 +26,7 @@ xdescribe('AppComponent', () => {
         fixture.detectChanges();
       });
   }));
+
   it('should create the app', async(() => {
     expect(sut).toBeTruthy();
   }));

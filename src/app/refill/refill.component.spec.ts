@@ -2,9 +2,10 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {RefillComponent} from './refill.component';
 import {TealiumUtagService} from '../service/utag.service';
-import {ConfigService} from "../service/config.service";
+import {ConfigService} from '../service/config.service';
+import {BrowserService} from '../service/browser.service';
 
-xdescribe('RefillComponent', () => {
+describe('RefillComponent', () => {
   let component: RefillComponent;
   let fixture: ComponentFixture<RefillComponent>;
   let mockTealiumUtagService: TealiumUtagService;
@@ -13,7 +14,7 @@ xdescribe('RefillComponent', () => {
     TestBed.configureTestingModule({
       declarations: [RefillComponent],
       providers: [
-        TealiumUtagService,
+        TealiumUtagService, BrowserService,
         {provide: ConfigService, useValue: {refillRxUrl: '/wps/myportal/REFILL_RX'}}
       ]
     })
