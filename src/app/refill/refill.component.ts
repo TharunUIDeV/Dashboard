@@ -22,15 +22,27 @@ export class RefillComponent implements  OnInit {
 
   constructor(private analytics: TealiumUtagService, private configSvc: ConfigService, private caremarkDataService: CaremarkDataService) { }
 
+
+  public getWidgetData() {
+    this.caremarkDataService.getRefills().then((refillsData: any) => {
+      let refill_count = 0;
+      for (const member of refillsData) {
+        for (const rxRefill of member.RxFills) {
+          if(rxRefill.refillable && rxRefill.tooSoonToRefill === 'false') {
+            refill_count = refill_count + 1;
+          }
+        }
+      }
+      this.refillWidgetData.RefillPrescriptionCount = refill_count.toString();
+    }).catch((error) => {
+      console.error('Failed to get WidgetData');
+      console.error(JSON.stringify(error));
+      this.refillWidgetData.RefillPrescriptionCount = '0';
+    });
+  }
+
   ngOnInit(): void {
-    this.caremarkDataService.getRefills()
-      .then((refills) => {
-        console.error('TODO: add refills count here');
-        this.refillWidgetData.RefillPrescriptionCount = '0';
-        console.log(JSON.stringify(refills)); })
-      .catch( (error) => {
-        console.error(error);
-      });
+    this.getWidgetData();
   }
 
   refillClickTag() {
