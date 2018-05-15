@@ -28,7 +28,7 @@ export class RefillComponent implements  OnInit {
       let refill_count = 0;
       for (const member of refillsData) {
         for (const rxRefill of member.RxFills) {
-          if(rxRefill.refillable && rxRefill.tooSoonToRefill === 'false') {
+          if (rxRefill.refillable && rxRefill.tooSoonToRefill === 'false') {
             refill_count = refill_count + 1;
           }
         }

@@ -76,6 +76,8 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
         return reject(error);
       }
       this.setAuthConfigParams(params);
+      // caremark SDK fails on setting memberInfo
+      params.memberInfo = undefined;
       this.sdkInstance.Drug.getRefills(params, (result) => {
         if (result.Header.StatusCode === '0000') {
           return resolve(result.Details);
