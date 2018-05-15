@@ -7,6 +7,8 @@ export class TealiumUtagService {
   private static deviceType;
   private static platform;
   private static environment;
+  private static memberId;
+  private static unEncyptedEmailAddress;
   script_src: string = '';
 
   // Typically set "noview" flag (no first page automatic view event) to true for Single Page Apps (SPAs)
@@ -16,6 +18,8 @@ export class TealiumUtagService {
     (<any>window).utag_cfg_ovrd = {noview: true};
     (<any>window).utag_data = {};
     TealiumUtagService.environment = this.configSvc.env;
+    TealiumUtagService.memberId = this.configSvc.memberId;
+    TealiumUtagService.unEncyptedEmailAddress = this.configSvc.emailAddr;
   }
 
   private static getEST(): string {
@@ -71,8 +75,8 @@ export class TealiumUtagService {
       query_string: null,
       state_city_ipaddress: null,
       Error_Messages: null,
-      member_id: 'SHOULD COME FROM PORTAL',
-      unencypted_email_id: 'SHOULD COME FROM PORTAL',
+      member_id: TealiumUtagService.memberId,
+      unencypted_email_id: TealiumUtagService.unEncyptedEmailAddress,
     };
     return basicViewTags;
   }
