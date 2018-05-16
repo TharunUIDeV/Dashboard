@@ -56,6 +56,7 @@ export class TealiumUtagService {
   private static _getBasicTraffic(): any {
     const pageCategory = 'Dashboard';
     const commonUrl = 'pbm';
+    const pathName = '/wps/myportal/NEWDASHBOARD';
     const basicViewTags = {
       domain: window.document.domain,
       adobe_platform: this.platform,
@@ -66,7 +67,7 @@ export class TealiumUtagService {
       sub_section4: commonUrl + '|' + this.platform + '|' + pageCategory,
       adobe_page_name: commonUrl + '|' + this.platform + '|' + pageCategory + ' Home',
       previous_adobe_page_name: this.getPreviousPageName(),
-      page_url: window.location.host + window.location.pathname,
+      page_url: window.location.host + pathName,
       previous_page_url: this.getPreviouspageURL(),
       responsive_design: this.platform,
       authentication_state: 'Rx Registered',
