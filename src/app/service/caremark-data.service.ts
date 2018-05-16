@@ -4,44 +4,54 @@ import {ConfigService} from './config.service';
 import {CaremarkSdkService} from './caremark-sdk.service';
 import {IceSdkService} from './ice-sdk.service';
 
+export enum DATASOURCE_TYPES {
+  CAREMARK_SDK = 'caremark-sdk',
+  VORDEL_PBM = 'vordel_pbm',
+  VORDEL_ICE = 'vordel_ice',
+}
+
 @Injectable()
 export class CaremarkDataService implements CaremarkDataServiceInterface {
-  private dataSource = 'pbm';
+
+  private _dataSource = undefined;
+  private _serviceInstance = undefined;
+
 
   constructor(private configService: ConfigService,
               private caremarkSdkService: CaremarkSdkService,
               private iceSdkService: IceSdkService) {
+    // Set Defaults
+    this._dataSource = DATASOURCE_TYPES.CAREMARK_SDK;
+    this._serviceInstance = this.caremarkSdkService;
+  }
+
+  set dataSource(value: DATASOURCE_TYPES) {
+    this._dataSource = value;
+    if (this._dataSource === DATASOURCE_TYPES.VORDEL_ICE) {
+      this._serviceInstance = this.iceSdkService;
+    }
+    if (this._dataSource === DATASOURCE_TYPES.VORDEL_PBM) {
+      this._serviceInstance = undefined;
+    }
+    if (this._dataSource === DATASOURCE_TYPES.CAREMARK_SDK) {
+      this._serviceInstance = this.caremarkSdkService;
+    }
+  }
+
+  get dataSource(): DATASOURCE_TYPES {
+    return this._dataSource;
   }
 
   getMemberDetails(): Promise<any> {
-    if (this.dataSource === 'ice') {
-      return this.iceSdkService.getMemberDetails();
-    }
-    if (this.dataSource === 'pbm') {
-      return this.caremarkSdkService.getMemberDetails();
-    }
-    return undefined;
+    return this._serviceInstance.getMemberDetails();
   }
 
   getOrderStatus(): Promise<any> {
-    if (this.dataSource === 'ice') {
-      return this.iceSdkService.getOrderStatus();
-    }
-    if (this.dataSource === 'pbm') {
-      return this.caremarkSdkService.getOrderStatus();
-    }
-    return undefined;
+    return this._serviceInstance.getOrderStatus();
   }
 
   getRefills(): Promise<any> {
-    this.dataSource = 'ice';
-    if (this.dataSource === 'ice') {
-      return this.iceSdkService.getRefills();
-    }
-    if (this.dataSource === 'pbm') {
-      return this.caremarkSdkService.getRefills();
-    }
-    return undefined;
+    return this._serviceInstance.getRefills();
   }
 
 }
