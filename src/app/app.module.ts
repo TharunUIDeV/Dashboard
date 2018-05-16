@@ -16,6 +16,7 @@ import {CaremarkSdkService} from './service/caremark-sdk.service';
 import {IceSdkService} from './service/ice-sdk.service';
 import { OrderStatusFilterPipe } from './order-status/order-status-filter.pipe';
 import {HttpClientModule} from '@angular/common/http';
+import {VordelPbmService} from './service/vordel-pbm.service';
 
 export function configServiceFactory(configSvc: ConfigService) {
   return () => configSvc.init;
@@ -40,6 +41,7 @@ export function configServiceFactory(configSvc: ConfigService) {
     CaremarkDataService,
     CaremarkSdkService,
     IceSdkService,
+    VordelPbmService,
     { provide: 'CAREMARKSDK_INSTANCE', useFactory: getCareMarkSdk},
   ],
   bootstrap: [AppComponent]
