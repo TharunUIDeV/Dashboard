@@ -34,6 +34,7 @@ export class CaremarkDataService implements CaremarkDataServiceInterface {
   }
 
   getRefills(): Promise<any> {
+    this.dataSource = 'ice';
     if (this.dataSource === 'ice') {
       return this.iceSdkService.getRefills();
     }

@@ -15,6 +15,7 @@ import { AttentionComponent } from './attention/attention.component';
 import {CaremarkSdkService} from './service/caremark-sdk.service';
 import {IceSdkService} from './service/ice-sdk.service';
 import { OrderStatusFilterPipe } from './order-status/order-status-filter.pipe';
+import {HttpClientModule} from '@angular/common/http';
 
 export function configServiceFactory(configSvc: ConfigService) {
   return () => configSvc.init;
@@ -29,7 +30,8 @@ export function configServiceFactory(configSvc: ConfigService) {
     OrderStatusFilterPipe,
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule,
   ],
 
   providers: [ConfigService,
