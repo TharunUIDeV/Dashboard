@@ -1,6 +1,6 @@
 import {Injectable} from '@angular/core';
-import {BrowserService} from "./browser.service";
-import {ConfigService} from "./config.service";
+import {BrowserService} from './browser.service';
+import {ConfigService} from './config.service';
 
 @Injectable()
 export class TealiumUtagService {
@@ -9,12 +9,14 @@ export class TealiumUtagService {
   private static environment;
   private static memberId;
   private static unEncyptedEmailAddress;
-  script_src: string = '';
+  script_src = '';
 
   // Typically set "noview" flag (no first page automatic view event) to true for Single Page Apps (SPAs)
   constructor(private browserService: BrowserService, private configSvc: ConfigService) {
     TealiumUtagService.deviceType = this.browserService.deviceType;
-    TealiumUtagService.platform = (TealiumUtagService.deviceType == 'DESKTOP') ? "dweb" : (TealiumUtagService.deviceType.indexOf('MOBILE') != -1) ? "mweb" : (TealiumUtagService.deviceType.indexOf('TAB') != -1) ? "tweb" : "dweb";
+    TealiumUtagService.platform = (TealiumUtagService.deviceType === 'DESKTOP') ? 'dweb'
+      : (TealiumUtagService.deviceType.indexOf('MOBILE') !== -1) ? 'mweb' :
+        (TealiumUtagService.deviceType.indexOf('TAB') !== -1) ? 'tweb' : 'dweb';
     (<any>window).utag_cfg_ovrd = {noview: true};
     (<any>window).utag_data = {};
     TealiumUtagService.environment = this.configSvc.env;
@@ -23,31 +25,31 @@ export class TealiumUtagService {
   }
 
   private static getEST(): string {
-    let utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
-    let tempDate = new Date();
-    let jan = new Date(tempDate.getFullYear(), 0, 1);
-    let jul = new Date(tempDate.getFullYear(), 6, 1);
+    const utc = new Date().getTime() + (new Date().getTimezoneOffset() * 60000);
+    const tempDate = new Date();
+    const jan = new Date(tempDate.getFullYear(), 0, 1);
+    const jul = new Date(tempDate.getFullYear(), 6, 1);
 
-    if (Math.min(jan.getTimezoneOffset(), jul.getTimezoneOffset()) == tempDate.getTimezoneOffset())
+    if (Math.min(jan.getTimezoneOffset(), jul.getTimezoneOffset()) === tempDate.getTimezoneOffset()) {
       return new Date(utc + (3600000 * -4)).toLocaleString() + ' EST';
-    else
+    } else {
       return new Date(utc + (3600000 * -5)).toLocaleString() + ' EST';
+    }
   }
 
   private static getPreviousPageName(): string {
-    if ((<any>window).utag && (<any>window).utag.data && (<any>window).utag.data.Page_Name){
-      return 'pbm' + '|' + this.platform  + '|' + (<any>window).utag.data.Page_Name;
-    }  else {
-      console.log(`Hard coding now for testing purposes`);
-      return 'pbm' + '|' + this.platform  + '|' + 'CVSCaremark Home Unauthenticated Home';
+    if ((<any>window).utag && (<any>window).utag.data && (<any>window).utag.data.Page_Name) {
+      return 'pbm' + '|' + this.platform + '|' + (<any>window).utag.data.Page_Name;
+    } else {
+      return 'pbm' + '|' + this.platform + '|' + 'CVSCaremark Home Unauthenticated Home';
     }
   }
 
   private static getPreviouspageURL(): string {
-    if ((<any>window).utag && (<any>window).utag.data && (<any>window).utag.data.page_url){
+    if ((<any>window).utag && (<any>window).utag.data && (<any>window).utag.data.page_url) {
       return (<any>window).utag.data.page_url;
     } else {
-      return "";
+      return '';
     }
   }
 
@@ -82,50 +84,51 @@ export class TealiumUtagService {
   }
 
   private static _getUtagData(): any {
-    const utagData =   {
-      environment : TealiumUtagService.environment,
-      site_name : 'caremark',
+    const utagData = {
+      environment: TealiumUtagService.environment,
+      site_name: 'caremark',
       platform: this.platform,
       // Client_Id: SHOULD COME FROM PORTAL,
       PBM_Client_Name: 'caremark'
     };
     return utagData;
   }
+
   // Generic script loader with callback
   getScript(src: string, callback: Function) {
-    let d = document;
-    let o = {
+    const d = document;
+    const o = {
       callback: callback || function () {
       }
     };
     let s, t;
 
-    if (typeof src == "undefined") {
+    if (typeof src === 'undefined') {
       return;
     }
 
-    s = d.createElement("script");
-    s.language = "javascript";
-    s.type = "text/javascript";
+    s = d.createElement('script');
+    s.language = 'javascript';
+    s.type = 'text/javascript';
     s.async = 1;
-    s.charset = "utf-8";
+    s.charset = 'utf-8';
     s.src = src;
-    if (typeof o.callback == "function") {
+    if (typeof o.callback === 'function') {
       if (d.addEventListener) {
-        s.addEventListener("load", function () {
-          o.callback()
+        s.addEventListener('load', function () {
+          o.callback();
         }, false);
       } else {
         // old IE support
         s.onreadystatechange = function () {
-          if (this.readyState == "complete" || this.readyState == "loaded") {
+          if (this.readyState === 'complete' || this.readyState === 'loaded') {
             this.onreadystatechange = null;
-            o.callback()
+            o.callback();
           }
         };
       }
     }
-    t = d.getElementsByTagName("script")[0];
+    t = d.getElementsByTagName('script')[0];
     t.parentNode.insertBefore(s, t);
   }
 
@@ -142,7 +145,7 @@ export class TealiumUtagService {
   // Data layer is optional set of key/value pairs
   track(tealium_event: string, data?: any) {
     if (this.script_src === '') {
-      console.log("Tealium config not set.");
+      console.log('Tealium config not set.');
       return;
     }
 
@@ -160,11 +163,11 @@ export class TealiumUtagService {
 
   view(data?: any) {
     const viewData = Object.assign({}, TealiumUtagService._getUtagData(), TealiumUtagService._getBasicTraffic(), data);
-    this.track("view", viewData);
+    this.track('view', viewData);
   }
 
   link(data?: any) {
     const linkData = Object.assign({}, TealiumUtagService._getUtagData(), data);
-    this.track("link", linkData);
+    this.track('link', linkData);
   }
 }
