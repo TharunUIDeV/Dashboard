@@ -1,17 +1,13 @@
-<div class="recent">
-  <div class="block-title">
-    <h2>{{ORDER_STATUS_TEXT}}</h2>
-    <a href="#" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}
-    </a>
-  </div>
-    <ul>
-      <li *ngFor="let OrderStatusData of OrderStatusList | slice:0:10 | orderStatusFilter">
-        <a href="#">order #{{OrderStatusData.OrderNumber}}</a>
-        <span class="placed">
-          <em> Placed on {{OrderStatusData.OrderDate | date:"MM/dd/yy"}}</em>
-          <em> for {{OrderStatusData.OrderedFor}}</em></span>
-        <span class="rx">>{{OrderStatusData.RxFills}} Rx</span>
-        <span class="status"><em>{{OrderStatusData.StatusDescription}}</em></span>
-      </li>
-    </ul>
+<div class="block recent">
+  <h2 class="block-title">{{ORDER_STATUS_TEXT}}</h2>
+  <ul>
+    <li *ngFor="let OrderStatusData of OrderStatusList | slice:0:3 | orderStatusFilter">
+      <a href="">Order #{{OrderStatusData.OrderNumber}}</a>
+      <span class="status"><em>{{OrderStatusData.StatusDescription}}</em></span>
+      <span class="placed">Placed on {{OrderStatusData.OrderDate | date:"MM/dd/yy"}} for {{OrderStatusData.OrderedFor | lowercase }}</span>
+      <span class="rx">{{OrderStatusData.RxFills}} Rxs</span>
+    </li>
+  </ul>
+  <a href="" class="with-caret all-orders" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a>
 </div>
+

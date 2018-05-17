@@ -38,7 +38,7 @@ export class AttentionComponent implements OnInit {
               this.AttentionWidgetOrders.push(
                 {
                   OrderDate: history.OrderDate,
-                  OrderedFor: history.OrderedFor,
+                  OrderedFor: prescription.PatientFirstName + ' ' + prescription.PatientLastName,
                   DoctorFullName: prescription.DoctorFullName,
                   OrderNumber: history.OrderNumber,
                   DrugDosage: prescription.DrugDosage,

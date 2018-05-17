@@ -38,18 +38,6 @@ a {
 b {
   font-weight: bold;
 }
-/*----------------------------------- HEADER -------------------------------------*/
-header {
-  background-color: #f8f9fa;
-  overflow: auto;
-  padding: 28px 40px 24px;
-}
-header .logo {
-  float: left;
-}
-header .logo img {
-  max-width: 220px;
-}
 /*----------------------------------- BODY -------------------------------------*/
 .content-wrapper {
   margin: 10px 10px 30px 10px;
@@ -83,7 +71,6 @@ header .logo img {
     margin-top: 15px;
   }
 }
-
 .block {
   border-bottom: 1px solid #EEEEEE;
   clear: both;
@@ -129,7 +116,7 @@ header .logo img {
   }
 }
 .with-caret{
-  background:	url(assets/images/caret.png) right center no-repeat;
+  background:	url(./assets/images/caret.png) right center no-repeat;
   background-size: 11px 18px;
   display: inline-block;
   padding: 2px 20px 2px 0;
@@ -161,9 +148,8 @@ header .logo img {
     margin-left: 20px;
   }
 }
-
 .important {
-  background:	url(assets/images/warning.png) left center no-repeat;
+  background:	url(./assets/images/warning.png) left center no-repeat;
   background-size: 20px 20px;
   display: inline-block;
   font-weight: bold;

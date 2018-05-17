@@ -10,18 +10,12 @@
   </div>
 
   <div *ngIf="!loading" class="content-wrapper">
+    <a href="#" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
     <h1>
       {{getTitle()}}
     </h1>
-    <section class="block">
       <app-attention></app-attention>
-    </section>
-    <section class="block">
       <app-order-status></app-order-status>
-    </section>
-    <section class="block">
       <app-refill></app-refill>
-    </section>
-    <a href="#" (click)="gotoDashboard()" class="with-caret">Go to full site</a>
   </div>
 </main>

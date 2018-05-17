@@ -1,19 +1,17 @@
-<div>
-<h2 class="block-title tasks">Your Tasks</h2>
-<section class="block-item" *ngIf="AttentionWidgetOrders.length > 0">
-  <em class="important">Ask your doctor to contact us</em>
-  <p> Your order(s) <em>on hold</em> because we need some additional information about the prescriptions listed</p>
+<section class="block">
+  <h2 class="block-title tasks">Your Tasks</h2>
+  <section class="block-item" *ngIf="AttentionWidgetOrders.length > 0">
+    <em class="important">Ask your doctor to contact us</em>
+    <p> Your order(s) <em>on hold</em> because we need some additional information about the prescriptions listed</p>
 
-  <section class="hold-order">
-    <ul>
-      <li *ngFor="let order of  AttentionWidgetOrders" >
-        <span class="name"><em>{{order.DrugName}}</em>{{order.DrugDosage}}</span>
-        <span class="order"><em>{{order.OrderNumber}}</em></span>
-        <span class="prescriber"><em>Prescriber: Dr. {{order.DoctorFullName}}</em></span>
-        <span class="date"><em>Requested on {{order.OrderDate | date:"MM/dd/yy" }} for {{order.OrderedFor}}</em></span>
-        <span class="viewall"><a href="" class="with-caret">View order</a></span>
-      </li>
-    </ul>
+    <section class="hold-order">
+      <ul *ngFor="let order of  AttentionWidgetOrders">
+        <li class="name"><b>{{order.DrugName}}</b> {{order.DrugStrength}} {{order.DrugDosage}}</li>
+        <li class="order">Order {{order.OrderNumber}}</li>
+        <li class="prescriber">Prescriber: Dr. {{order.DoctorFullName}}</li>
+        <li class="date">Request {{order.OrderDate | date:"MM/dd/yy" }} for {{order.OrderedFor}}</li>
+        <li class="viewall"><a href="" class="with-caret">View order</a></li>
+      </ul>
+    </section>
   </section>
 </section>
-</div>
