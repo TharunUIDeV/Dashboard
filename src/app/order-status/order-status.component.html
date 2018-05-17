@@ -5,7 +5,7 @@
     </a>
   </div>
     <ul>
-      <li *ngFor="let OrderStatusData of OrderStatusList | slice:0:3 | orderStatusFilter">
+      <li *ngFor="let OrderStatusData of OrderStatusList | slice:0:10 | orderStatusFilter">
         <a href="#">order #{{OrderStatusData.OrderNumber}}</a>
         <span class="placed">
           <em> Placed on {{OrderStatusData.OrderDate | date:"MM/dd/yy"}}</em>

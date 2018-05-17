@@ -33,23 +33,25 @@ export class AttentionComponent implements OnInit {
       for (const history of historyStatus.Results) {
         if (history.PrescriptionList) {
           for (const prescription of history.PrescriptionList) {
-            if (prescription.status.toUpperCase() ===  this.ORDER_HOLD_STATUS_TEXT.toUpperCase()) {
-              this.AttentionWidgetOrders.push({
-                OrderNumber: history.OrderNumber,
-                OrderDate: history.OrderDate,
-                OrderedFor: prescription.PatientFirstName + ' ' + history.Prescription.PatientLastName,
-                OrderStatus: prescription.StatusDescription,
-                DoctorFullName: prescription.DoctorFullName,
-                DrugName: prescription.DrugName,
-                DrugDosage: prescription.DrugDosage,
-                DrugStrength: prescription.DrugStrength
-              });
+            if (prescription.Status.toUpperCase() ===  this.ORDER_HOLD_STATUS_TEXT.toUpperCase()) {
+              console.log('In HOLD');
+              this.AttentionWidgetOrders.push(
+                {
+                  OrderDate: history.OrderDate,
+                  OrderedFor: history.OrderedFor,
+                  DoctorFullName: prescription.DoctorFullName,
+                  OrderNumber: history.OrderNumber,
+                  DrugDosage: prescription.DrugDosage,
+                  DrugName: prescription.DrugName,
+                  DrugStrength: prescription.DrugStrength,
+                  OrderStatus: prescription.OrderStatus
+                });
             }
           }
         }
       }
     }).catch((error) => {
-      console.error('Failed to get WidgetData');
+      console.error('Failed to get WidgetData in attention');
       console.error(JSON.stringify(error));
     });
   }

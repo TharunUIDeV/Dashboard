@@ -41,7 +41,7 @@ export class OrderStatusComponent implements OnInit {
         });
       }
     }).catch((error) => {
-        console.error('Failed to get WidgetData');
+        console.error('Failed to get WidgetData in OrderStatus');
         console.error(JSON.stringify(error));
     });
   }

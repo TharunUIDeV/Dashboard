@@ -3,6 +3,7 @@ import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
 import {ConfigService} from './config.service';
 import {CaremarkSdkService} from './caremark-sdk.service';
 import {IceSdkService} from './ice-sdk.service';
+import {VordelPbmService} from './vordel-pbm.service';
 
 export enum DATASOURCE_TYPES {
   CAREMARK_SDK = 'caremark-sdk',
@@ -19,10 +20,11 @@ export class CaremarkDataService implements CaremarkDataServiceInterface {
 
   constructor(private configService: ConfigService,
               private caremarkSdkService: CaremarkSdkService,
-              private iceSdkService: IceSdkService) {
+              private iceSdkService: IceSdkService,
+              private vordelPbmService: VordelPbmService) {
     // Set Defaults
-    this._dataSource = DATASOURCE_TYPES.CAREMARK_SDK;
-    this._serviceInstance = this.caremarkSdkService;
+    this._dataSource = DATASOURCE_TYPES.VORDEL_PBM;
+    this._serviceInstance = this.vordelPbmService;
   }
 
   set dataSource(value: DATASOURCE_TYPES) {
@@ -31,7 +33,7 @@ export class CaremarkDataService implements CaremarkDataServiceInterface {
       this._serviceInstance = this.iceSdkService;
     }
     if (this._dataSource === DATASOURCE_TYPES.VORDEL_PBM) {
-      this._serviceInstance = undefined;
+      this._serviceInstance = this.vordelPbmService;
     }
     if (this._dataSource === DATASOURCE_TYPES.CAREMARK_SDK) {
       this._serviceInstance = this.caremarkSdkService;
