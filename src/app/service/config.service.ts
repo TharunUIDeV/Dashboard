@@ -16,6 +16,8 @@ export class ConfigService {
   public orderStatusUrl: string;
   public refillRxUrl: string;
   public homePageUrl: string;
+  public memberId: string;
+  public emailAddr: string;
 
   ready = new BehaviorSubject(false);
 
@@ -53,6 +55,8 @@ export class ConfigService {
         this.orderStatusUrl = data.appData.OrderStatusUrl;
         this.refillRxUrl = data.appData.RefillRXUrl;
         this.homePageUrl = data.appData.HomePageUrl;
+        this.memberId = data.appData.ParticipantExternalId;
+        this.emailAddr = data.appData.ParticpantUserId;
       }
     } catch (e) {
       console.log('config service --> init() :' + e);
