@@ -19,6 +19,8 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
     'deviceType': 'DESKTOP',
     'appName': 'CMK_WEB'
   };
+  private  xml2jsParser = new xml2js.Parser({explicitArray : false});
+  private xml2jsXmlBuilder = new xml2js.Builder();
 
 
   constructor(private httpClient: HttpClient, private configService: ConfigService) { }
@@ -30,18 +32,6 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       queryParam.push(key + '=' + data[key]);
     }
     return queryParam.join('&');
-  }
-
-  private convertXML2JSON(xmlText) {
-    return new Promise((resolve, reject) => {
-        xml2js.parseString(xmlText, (err, result) => {
-        if (!err) {
-          resolve(result.rss.channel.item);
-        } else {
-          reject(err);
-        }
-      });
-    });
   }
 
   private handleError(res: HttpErrorResponse | any) {
@@ -76,7 +66,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
 
 
     queryParam.env = 'SIT1';
-    queryParam.tokenID = '1DE7D95CA13E392288C1D9D07FFF511A';
+    queryParam.tokenID = '6CEBEB43827A307C947720DFD4A0035E';
 
     const url = this.baseUrl + '/refill/orderStatus?' + VordelPbmService.createQueryString(queryParam);
     const httpOptions = {
@@ -103,16 +93,19 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
   public getOrderStatus(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getOrderStatusObserve().subscribe((result) => {
-          xml2js.parseString(result, (error, jsonData) => {
-            console.log(JSON.stringify(jsonData));
-            console.log(JSON.stringify(error));
+          this.xml2jsParser.parseString(result, (error, jsonData) => {
+            if (error) {
+              console.error('failed to do xml2json parsing in getOrderStatus');
+              return reject(error);
+            }
+            const response = jsonData.response;
 
-          if (jsonData.Header.StatusCode === '0000') {
-            console.log(JSON.stringify(result.Header.Details));
-            return resolve(jsonData.Details);
+          if (response.header.statusCode === '0000') {
+            console.log(JSON.stringify(response.header.details));
+            return resolve(response.details);
           }
-          console.error(JSON.stringify(jsonData.Header));
-          return reject(jsonData.Header);
+          console.error(JSON.stringify(response.header));
+          return reject(response.header);
         } );
 
       });
@@ -140,10 +133,6 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       env: this.configService.env
     };
 
-
-    queryParam.env = 'SIT1';
-    queryParam.tokenID = '1DE7D95CA13E392288C1D9D07FFF511A';
-
     const url = this.baseUrl + '/refill/getRefills?' + VordelPbmService.createQueryString(queryParam);
     const httpOptions = {
       headers: new HttpHeaders({
@@ -162,16 +151,20 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
   public getRefillsCount(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getRefillCountObserve().subscribe((result) => {
-        xml2js.parseString(result, (error, jsonData) => {
-          console.log(JSON.stringify(jsonData));
-          console.log(JSON.stringify(error));
-
-          if (jsonData.Header.StatusCode === '0000') {
-            console.log(JSON.stringify(result.Header.Details));
-            return resolve(jsonData.Details);
+        const parser = new xml2js.Parser({explicitArray : false});
+        this.xml2jsParser.parseString(result, (error, jsonData) => {
+          if (error) {
+            console.error('failed in xml2js.parseString');
+            return reject({error: 'failed to convert xml to json'});
           }
-          console.error(JSON.stringify(jsonData.Header));
-          return reject(jsonData.Header);
+          const response = jsonData.response;
+
+          if (response.header.statusCode === '0000') {
+            console.log(JSON.stringify(response.details));
+            return resolve(response.details);
+          }
+          console.error(JSON.stringify(response.header));
+          return reject(response.header);
         } );
 
       });
@@ -212,11 +205,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       }
     };
 
-    //  hardcode for easy testing
-    body.request.header.serviceContext.tokenID = 'FA5905D24F693874993589E9494DB479';
-
-    const builder = new xml2js.Builder();
-    const body_xml = builder.buildObject(body);
+    const body_xml = this.xml2jsXmlBuilder.buildObject(body);
 
     return this.httpClient.post(url,  body_xml,   httpOptions)
       .pipe(
@@ -227,16 +216,18 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
   public getRefills(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getRefillsObserve().subscribe((result) => {
-        xml2js.parseString(result, (error, jsonData) => {
-          console.log(JSON.stringify(jsonData));
-          console.log(JSON.stringify(error));
-
-          if (jsonData.Header.StatusCode === '0000') {
-            console.log(JSON.stringify(result.Header.Details));
-            return resolve(jsonData.Details);
+        this.xml2jsParser.parseString(result, (error, jsonData) => {
+          if (error) {
+            console.log(error);
+            return reject(error);
           }
-          console.error(JSON.stringify(jsonData.Header));
-          return reject(jsonData.Header);
+          const response = jsonData.response;
+          if (response.header.statusCode === '0000') {
+            console.log(JSON.stringify(response.details));
+            return resolve(response.details);
+          }
+          console.error(JSON.stringify(response.header));
+          return reject(response.header);
         } );
 
       });
