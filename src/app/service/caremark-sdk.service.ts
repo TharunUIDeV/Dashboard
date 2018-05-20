@@ -5,6 +5,21 @@ import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
 @Injectable()
 export class CaremarkSdkService implements CaremarkDataServiceInterface {
 
+  private sdkInstance: any;
+
+  private static getCareMarkSdk() {
+
+    if (typeof window !== 'undefined' && typeof window['SDK'] !== 'undefined') {
+      window['SDK'].setIdentity('browser');
+      return window['SDK'];
+    }
+    return null;
+  }
+
+  constructor(private configService: ConfigService) {
+    this.sdkInstance = CaremarkSdkService.getCareMarkSdk();
+  }
+
   private setAuthConfigParams(params): void {
     params.env = this.configService.env;
     params.apiKey = this.configService.apiKey;
@@ -14,9 +29,6 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
       'tokenId': this.configService.token,
     };
   }
-
-  constructor(@Inject('CAREMARKSDK_INSTANCE') private sdkInstance: any,
-              private configService: ConfigService) {}
 
   public getMemberDetails(): Promise<any> {
 
