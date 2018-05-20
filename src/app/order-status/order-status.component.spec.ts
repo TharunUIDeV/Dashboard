@@ -4,6 +4,7 @@ import {OrderStatusComponent} from './order-status.component';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from "../service/config.service";
 import {BrowserService} from "../service/browser.service";
+import {CaremarkSdkService} from '../service/caremark-sdk.service';
 
 describe('OrderStatusComponent', () => {
   let component: OrderStatusComponent;
@@ -13,7 +14,7 @@ describe('OrderStatusComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrderStatusComponent],
-      providers: [TealiumUtagService, ConfigService, BrowserService,
+      providers: [TealiumUtagService, ConfigService, BrowserService, CaremarkSdkService,
         // {provide: ConfigService, useValue: {orderStatusUrl: '/wps/myportal/ORDER_STATUS'}},
         {provide: window.parent.location.href, useValue: '/'}
       ]
@@ -32,7 +33,7 @@ describe('OrderStatusComponent', () => {
   });
 
   xit('should process the TAGS', () => {
-    let result = {
+    const result = {
       key_activity: 'new dashboard view orders',
       link_name: 'Custom: New Dashboard view orders clicked'
     };

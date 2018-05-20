@@ -4,6 +4,7 @@ import {RefillComponent} from './refill.component';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {BrowserService} from '../service/browser.service';
+import {CaremarkSdkService} from '../service/caremark-sdk.service';
 
 describe('RefillComponent', () => {
   let component: RefillComponent;
@@ -15,7 +16,8 @@ describe('RefillComponent', () => {
       declarations: [RefillComponent],
       providers: [
         TealiumUtagService, BrowserService,
-        {provide: ConfigService, useValue: {refillRxUrl: '/wps/myportal/REFILL_RX'}}
+        {provide: ConfigService, useValue: {refillRxUrl: '/wps/myportal/REFILL_RX'}},
+        CaremarkSdkService,
       ]
     })
       .compileComponents()
@@ -31,7 +33,7 @@ describe('RefillComponent', () => {
   });
 
   xit('should process the TAGS', () => {
-    let result = {key_activity: 'new dashboard view prescriptions', link_name: 'Custom: New Dashboard view prescriptions clicked'};
+    const result = {key_activity: 'new dashboard view prescriptions', link_name: 'Custom: New Dashboard view prescriptions clicked'};
     spyOn(mockTealiumUtagService, 'link').and.returnValue(result);
     component.refillClickTag();
     expect(component.webTrends).toEqual(result);

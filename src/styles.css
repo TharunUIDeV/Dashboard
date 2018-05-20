@@ -1,10 +1,9 @@
-/* You can add global styles to this file, and also import other style files */
-/* You can add global styles to this file, and also import other style files */
 /*----------------------------------- RESET -------------------------------------*/
 html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
+  box-sizing: border-box;
   font-size: 100%;
   font: inherit;
   line-height: 1;
@@ -13,6 +12,7 @@ html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockqu
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, address, main {
+  box-sizing: border-box;
   display: block;
 }
 ol, ul {
@@ -38,82 +38,186 @@ a {
 b {
   font-weight: bold;
 }
-/*----------------------------------- HEADER -------------------------------------*/
-header {
-  background-color: #f8f9fa;
-  overflow: auto;
-  padding: 28px 40px 24px;
-}
-header .logo {
-  float: left;
-}
-header .logo img {
-  max-width: 220px;
-}
 /*----------------------------------- BODY -------------------------------------*/
 .content-wrapper {
-  margin: 30px 20px 30px 18px;
+  margin: 10px 10px 30px 10px;
   max-width: 625px;
 }
-/*@media only screen and (min-device-width : 768px) {
+@media only screen and (min-device-width : 768px) {
   .content-wrapper {
-    margin-left: 70px;
+    margin: 30px 20px 30px 18px
   }
-}*/
+}
 .content-wrapper h1 {
+  clear: both;
+  font-size: 1.375em;
   font-weight: bold;
-  font-size: 2.25em;
-  padding: 0 0 50px;
-}
-.content-wrapper > a {
-  font-size: .875em;
-}
-.block {
-  border-bottom: 1px solid #EEEEEE;
-  font-weight: bold;
-  margin-bottom: 25px;
-}
-.block-title {
-  overflow: auto;
   padding: 0 0 20px;
 }
 @media only screen and (min-device-width : 768px) {
-  .block-title {
-    padding-bottom: 25px;
+  .content-wrapper h1 {
+    clear: none;
+    float: left;
+    font-size: 1.75em;
+    padding-bottom: 20px;
   }
 }
-.block-title h2 {
-  font-size: 1.375em;
-  padding: 0 30px 0 0;
+.view-site {
+  font-size: .875em;
+  float: right;
 }
 @media only screen and (min-device-width : 768px) {
-  .block-title h2 {
-    float: left;
+  .view-site {
+    margin-top: 15px;
   }
 }
-.block-title a, .with-caret{
-   background:	url(assets/images/caret.png) right center no-repeat;
-   background-size: 11px 18px;
-   display: inline-block;
-   margin-top: 5px;
-   padding: 5px 20px 5px 0;
-   text-decoration: none;
- }
-.block-title a {
+.block {
+  border-bottom: 1px solid #EEEEEE;
+  clear: both;
+  margin-bottom: 15px;
+  padding: 0 0 0 10px;
+}
+.block.recent {
+  padding-bottom: 15px;
+}
+.block.refill {
+  padding-bottom: 5px;
+}
+.block > a {
   font-size: .875em;
 }
 @media only screen and (min-device-width : 768px) {
-  .block-title a, .with-caret {
-    margin-top: 0;
+  .block {
+    margin-bottom: 25px;
+    padding: 0;
+  }
+  .block.recent {
+    padding-bottom: 20px;
+  }
+  .block.refill {
+    padding-bottom: 10px;
   }
 }
+.block-title {
+  font-weight: bold;
+  padding: 0 0 10px 0;
+}
+@media only screen and (min-device-width : 768px) {
+  .block-title {
+    padding-bottom: 15px;
+  }
+  .recent .block-title{
+    padding-bottom: 10px;
+  }
+}
+@media only screen and (min-device-width : 768px) {
+  .block-title {
+    font-size: 1.125em;
+  }
+}
+.with-caret{
+  background:	url(./assets/images/caret.png) right center no-repeat;
+  background-size: 11px 18px;
+  display: inline-block;
+  padding: 2px 20px 2px 0;
+  text-decoration: none;
+}
 .block p {
-  padding: 0 0 15px;
+  color: #333;
+  line-height: 1.325em;
+  padding: 0 0 10px;
 }
-.block ul {
-  list-style-type: disc;
-  list-style-position: inside;
+@media only screen and (min-device-width : 768px) {
+  .block p {
+    padding-bottom: 15px;
+  }
 }
-.block li {
-  padding: 0 0 15px;
+.block-item {
+  font-size: .875em;
+}
+.hold-order {
+  padding-bottom: 10px;
+}
+.block-item p em {
+  color: #CC0000;
+  font-weight: bold;
+}
+@media only screen and (min-device-width : 768px) {
+  .block-item {
+    margin-bottom: 10px;
+    margin-left: 20px;
+  }
+}
+.important {
+  background:	url(./assets/images/warning.png) left center no-repeat;
+  background-size: 20px 20px;
+  display: inline-block;
+  font-weight: bold;
+  margin-bottom: 5px;
+  padding: 5px 25px;
+}
+@media only screen and (min-device-width : 768px) {
+  .hold-order > a {
+    float: right;
+  }
+}
+.hold-order ul {
+  overflow: auto;
+}
+.hold-order li {
+  padding: 5px 0;
+}
+.hold-order li.viewall {
+  padding-bottom: 0;
+}
+@media only screen and (min-device-width : 768px) {
+  .hold-order li {
+    float: left;
+    width: 50%;
+  }
+}
+.block > ul {
+  font-size: .875em;
+}
+@media only screen and (min-device-width : 768px) {
+  .block > ul, .all-orders {
+    margin-left: 20px;
+  }
+}
+.block > ul li {
+  margin-bottom: 10px;
+  overflow: auto;
+}
+.block > ul li span, .block > ul li a {
+  padding: 4px 0;
+}
+.block > ul li a, .block > ul li .placed {
+  color: #000;
+  clear: left;
+  float: left;
+}
+.block > ul li .rx, .block > ul li .status {
+  float: right;
+}
+.block > ul li .status {
+  font-weight: bold;
+}
+.block > ul li .status em {
+  color: #CC0000;
+}
+@media only screen and (min-device-width : 768px) {
+  .block > ul li a {
+    width: 25%;
+  }
+  .block > ul li .placed {
+    clear: none;
+    width: 43%;
+  }
+  .block > ul li .rx {
+    width: 10%;
+  }
+  .block > ul li .status {
+    text-align: right;
+    width: 20%;
+  }
 }
