@@ -9,7 +9,6 @@ import * as xml2js from 'xml2js';
 
 @Injectable()
 export class VordelPbmService implements CaremarkDataServiceInterface {
-  private params: any;
   private baseUrl =  'https://sit1pbmservices.caremark.com/';
   private QueryConstants = {
     'lineOfBusiness': 'PBM',

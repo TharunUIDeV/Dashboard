@@ -1,11 +1,11 @@
 <div class="block recent">
-  <h2 class="block-title">{{ORDER_STATUS_TEXT}}</h2>
+  <h2 class="block-title">{{orderStatusWidgetData.OrdersCount}} {{ORDER_STATUS_TEXT}}</h2>
   <ul>
-    <li *ngFor="let OrderStatusData of OrderStatusList | slice:0:3 | orderStatusFilter">
-      <a href="">Order #{{OrderStatusData.OrderNumber}}</a>
-      <span class="status"><em>{{OrderStatusData.StatusDescription}}</em></span>
-      <span class="placed">Placed on {{OrderStatusData.OrderDate | date:"MM/dd/yy"}} for {{OrderStatusData.OrderedFor | lowercase }}</span>
-      <span class="rx">{{OrderStatusData.RxFills}} Rxs</span>
+    <li *ngFor="let OrderStatusDetail of orderStatusWidgetData.Orders | slice:0:3 | orderStatusFilter">
+      <a href="">Order #{{OrderStatusDetail.OrderNumber}}</a>
+      <span class="status"><em>{{OrderStatusDetail.StatusDescription}}</em></span>
+      <span class="placed">Placed on {{OrderStatusDetail.OrderDate | date:"MM/dd/yy"}} for {{OrderStatusDetail.OrderedFor | lowercase }}</span>
+      <span class="rx">{{OrderStatusDetail.RxFills}} Rxs</span>
     </li>
   </ul>
   <a href="" class="with-caret all-orders" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a>

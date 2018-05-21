@@ -2,7 +2,8 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {OrderStatusComponent} from './order-status.component';
 import {TealiumUtagService} from '../service/utag.service';
-import {ConfigService} from '../service/config.service';
+import {ConfigService} from "../service/config.service";
+import {BrowserService} from "../service/browser.service";
 import {CaremarkSdkService} from '../service/caremark-sdk.service';
 
 describe('OrderStatusComponent', () => {
@@ -13,8 +14,7 @@ describe('OrderStatusComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       declarations: [OrderStatusComponent],
-      providers: [TealiumUtagService, ConfigService,
-        {provide: CaremarkSdkService, useValue: {sdkInstance: window['SDK']}},
+      providers: [TealiumUtagService, ConfigService, BrowserService, CaremarkSdkService,
         // {provide: ConfigService, useValue: {orderStatusUrl: '/wps/myportal/ORDER_STATUS'}},
         {provide: window.parent.location.href, useValue: '/'}
       ]

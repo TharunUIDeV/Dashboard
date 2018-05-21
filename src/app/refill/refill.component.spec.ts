@@ -3,6 +3,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {RefillComponent} from './refill.component';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
+import {BrowserService} from '../service/browser.service';
 import {CaremarkSdkService} from '../service/caremark-sdk.service';
 
 describe('RefillComponent', () => {
@@ -14,10 +15,9 @@ describe('RefillComponent', () => {
     TestBed.configureTestingModule({
       declarations: [RefillComponent],
       providers: [
-        TealiumUtagService,
-        {provide: CaremarkSdkService, useValue: {sdkInstance: window['SDK']}},
-        {provide: ConfigService, useValue: {refillRxUrl: '/wps/myportal/REFILL_RX'},
-        }
+        TealiumUtagService, BrowserService,
+        {provide: ConfigService, useValue: {refillRxUrl: '/wps/myportal/REFILL_RX'}},
+        CaremarkSdkService,
       ]
     })
       .compileComponents()
