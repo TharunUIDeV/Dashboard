@@ -1,15 +1,14 @@
 import { Injectable } from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
-import * as MockOrderStatus from './mock-order-status-data.json';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {catchError} from 'rxjs/operators';
 import {Observable} from 'rxjs/Observable';
 import {ConfigService} from './config.service';
 import * as xml2js from 'xml2js';
 
 @Injectable()
 export class VordelPbmService implements CaremarkDataServiceInterface {
-  private baseUrl =  'https://sit1pbmservices.caremark.com/';
+  private baseUrl =  this.configService.apiBaseUrl;
   private QueryConstants = {
     'lineOfBusiness': 'PBM',
     'deviceID': 'device12345',
@@ -27,7 +26,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
 
   static createQueryString(data: any): string {
     const queryParam = [];
-    for (const key in data) {
+    for (const key of Object.keys(data)) {
       queryParam.push(key + '=' + data[key]);
     }
     return queryParam.join('&');
@@ -150,7 +149,6 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
   public getRefillsCount(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getRefillCountObserve().subscribe((result) => {
-        const parser = new xml2js.Parser({explicitArray : false});
         this.xml2jsParser.parseString(result, (error, jsonData) => {
           if (error) {
             console.error('failed in xml2js.parseString');

@@ -9,7 +9,7 @@ import {ConfigService} from './config.service';
 
 @Injectable()
 export class IceSdkService implements CaremarkDataServiceInterface {
-  private baseUrl = 'https://icet-sit3.caremark.com/';
+  private baseUrl =  this.configService.apiBaseUrl;
   private QueryConstants = {
     'lineOfBusiness': 'ICE',
     'deviceID': 'device12345',
@@ -26,7 +26,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
 
   static createQueryString(data: any): string {
     const queryParam = [];
-    for (const key in data) {
+    for (const key of Object.keys(data)) {
       queryParam.push(key + '=' + data[key]);
     }
     return queryParam.join('&');
