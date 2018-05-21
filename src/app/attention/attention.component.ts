@@ -3,8 +3,12 @@ import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
 
+interface AttentionWidgetData {
+  Orders: AttentionWidgetOrderStatus[];
+}
 
-interface AttentionWidgetOrderDetails {
+
+interface AttentionWidgetOrderStatus {
   OrderNumber: string;
   OrderDate: string;
   OrderedFor: string;
@@ -21,7 +25,7 @@ interface AttentionWidgetOrderDetails {
   styleUrls: ['./attention.component.css']
 })
 export class AttentionComponent implements OnInit {
-  public AttentionWidgetOrders: AttentionWidgetOrderDetails[] = [];
+  public attentionWidgetData: AttentionWidgetData = { Orders: []};
   public ORDER_HOLD_STATUS_TEXT = 'On Hold';
 
   constructor(private analytics: TealiumUtagService,
@@ -35,7 +39,7 @@ export class AttentionComponent implements OnInit {
           for (const prescription of history.PrescriptionList) {
             if (prescription.Status.toUpperCase() ===  this.ORDER_HOLD_STATUS_TEXT.toUpperCase()) {
               console.log('In HOLD');
-              this.AttentionWidgetOrders.push(
+              this.attentionWidgetData.Orders.push(
                 {
                   OrderDate: history.OrderDate,
                   OrderedFor: prescription.PatientFirstName + ' ' + prescription.PatientLastName,
