@@ -3,7 +3,12 @@ import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
 
-interface OrderStatusWidgetElement {
+interface OrderStatusWidgetData {
+  OrdersCount: number;
+  Orders: OrderStatusDetail [];
+}
+
+interface OrderStatusDetail {
   OrderNumber: string;
   OrderDate: string;
   OrderedFor: string;
@@ -20,7 +25,7 @@ export class OrderStatusComponent implements OnInit {
   public ORDER_STATUS_TEXT = 'Recent Orders';
   public ORDER_STATUS_HREF_TEXT = 'View all orders';
   public orderStatusWT: any;
-  public OrderStatusList: OrderStatusWidgetElement[] = [];
+  public orderStatusWidgetData: OrderStatusWidgetData = {OrdersCount: 0, Orders: []};
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
@@ -29,7 +34,7 @@ export class OrderStatusComponent implements OnInit {
   public getWidgetData() {
     this.caremarkDataService.getOrderStatus().then((historyStatus: any) => {
       for (const history of historyStatus.Results) {
-        this.OrderStatusList.push({
+        this.orderStatusWidgetData.Orders.push({
           OrderNumber: history.OrderNumber,
           OrderDate: history.OrderDate,
           OrderedFor: history.PrescriptionList !== undefined ?
@@ -40,6 +45,7 @@ export class OrderStatusComponent implements OnInit {
               history.PrescriptionList[0].StatusDescription : undefined
         });
       }
+      this.orderStatusWidgetData.OrdersCount = this.orderStatusWidgetData.Orders.length;
     }).catch((error) => {
         console.error('Failed to get WidgetData in OrderStatus');
         console.error(JSON.stringify(error));
