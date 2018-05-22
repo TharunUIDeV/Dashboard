@@ -26,6 +26,7 @@ export class OrderStatusComponent implements OnInit {
   public ORDER_STATUS_HREF_TEXT = 'View all orders';
   public orderStatusWT: any;
   public orderStatusWidgetData: OrderStatusWidgetData = {OrdersCount: 0, Orders: []};
+  public ORDER_STATUS_HOLD_TEXT = 'On Hold';
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
@@ -34,18 +35,25 @@ export class OrderStatusComponent implements OnInit {
   public getWidgetData() {
     this.caremarkDataService.getOrderStatus().then((historyStatus: any) => {
       for (const history of historyStatus.Results) {
-        this.orderStatusWidgetData.Orders.push({
-          OrderNumber: history.OrderNumber,
-          OrderDate: history.OrderDate,
-          OrderedFor: history.PrescriptionList !== undefined ?
-              history.PrescriptionList[0].PatientFirstName + ' ' + history.PrescriptionList[0].PatientLastName :  undefined,
-          RxFills: history.PrescriptionList !== undefined ?
-              history.PrescriptionList[0].RxFillList.length : undefined,
-          StatusDescription: history.PrescriptionList !== undefined ?
-              history.PrescriptionList[0].StatusDescription : undefined
-        });
+        // Check if any prescriptions are on hold
+        const orderStatusDetail: any = {};
+        orderStatusDetail.OrderDate = history.OrderDate;
+        orderStatusDetail.OrderNumber = history.OrderNumber;
+        orderStatusDetail.StatusDescription = history.PrescriptionList ? history.PrescriptionList[0].StatusDescription : undefined;
+        orderStatusDetail.OrderedFor = history.PrescriptionList ? history.PrescriptionList[0].PatientFirstName + ' ' +
+                                history.PrescriptionList[0].PatientLastName : undefined;
+        orderStatusDetail.RxFills = history.PrescriptionList ?  history.PrescriptionList.length : 0;
+        // Order Status takes priority of prescription on hold otherwise first prescriotion status
+        for (const prescription of history.PrescriptionList) {
+          if (prescription.StatusDescription.toUpperCase() === this.ORDER_STATUS_HOLD_TEXT.toUpperCase()) {
+            orderStatusDetail.StatusDescription = this.ORDER_STATUS_HOLD_TEXT;
+            orderStatusDetail.OrderedFor = prescription.PatientFirstName + ' ' + prescription.PatientLastName;
+          }
+        }
+        this.orderStatusWidgetData.Orders.push(orderStatusDetail);
       }
       this.orderStatusWidgetData.OrdersCount = this.orderStatusWidgetData.Orders.length;
+      console.log(this.orderStatusWidgetData.OrdersCount);
     }).catch((error) => {
         console.error('Failed to get WidgetData in OrderStatus');
         console.error(JSON.stringify(error));
