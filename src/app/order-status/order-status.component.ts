@@ -12,7 +12,7 @@ interface OrderStatusDetail {
   OrderNumber: string;
   OrderDate: string;
   OrderedFor: string;
-  RxFills: string;
+  RxFills: number;
   StatusDescription: string;
 }
 
@@ -35,25 +35,32 @@ export class OrderStatusComponent implements OnInit {
   public getWidgetData() {
     this.caremarkDataService.getOrderStatus().then((historyStatus: any) => {
       for (const history of historyStatus.Results) {
-        // Check if any prescriptions are on hold
         const orderStatusDetail: any = {};
+
         orderStatusDetail.OrderDate = history.OrderDate;
         orderStatusDetail.OrderNumber = history.OrderNumber;
-        orderStatusDetail.StatusDescription = history.PrescriptionList ? history.PrescriptionList[0].StatusDescription : undefined;
-        orderStatusDetail.OrderedFor = history.PrescriptionList ? history.PrescriptionList[0].PatientFirstName + ' ' +
-                                history.PrescriptionList[0].PatientLastName : undefined;
-        orderStatusDetail.RxFills = history.PrescriptionList ?  history.PrescriptionList.length : 0;
         // Order Status takes priority of prescription on hold otherwise first prescriotion status
-        for (const prescription of history.PrescriptionList) {
-          if (prescription.StatusDescription.toUpperCase() === this.ORDER_STATUS_HOLD_TEXT.toUpperCase()) {
-            orderStatusDetail.StatusDescription = this.ORDER_STATUS_HOLD_TEXT;
-            orderStatusDetail.OrderedFor = prescription.PatientFirstName + ' ' + prescription.PatientLastName;
+        if (history.PrescriptionList) {
+          orderStatusDetail.StatusDescription = history.PrescriptionList[0].StatusDescription;
+          orderStatusDetail.OrderedFor = history.PrescriptionList[0].PatientFirstName + ' ' +  history.PrescriptionList[0].PatientLastName;
+          orderStatusDetail.RxFills = history.PrescriptionList.length;
+          for (const prescription of history.PrescriptionList) {
+            if (prescription.StatusDescription.toUpperCase() === this.ORDER_STATUS_HOLD_TEXT.toUpperCase()) {
+              orderStatusDetail.StatusDescription = this.ORDER_STATUS_HOLD_TEXT;
+              orderStatusDetail.OrderedFor = prescription.PatientFirstName + ' ' + prescription.PatientLastName;
+              break;
+            }
           }
+        } else {
+          orderStatusDetail.StatusDescription = undefined;
+          orderStatusDetail.OrderedFor = undefined;
+          orderStatusDetail.RxFills = 0;
         }
         this.orderStatusWidgetData.Orders.push(orderStatusDetail);
       }
       this.orderStatusWidgetData.OrdersCount = this.orderStatusWidgetData.Orders.length;
-      console.log(this.orderStatusWidgetData.OrdersCount);
+      console.log(JSON.stringify(this.orderStatusWidgetData));
+      // console.log(this.orderStatusWidgetData.OrdersCount);
     }).catch((error) => {
         console.error('Failed to get WidgetData in OrderStatus');
         console.error(JSON.stringify(error));
