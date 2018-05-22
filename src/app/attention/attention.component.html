@@ -1,6 +1,6 @@
-<section class="block">
+<section class="block" *ngIf="attentionWidgetData.Orders.length > 0">
   <h2 class="block-title tasks">Your Tasks</h2>
-  <section class="block-item" *ngIf="attentionWidgetData.Orders.length > 0">
+  <section class="block-item" >
     <em class="important">Ask your doctor to contact us</em>
     <p> Your order(s) <em>on hold</em> because we need some additional information about the prescriptions listed</p>
 
