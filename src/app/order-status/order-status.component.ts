@@ -59,8 +59,6 @@ export class OrderStatusComponent implements OnInit {
         this.orderStatusWidgetData.Orders.push(orderStatusDetail);
       }
       this.orderStatusWidgetData.OrdersCount = this.orderStatusWidgetData.Orders.length;
-      console.log(JSON.stringify(this.orderStatusWidgetData));
-      // console.log(this.orderStatusWidgetData.OrdersCount);
     }).catch((error) => {
         console.error('Failed to get WidgetData in OrderStatus');
         console.error(JSON.stringify(error));

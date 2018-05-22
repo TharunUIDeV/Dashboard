@@ -27,8 +27,8 @@ export class RefillComponent implements  OnInit {
     this.caremarkDataService.getRefills().then((refillsData: any) => {
       let refill_count = 0;
       for (const member of refillsData) {
-        for (const rxRefill of member.RxFills) {
-          if (rxRefill.refillable && rxRefill.tooSoonToRefill === 'false') {
+        for (const rxRefill of member.rxRefills) {
+          if (rxRefill.canAutoRefill && rxRefill.tooSoonToRefill !== false) {
             refill_count = refill_count + 1;
           }
         }

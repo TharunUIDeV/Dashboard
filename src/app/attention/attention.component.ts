@@ -38,7 +38,6 @@ export class AttentionComponent implements OnInit {
         if (history.PrescriptionList) {
           for (const prescription of history.PrescriptionList) {
             if (prescription.Status.toUpperCase() ===  this.ORDER_HOLD_STATUS_TEXT.toUpperCase()) {
-              console.log('In HOLD');
               this.attentionWidgetData.Orders.push(
                 {
                   OrderDate: history.OrderDate,
