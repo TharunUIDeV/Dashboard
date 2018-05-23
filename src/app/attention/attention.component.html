@@ -1,4 +1,5 @@
 <section class="block" *ngIf="attentionWidgetData.Orders.length > 0">
+  <app-spinner [loading]="loading"></app-spinner>
   <h2 class="block-title tasks">Your Tasks</h2>
   <section class="block-item" >
     <em class="important">Ask your doctor to contact us</em>

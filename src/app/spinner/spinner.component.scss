@@ -1,0 +1,62 @@
+@mixin prefix($property, $value, $prefixes: ()) {
+  @each $prefix in ('webkit', 'moz', 'ms') {
+    #{'-' + $prefix + '-' + $property}: $value;
+  }
+  #{$property}: $value;
+}
+
+/*** loader ***/
+
+#spinner-container {
+  .loadingModal {
+    z-index: 1050;
+    background-color: rgba(255, 255, 255, .8);
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    outline: none;
+    text-align: center;
+    .icon-container {
+      height: 0;
+    }
+    .spinner-wrapper {
+      position: absolute;
+      top: 50vh;
+      left: 50%;
+      @include prefix(transform, translate(-50%, -50%));
+      .spinner--preloader {
+        margin: 0px auto 20px;
+        @include prefix(animation, spin 1.5s linear infinite);
+      }
+      .spinner--text {
+        font-size: 14px;
+        color: #646464;
+      }
+    }
+    @-moz-keyframes spin {
+      100% {
+        -moz-transform: rotate(360deg);
+      }
+    }
+    @-webkit-keyframes spin {
+      100% {
+        -webkit-transform: rotate(360deg);
+      }
+    }
+    @keyframes spin {
+      100% {
+        -webkit-transform: rotate(360deg);
+        transform: rotate(360deg);
+      }
+    }
+
+    #modal__title {
+      text-align: center;
+      top: 60%;
+    }
+  }
+}
+/*** loader ends ***/

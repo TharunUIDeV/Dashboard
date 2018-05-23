@@ -5,7 +5,7 @@ import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
 
 interface RefillWidgetData {
-  RefillPrescriptionCount: string;
+  RefillPrescriptionCount: number;
 }
 
 @Component({
@@ -17,7 +17,8 @@ export class RefillComponent implements  OnInit {
   public REFILL_URL_TEXT = 'Prescriptions ready for refill';
   // public REFILL_URL_TEXT = 'View prescriptions';
   public webTrends: any;
-  public refillWidgetData: RefillWidgetData = { RefillPrescriptionCount: '0'};
+  public refillWidgetData: RefillWidgetData = { RefillPrescriptionCount: undefined};
+  public loading = true;
 
 
   constructor(private analytics: TealiumUtagService, private configSvc: ConfigService, private caremarkDataService: CaremarkDataService) { }
@@ -33,12 +34,12 @@ export class RefillComponent implements  OnInit {
           }
         }
       }
-      this.refillWidgetData.RefillPrescriptionCount = refill_count.toString();
+      this.refillWidgetData.RefillPrescriptionCount = refill_count;
     }).catch((error) => {
       console.error('Failed to get WidgetData');
       console.error(JSON.stringify(error));
-      this.refillWidgetData.RefillPrescriptionCount = '0';
-    });
+      this.refillWidgetData.RefillPrescriptionCount = undefined;
+    }).then (() => { this.loading = false; });
   }
 
   ngOnInit(): void {

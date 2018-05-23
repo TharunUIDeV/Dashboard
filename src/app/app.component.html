@@ -1,13 +1,5 @@
 <main>
-  <div *ngIf="loading" id="spinner-container" class="spin-container modal__wrapper js-modal__wrapper"
-       aria-hidden="false" role="dialog" aria-labelledby="modal__title">
-    <div id="pleasewait" class="loadingModal" role="document">
-      <div class="spinner-wrapper">
-        <img class="spinner--preloader" src="assets/images/preloader.png">
-        <p class="spinner--text">Please wait while we are loading your information.</p>
-      </div>
-    </div>
-  </div>
+  <app-spinner [loading]="loading"></app-spinner>
 
   <div *ngIf="!loading" class="content-wrapper">
     <a href="#" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>

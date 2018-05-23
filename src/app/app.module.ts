@@ -11,6 +11,7 @@ import {HttpClientModule} from '@angular/common/http';
 
 import * as fromServices from './service';
 import {NgModule} from '@angular/core';
+import { SpinnerComponent } from './spinner/spinner.component';
 
 
 
@@ -21,6 +22,7 @@ import {NgModule} from '@angular/core';
     OrderStatusComponent,
     AttentionComponent,
     OrderStatusFilterPipe,
+    SpinnerComponent,
   ],
   imports: [
     BrowserModule,

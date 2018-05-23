@@ -25,8 +25,9 @@ export class OrderStatusComponent implements OnInit {
   public ORDER_STATUS_TEXT = 'Recent Orders';
   public ORDER_STATUS_HREF_TEXT = 'View all orders';
   public orderStatusWT: any;
-  public orderStatusWidgetData: OrderStatusWidgetData = {OrdersCount: 0, Orders: []};
+  public orderStatusWidgetData: OrderStatusWidgetData = {OrdersCount: undefined, Orders: []};
   public ORDER_STATUS_HOLD_TEXT = 'On Hold';
+  public loading = true;
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
@@ -62,7 +63,7 @@ export class OrderStatusComponent implements OnInit {
     }).catch((error) => {
         console.error('Failed to get WidgetData in OrderStatus');
         console.error(JSON.stringify(error));
-    });
+    }).then (() => { this.loading = false; });
   }
 
   ngOnInit(): void {

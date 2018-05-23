@@ -7,7 +7,6 @@ interface AttentionWidgetData {
   Orders: AttentionWidgetOrderStatus[];
 }
 
-
 interface AttentionWidgetOrderStatus {
   OrderNumber: string;
   OrderDate: string;
@@ -27,6 +26,7 @@ interface AttentionWidgetOrderStatus {
 export class AttentionComponent implements OnInit {
   public attentionWidgetData: AttentionWidgetData = { Orders: []};
   public ORDER_HOLD_STATUS_TEXT = 'On Hold';
+  public loading = true;
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
@@ -56,7 +56,7 @@ export class AttentionComponent implements OnInit {
     }).catch((error) => {
       console.error('Failed to get WidgetData in attention');
       console.error(JSON.stringify(error));
-    });
+    }).then (() => { this.loading = false; });
   }
 
   ngOnInit(): void {
