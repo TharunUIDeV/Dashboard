@@ -3,9 +3,9 @@
   <h2 class="block-title">{{orderStatusWidgetData.OrdersCount}} {{ORDER_STATUS_TEXT}}</h2>
   <app-spinner [loading]="loading"></app-spinner>
     <ul>
-      <li *ngFor="let OrderStatusDetail of orderStatusWidgetData.Orders | slice:0:3 | orderStatusFilter">
+      <li *ngFor="let OrderStatusDetail of orderStatusWidgetData.Orders | slice:0:100 | orderStatusFilter">
         <a href="">Order #{{OrderStatusDetail.OrderNumber}}</a>
-        <span class="status"><em>{{OrderStatusDetail.StatusDescription}}</em></span>
+        <span class="status"><em>{{OrderStatusDetail.OrderStatus}}</em></span>
         <span class="placed">Placed on {{OrderStatusDetail.OrderDate | date:"MM/dd/yy"}} for {{OrderStatusDetail.OrderedFor | lowercase }}</span>
         <span class="rx">{{OrderStatusDetail.RxFills}} Rxs</span>
       </li>

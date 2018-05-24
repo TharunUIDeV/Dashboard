@@ -7,11 +7,17 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
 
   private sdkInstance: any;
 
-  private static getCareMarkSdk() {
-
+  private static getCareMarkWrapperSdk() {
     if (typeof window !== 'undefined' && typeof window['SDK'] !== 'undefined') {
       window['SDK'].setIdentity('browser');
       return window['SDK'];
+    }
+    return null;
+  }
+
+  private static getCareMarkSdk() {
+    if (typeof window !== 'undefined' && typeof window['CoreSdk'] !== 'undefined') {
+      return  new window['CoreSdk'].Index('browser');
     }
     return null;
   }
@@ -64,9 +70,11 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
         return reject(error);
       }
       this.setAuthConfigParams(params);
-      params.historyCount = 30;
+      params.historyCount = '366';
       params.historyMetric = 'days';
-      console.log(JSON.stringify(params));
+      params.fastStartOrders = true;
+      params.mailOrders = true;
+      // console.log(JSON.stringify(params));
       this.sdkInstance.Order.getOrderStatus(params, (result) => {
         if (result.Header.StatusCode === '0000') {
           return resolve(result.Details);
