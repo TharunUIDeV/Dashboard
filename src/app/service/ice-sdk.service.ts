@@ -104,6 +104,8 @@ export class IceSdkService implements CaremarkDataServiceInterface {
 
   getRefills(): Promise<any> {
     return new Promise((resolve, reject) => {
+      reject('Not implemented yet');
+      /*
       this.getRefillsObserve().subscribe((result) => {
         if (result.Header.StatusCode === '0000') {
           return resolve(result.detail.prescriptionHistoryDetails);
@@ -111,6 +113,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         console.error(JSON.stringify(result.Header));
         return reject(result.Header);
       });
+      */
     });
   }
 
