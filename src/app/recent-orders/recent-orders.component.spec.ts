@@ -1,19 +1,19 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {OrderStatusComponent} from './order-status.component';
+import {RecentOrdersComponent} from './recent-orders.component';
 import {TealiumUtagService} from '../service/utag.service';
-import {ConfigService} from "../service/config.service";
-import {BrowserService} from "../service/browser.service";
+import {ConfigService} from '../service/config.service';
+import {BrowserService} from '../service/browser.service';
 import {CaremarkSdkService} from '../service/caremark-sdk.service';
 
-describe('OrderStatusComponent', () => {
-  let component: OrderStatusComponent;
-  let fixture: ComponentFixture<OrderStatusComponent>;
+describe('RecentOrdersComponent', () => {
+  let component: RecentOrdersComponent;
+  let fixture: ComponentFixture<RecentOrdersComponent>;
   let mockTealiumUtagService: TealiumUtagService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OrderStatusComponent],
+      declarations: [RecentOrdersComponent],
       providers: [TealiumUtagService, ConfigService, BrowserService, CaremarkSdkService,
         // {provide: ConfigService, useValue: {orderStatusUrl: '/wps/myportal/ORDER_STATUS'}},
         {provide: window.parent.location.href, useValue: '/'}
@@ -21,7 +21,7 @@ describe('OrderStatusComponent', () => {
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(OrderStatusComponent);
+        fixture = TestBed.createComponent(RecentOrdersComponent);
         component = fixture.componentInstance;
         mockTealiumUtagService = TestBed.get(TealiumUtagService);
         fixture.detectChanges();

@@ -3,7 +3,7 @@ import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
 
-interface OrderStatusWidgetData {
+interface RecentOrdersWidgetData {
   OrdersCount: number;
   Orders: OrderStatusDetail [];
 }
@@ -14,18 +14,19 @@ interface OrderStatusDetail {
   OrderedFor: string;
   RxFills: number;
   OrderStatus: string;
+  OrderType: string;
 }
 
 @Component({
   selector: 'app-order-status',
-  templateUrl: './order-status.component.html',
-  styleUrls: ['./order-status.component.scss']
+  templateUrl: './recent-orders.component.html',
+  styleUrls: ['./recent-orders.component.scss']
 })
-export class OrderStatusComponent implements OnInit {
-  public ORDER_STATUS_TEXT = 'Recent Orders';
+export class RecentOrdersComponent implements OnInit {
+  public RECENT_ORDERS_TEXT = 'Recent Orders';
   public ORDER_STATUS_HREF_TEXT = 'View all orders';
   public orderStatusWT: any;
-  public orderStatusWidgetData: OrderStatusWidgetData = {OrdersCount: undefined, Orders: []};
+  public recentOrdersWidgetData: RecentOrdersWidgetData = {OrdersCount: undefined, Orders: []};
   public ORDER_STATUS_HOLD_TEXT = 'On Hold';
   public loading = true;
 
@@ -40,6 +41,7 @@ export class OrderStatusComponent implements OnInit {
 
         orderStatusDetail.OrderDate = history.OrderDate;
         orderStatusDetail.OrderNumber = history.OrderNumber;
+        orderStatusDetail.OrderType = history.OrderType;
         // Order Status takes priority of prescription on hold otherwise first prescriotion status
         if (history.PrescriptionList) {
           orderStatusDetail.OrderStatus = history.PrescriptionList[0].Status;
@@ -58,13 +60,13 @@ export class OrderStatusComponent implements OnInit {
           orderStatusDetail.RxFills = 0;
         }
         console.log(JSON.stringify(orderStatusDetail));
-        this.orderStatusWidgetData.Orders.push(orderStatusDetail);
+        this.recentOrdersWidgetData.Orders.push(orderStatusDetail);
       }
-      this.orderStatusWidgetData.OrdersCount = this.orderStatusWidgetData.Orders.length;
+      this.recentOrdersWidgetData.OrdersCount = this.recentOrdersWidgetData.Orders.length;
     }).catch((error) => {
         console.error('Failed to get WidgetData in OrderStatus');
         console.error(JSON.stringify(error));
-        this.orderStatusWidgetData = {OrdersCount: undefined, Orders: []};
+        this.recentOrdersWidgetData = {OrdersCount: undefined, Orders: []};
     }).then (() => { this.loading = false; });
   }
 
