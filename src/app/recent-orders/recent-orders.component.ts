@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
+import {OrderStatusFilterPipe} from './order-status-filter.pipe';
 
 interface RecentOrdersWidgetData {
   OrdersCount: number;
@@ -32,23 +33,26 @@ export class RecentOrdersComponent implements OnInit {
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
-              private caremarkDataService: CaremarkDataService) { }
+              private caremarkDataService: CaremarkDataService,
+              private orderStatusFilter: OrderStatusFilterPipe) { }
 
   public getWidgetData() {
     this.caremarkDataService.getOrderStatus().then((historyStatus: any) => {
-      for (const history of historyStatus.Results) {
+      let orders = historyStatus.Results;
+      orders = this.orderStatusFilter.transform(orders);
+      for (const order of orders) {
         const orderStatusDetail: any = {};
 
-        orderStatusDetail.OrderDate = history.OrderDate;
-        orderStatusDetail.OrderNumber = history.OrderNumber;
-        orderStatusDetail.OrderType = history.OrderType;
+        orderStatusDetail.OrderDate = order.OrderDate;
+        orderStatusDetail.OrderNumber = order.OrderNumber;
+        orderStatusDetail.OrderType = order.OrderType;
         // Order Status takes priority of prescription on hold otherwise first prescriotion status
-        if (history.PrescriptionList) {
-          orderStatusDetail.OrderStatus = history.PrescriptionList[0].Status;
-          orderStatusDetail.OrderedFor = history.PrescriptionList[0].PatientFirstName + ' ' +  history.PrescriptionList[0].PatientLastName;
-          orderStatusDetail.RxFills = history.PrescriptionList.length;
-          for (const prescription of history.PrescriptionList) {
-            if (prescription.Status.toUpperCase() === this.ORDER_STATUS_HOLD_TEXT.toUpperCase()) {
+        if (order.PrescriptionList) {
+          orderStatusDetail.OrderStatus = order.PrescriptionList[0].StatusDescription;
+          orderStatusDetail.OrderedFor = order.PrescriptionList[0].PatientFirstName + ' ' +  order.PrescriptionList[0].PatientLastName;
+          orderStatusDetail.RxFills = order.PrescriptionList.length;
+          for (const prescription of order.PrescriptionList) {
+            if (prescription.StatusDescription.toUpperCase() === this.ORDER_STATUS_HOLD_TEXT.toUpperCase()) {
               orderStatusDetail.OrderStatus = this.ORDER_STATUS_HOLD_TEXT;
               orderStatusDetail.OrderedFor = prescription.PatientFirstName + ' ' + prescription.PatientLastName;
               break;

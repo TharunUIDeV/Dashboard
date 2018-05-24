@@ -3,7 +3,7 @@
   <h2 class="block-title">{{recentOrdersWidgetData.OrdersCount}} {{RECENT_ORDERS_TEXT}}</h2>
   <app-spinner [loading]="loading"></app-spinner>
     <ul>
-      <li *ngFor="let OrderStatusDetail of recentOrdersWidgetData.Orders | slice:0:100">
+      <li *ngFor="let OrderStatusDetail of recentOrdersWidgetData.Orders | slice:0:3">
         <a href="">Order #{{OrderStatusDetail.OrderNumber}}</a>
         <span class="status"><em>{{OrderStatusDetail.OrderStatus}}</em></span>
         <span class="placed">Placed on {{OrderStatusDetail.OrderDate | date:"MM/dd/yy"}} for {{OrderStatusDetail.OrderedFor | lowercase }}</span>

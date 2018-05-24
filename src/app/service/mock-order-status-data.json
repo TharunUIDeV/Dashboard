@@ -265,7 +265,7 @@
       "PrescriptionList": [
         {
           "DateOfBirth": "01/01/1961",
-          "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+          "DoctorFullName": "JAMIESONSR, CLABORN",
           "DrugDosage": "TAB",
           "DrugName": "CRESTOR",
           "DrugStrength": "5MG",
@@ -326,7 +326,7 @@
       "PrescriptionList": [
         {
           "DateOfBirth": "01/01/1961",
-          "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+          "DoctorFullName": "JAMIESONSR, CLABORN",
           "DrugDosage": "TAB",
           "DrugName": "CRESTOR",
           "DrugStrength": "5MG",

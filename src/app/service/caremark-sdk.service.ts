@@ -1,4 +1,4 @@
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
 
@@ -50,6 +50,7 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
 
       this.sdkInstance.Member.getDetails(params, (result) => {
         if (result.Header.StatusCode === '0000') {
+          console.log(JSON.stringify(result.Details));
           return resolve(result.Details);
         }
         console.error(JSON.stringify(result.Header));

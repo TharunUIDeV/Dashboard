@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
 import * as MockOrderStatusData from './mock-order-status-data.json';
 import * as MockGetRefillsData from './mock-get-refills-data.json';
+import * as MockMemberInfo from './mock-get-memberinfo.json';
 
 @Injectable()
 export class MockCaremarkSdkService implements CaremarkDataServiceInterface {
@@ -11,7 +12,7 @@ export class MockCaremarkSdkService implements CaremarkDataServiceInterface {
   public getMemberDetails(): Promise<any> {
 
     return new Promise((resolve, reject) => {
-      reject({error: 'Not implemented yet'});
+      resolve((<any>MockMemberInfo).Details);
     });
   }
 

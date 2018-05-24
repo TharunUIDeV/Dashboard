@@ -37,7 +37,7 @@ export class AttentionComponent implements OnInit {
       for (const history of historyStatus.Results) {
         if (history.PrescriptionList) {
           for (const prescription of history.PrescriptionList) {
-            if (prescription.Status.toUpperCase() !==  this.ORDER_HOLD_STATUS_TEXT.toUpperCase()) {
+            if (prescription.Status.toUpperCase() ===  this.ORDER_HOLD_STATUS_TEXT.toUpperCase()) {
               this.attentionWidgetData.Orders.push(
                 {
                   OrderDate: history.OrderDate,
