@@ -1,9 +1,9 @@
 import {Injectable} from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
-import * as MockOrderStatusData from './mock-order-status-data.json';
-import * as MockGetRefillsData from './mock-get-refills-data.json';
-import * as MockMemberInfo from './mock-get-memberinfo.json';
-import * as MockGetRefillsCountData from './mock-getRefillsCount-data.json';
+import * as MockOrderStatusData from '../../assets/mock-data/mock-order-status-data.json';
+import * as MockGetRefillsData from '../../assets/mock-data/mock-get-refills-data.json';
+import * as MockMemberInfo from '../../assets/mock-data/mock-get-memberinfo.json';
+import * as MockGetRefillsCountData from '../../assets/mock-data/mock-getRefillsCount-data.json';
 
 @Injectable()
 export class MockCaremarkSdkService implements CaremarkDataServiceInterface {
