@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
+import 'rxjs/add/observable/throw';
 import {Observable} from 'rxjs/Observable';
 import {ConfigService} from './config.service';
 import * as xml2js from 'xml2js';
@@ -62,10 +63,6 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       env: this.configService.env
     };
 
-
-    queryParam.env = 'SIT1';
-    queryParam.tokenID = '6CEBEB43827A307C947720DFD4A0035E';
-
     const url = this.baseUrl + '/refill/orderStatus?' + VordelPbmService.createQueryString(queryParam);
     const httpOptions = {
       headers: new HttpHeaders({
@@ -116,19 +113,20 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       apiKey: this.configService.apiKey,
       apiSecret: this.configService.apiSecret,
       appName: this.QueryConstants.appName,
-      channelName: this.QueryConstants.channelName,
-      deviceType: this.QueryConstants.deviceType,
+      // channelName: this.QueryConstants.channelName,
+      // deviceType: this.QueryConstants.deviceType,
       tokenID: this.configService.token,
       deviceID: this.QueryConstants.deviceID,
-      deviceToken: this.QueryConstants.deviceToken,
-      lineOfBusiness: this.QueryConstants.lineOfBusiness,
+      // deviceToken: this.QueryConstants.deviceToken,
+      // lineOfBusiness: this.QueryConstants.lineOfBusiness,
       serviceCORS: 'TRUE',
       version: '5.0',
+      xmlFormat: 'True',
       serviceName: 'getRefills',
       operationName: 'getRefillCounts',
       estimatedCost: '1',
       familyRefills: 'TRUE',
-      env: this.configService.env
+      // env: this.configService.env
     };
 
     const url = this.baseUrl + '/refill/getRefills?' + VordelPbmService.createQueryString(queryParam);
@@ -155,16 +153,18 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
             return reject({error: 'failed to convert xml to json'});
           }
           const response = jsonData.response;
+          console.log(JSON.stringify(response));
 
           if (response.header.statusCode === '0000') {
-            console.log(JSON.stringify(response.details));
-            return resolve(response.details);
+            console.log(JSON.stringify(response.detail));
+            return resolve(response.detail);
           }
           console.error(JSON.stringify(response.header));
           return reject(response.header);
         } );
 
-      });
+      },
+        error => reject(error));
     });
   }
 

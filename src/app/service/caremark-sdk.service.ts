@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
+import {VordelPbmService} from './vordel-pbm.service';
 
 @Injectable()
 export class CaremarkSdkService implements CaremarkDataServiceInterface {
@@ -22,7 +23,7 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
     return null;
   }
 
-  constructor(private configService: ConfigService) {
+  constructor(private configService: ConfigService, private vordelPbmService: VordelPbmService) {
     this.sdkInstance = CaremarkSdkService.getCareMarkSdk();
   }
 
@@ -50,7 +51,7 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
 
       this.sdkInstance.Member.getDetails(params, (result) => {
         if (result.Header.StatusCode === '0000') {
-          console.log(JSON.stringify(result.Details));
+          // console.log(JSON.stringify(result.Details));
           return resolve(result.Details);
         }
         console.error(JSON.stringify(result.Header));
@@ -107,6 +108,15 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
         return reject(result.Header);
       });
     });
+  }
+
+  public getRefillsCount(): Promise<any> {
+    return this.vordelPbmService.getRefillsCount();
+/*
+    return new Promise((resolve, reject) => {
+      const params: any = {};
+     return this.vordelPbmService.getRefillsCount();
+    });*/
   }
 
 }

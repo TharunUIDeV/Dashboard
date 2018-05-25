@@ -13,18 +13,18 @@ import {MemberService} from './member.service';
 import {OrderStatusFilterPipe} from '../recent-orders/order-status-filter.pipe';
 
 
-const caremarkSdkServiceFactory = (configService: ConfigService)  => {
+const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService)  => {
   if (environment.production) {
-    return new CaremarkSdkService(configService);
+    return new CaremarkSdkService(configService, vordelPbmService);
   } else if (environment.mock) {
     return new MockCaremarkSdkService();
   } else {
-    return new CaremarkSdkService(configService);
+    return new CaremarkSdkService(configService, vordelPbmService);
   }
 };
 
 export const CareMarkSdkServiceProvider = { provide: CaremarkSdkService,
-  useFactory: caremarkSdkServiceFactory, deps: [ConfigService]};
+  useFactory: caremarkSdkServiceFactory, deps: [ConfigService, VordelPbmService]};
 
 
 

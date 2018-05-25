@@ -64,7 +64,7 @@ export class RecentOrdersComponent implements OnInit {
           orderStatusDetail.OrderedFor = undefined;
           orderStatusDetail.RxFills = 0;
         }
-        console.log(JSON.stringify(orderStatusDetail));
+        // console.log(JSON.stringify(orderStatusDetail));
         this.recentOrdersWidgetData.Orders.push(orderStatusDetail);
       }
       this.recentOrdersWidgetData.OrdersCount = this.recentOrdersWidgetData.Orders.length;
