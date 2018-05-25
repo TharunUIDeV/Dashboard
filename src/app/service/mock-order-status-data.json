@@ -41,9 +41,9 @@
               "RxNumber": "Private"
             }
           ],
-          "Status": "Processing",
-          "StatusDescription": "In Process",
-          "StatusReasonDescription": "We are processing your prescription."
+          "Status": "Hold",
+          "StatusDescription": "On Hold",
+          "StatusReasonDescription": "Call your doctor for more information."
         }
       ],
       "ShipMethod": "D",

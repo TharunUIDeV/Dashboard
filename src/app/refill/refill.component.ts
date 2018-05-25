@@ -14,7 +14,7 @@ interface RefillWidgetData {
   styleUrls: ['./refill.component.scss']
 })
 export class RefillComponent implements  OnInit {
-  public REFILL_URL_TEXT = 'Prescriptions ready for refill';
+  public REFILL_URL_TEXT = 'Prescriptions Ready For Refill';
   // public REFILL_URL_TEXT = 'View prescriptions';
   public webTrends: any;
   public refillWidgetData: RefillWidgetData = { RefillPrescriptionCount: undefined};
