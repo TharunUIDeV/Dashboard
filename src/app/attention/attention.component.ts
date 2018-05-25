@@ -63,4 +63,8 @@ export class AttentionComponent implements OnInit {
     this.getWidgetData();
   }
 
+  orderNumberClick(OrderNumber) {
+    window.parent.location.href = this.configSvc.orderStatusUrl + '?OrderNumber=' + OrderNumber;
+  }
+
 }

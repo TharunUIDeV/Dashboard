@@ -86,4 +86,8 @@ export class RecentOrdersComponent implements OnInit {
     window.parent.location.href = this.configSvc.orderStatusUrl;
 
   }
+
+  orderNumberClick(OrderNumber) {
+    window.parent.location.href = this.configSvc.orderStatusUrl + '?OrderNumber=' + OrderNumber;
+  }
 }

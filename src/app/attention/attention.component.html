@@ -11,7 +11,7 @@
         <li class="order">Order #{{order.OrderNumber}}</li>
         <li class="prescriber">Prescriber: Dr. {{order.DoctorFullName}}</li>
         <li class="date">Request {{order.OrderDate | date:"MM/dd/yy" }} for {{order.OrderedFor}}</li>
-        <li class="viewall"><a href="" class="with-caret">View order</a></li>
+        <li class="viewall"><a href="#" class="with-caret" (click)="orderNumberClick(order.OrderNumber)">View order</a></li>
       </ul>
     </section>
   </section>

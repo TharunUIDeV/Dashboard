@@ -4,7 +4,7 @@
   <app-spinner [loading]="loading"></app-spinner>
     <ul>
       <li *ngFor="let Order of recentOrdersWidgetData.Orders | slice:0:3">
-        <a href="">Order #{{Order.OrderNumber}}</a>
+        <a href="#" (click)="orderNumberClick(Order.OrderNumber)">Order #{{Order.OrderNumber}}</a>
         <span class="status" [ngClass]="{'hold' : Order.OrderStatus === ORDER_STATUS_HOLD_TEXT}">{{Order.OrderStatus}}</span>
         <span class="placed">Placed on {{Order.OrderDate | date:"MM/dd/yy"}} for {{Order.OrderedFor | lowercase }}</span>
         <span class="rx">{{Order.RxFills}} Rxs</span>
