@@ -52,7 +52,8 @@ export class RecentOrdersComponent implements OnInit {
           orderStatusDetail.OrderedFor = order.PrescriptionList[0].PatientFirstName + ' ' +  order.PrescriptionList[0].PatientLastName;
           orderStatusDetail.RxFills = order.PrescriptionList.length;
           for (const prescription of order.PrescriptionList) {
-            if (prescription.StatusDescription.toUpperCase() === this.ORDER_STATUS_HOLD_TEXT.toUpperCase()) {
+            if (prescription.StatusDescription &&
+              prescription.StatusDescription.toUpperCase() === this.ORDER_STATUS_HOLD_TEXT.toUpperCase()) {
               orderStatusDetail.OrderStatus = this.ORDER_STATUS_HOLD_TEXT;
               orderStatusDetail.OrderedFor = prescription.PatientFirstName + ' ' + prescription.PatientLastName;
               break;
