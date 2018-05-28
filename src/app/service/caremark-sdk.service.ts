@@ -81,6 +81,9 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
         if (result.Header.StatusCode === '0000') {
           return resolve(result.Details);
         }
+        if (result.Header.StatusCode === '5000' && result.Header.StatusDescription.toUpperCase() === 'No Orders found.'.toUpperCase()) {
+          return resolve({Results: []});
+        }
         console.error(JSON.stringify(result.Header));
         return reject(result);
       });

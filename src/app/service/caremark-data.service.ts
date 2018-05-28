@@ -24,6 +24,7 @@ export class CaremarkDataService implements CaremarkDataServiceInterface {
               private vordelPbmService: VordelPbmService) {
     // Set Defaults
     this.dataSource = DATASOURCE_TYPES.CAREMARK_SDK;
+    // this.dataSource = DATASOURCE_TYPES.VORDEL_ICE;
   }
 
   set dataSource(value: DATASOURCE_TYPES) {

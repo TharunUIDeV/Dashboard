@@ -71,6 +71,7 @@ export namespace caremarksdk {
     RxFillList: RxFill[];
     Status: string;
     StatusDescription: string;
+    StatusReasonCode: string;
     StatusReasonDescription: string;
   }
 

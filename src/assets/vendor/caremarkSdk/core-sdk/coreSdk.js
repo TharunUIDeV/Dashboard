@@ -84221,6 +84221,25 @@ var OrderStatusResultModel = (function () {
         var memberList = this.memberInfo(args.memberInfo);
         var dateRangeCheck = true;
         _.each(orderList, function (content) {
+            // Only include orders within requested range
+            if (args.historyCount && args.historyMetric) {
+                // Why this ? Vordel API ignoring historyCount for Faststart orders
+                var now = moment(new Date());
+                var end = moment(content.OrderDate);
+                var duration = moment.duration(now.diff(end));
+                if (args.historyMetric === 'days') {
+                    var days = Math.ceil(duration.asDays());
+                    if (days > args.historyCount) {
+                        dateRangeCheck = false;
+                    }
+                }
+                if (args.historyMetric === 'months') {
+                    var months = Math.ceil(duration.asMonths());
+                    if (months > args.historyCount) {
+                        dateRangeCheck = false;
+                    }
+                }
+            }
             if (args.startDate && args.endDate) {
                 dateRangeCheck = moment(content.OrderDate).isBetween(moment(args.startDate), moment(args.endDate), null, '[]');
             }
@@ -84252,6 +84271,10 @@ var OrderStatusResultModel = (function () {
                 _this.Results.push(orderObj);
             }
         });
+        // _.sortBy(this.Results, 'OrderDate');
+        this.Results.sort(function (left, right) {
+            return moment.utc(left.OrderDate).diff(moment.utc(right.OrderDate));
+        }).reverse();
         return this.Results;
     };
     OrderStatusResultModel.prototype.processPrescription = function (prescriptionList, memberList) {
@@ -84282,6 +84305,7 @@ var OrderStatusResultModel = (function () {
             prescriptionobj.PayAmount = content.PayAmount;
             prescriptionobj.Status = content.Status;
             prescriptionobj.StatusDescription = content.StatusDescription;
+            prescriptionobj.StatusReasonCode = content.StatusReasonCode;
             prescriptionobj.StatusReasonDescription = content.StatusReasonDescription;
             if (content.RxFillList) {
                 prescriptionobj.RxFillList = _this.processRxFill(content.RxFillList);
@@ -85592,24 +85616,24 @@ function fetch(api, sch) {
     var _inputInterfaceMeta = {
         "api": {
             "Claim_History_ClaimHistoryApi": {
-                "i": "505",
-                "o": "516"
+                "i": "506",
+                "o": "517"
             },
             "Drug_Refill_GetRefillsApi": {
                 "i": "47",
-                "o": "358"
+                "o": "359"
             },
             "Drug_Prescription_Cancel_PrescriptionCancelApi": {
-                "i": "459",
-                "o": "472"
+                "i": "460",
+                "o": "473"
             },
             "Drug_Prescription_Update_PrescriptionStatusUpdateApi": {
-                "i": "443",
-                "o": "440"
+                "i": "444",
+                "o": "441"
             },
             "Member_Payments_CreditCard_AddCreditCardApi": {
                 "i": "47",
-                "o": "614"
+                "o": "615"
             },
             "Member_Details_DetailsApi": {
                 "i": "47",
@@ -85625,43 +85649,43 @@ function fetch(api, sch) {
             },
             "Member_MedicalProfile_UpdateMedicalProfile_UpdateMedicalProfileApi": {
                 "i": "47",
-                "o": "614"
+                "o": "615"
             },
             "Member_ValidateAddress_ValidateAddressApi": {
                 "i": "47",
-                "o": "614"
+                "o": "615"
             },
             "Order_FindPhysician_FindPhysicianApi": {
-                "i": "586",
-                "o": "600"
+                "i": "587",
+                "o": "601"
             },
             "Order_DeliveryDate_GetDeliveryDateRangeApi": {
-                "i": "395",
-                "o": "405"
+                "i": "396",
+                "o": "406"
             },
             "Order_OrderStatus_OrderStatusApi": {
                 "i": "134",
                 "o": "149"
             },
             "Order_PlaceOrder_PlaceOrderApi": {
-                "i": "188",
-                "o": "614"
+                "i": "189",
+                "o": "615"
             },
             "Order_ShipConsent_ShipConsentApi": {
-                "i": "489",
-                "o": "499"
+                "i": "490",
+                "o": "500"
             },
             "Pharmacy_FindPharmacy_FindPharmacyApi": {
-                "i": "277",
-                "o": "307"
+                "i": "278",
+                "o": "308"
             },
             "Pharmacy_GetDefaultPharmacy_GetDefaultPharmacyApi": {
                 "i": "47",
-                "o": "220"
+                "o": "221"
             },
             "Pharmacy_SetPrimaryPharmacy_SetPrimaryPharmacyApi": {
-                "i": "259",
-                "o": "614"
+                "i": "260",
+                "o": "615"
             },
             "Pricing_Price_GetPriceByNdcId": {
                 "i": "2",
@@ -87160,7 +87184,7 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "ShippingAddress",
-                    "id": 178
+                    "id": 179
                 }
             },
             "131": {
@@ -87506,7 +87530,8 @@ function fetch(api, sch) {
                 "169",
                 "170",
                 "171",
-                "172"
+                "172",
+                "173"
             ],
             "152": {
                 "name": "DateOfBirth",
@@ -87706,7 +87731,7 @@ function fetch(api, sch) {
                     "elementType": {
                         "type": "reference",
                         "name": "RxFill",
-                        "id": 173
+                        "id": 174
                     }
                 }
             },
@@ -87733,6 +87758,17 @@ function fetch(api, sch) {
                 }
             },
             "172": {
+                "name": "StatusReasonCode",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "173": {
                 "name": "StatusReasonDescription",
                 "flags": {
                     "isExported": true,
@@ -87743,13 +87779,13 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "173": [
-                "174",
+            "174": [
                 "175",
                 "176",
-                "177"
+                "177",
+                "178"
             ],
-            "174": {
+            "175": {
                 "name": "DaysSupply",
                 "flags": {
                     "isExported": true,
@@ -87760,7 +87796,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "175": {
+            "176": {
                 "name": "DispensedQuantity",
                 "flags": {
                     "isExported": true,
@@ -87771,7 +87807,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "176": {
+            "177": {
                 "name": "PriorPBMFlag",
                 "flags": {
                     "isExported": true,
@@ -87782,7 +87818,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "177": {
+            "178": {
                 "name": "RxNumber",
                 "flags": {
                     "isExported": true,
@@ -87793,17 +87829,17 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "178": [
-                "179",
+            "179": [
                 "180",
                 "181",
                 "182",
                 "183",
                 "184",
                 "185",
-                "186"
+                "186",
+                "187"
             ],
-            "179": {
+            "180": {
                 "name": "City",
                 "flags": {
                     "isExported": true,
@@ -87814,7 +87850,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "180": {
+            "181": {
                 "name": "FirstName",
                 "flags": {
                     "isExported": true,
@@ -87825,7 +87861,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "181": {
+            "182": {
                 "name": "LastName",
                 "flags": {
                     "isExported": true,
@@ -87836,7 +87872,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "182": {
+            "183": {
                 "name": "Line1",
                 "flags": {
                     "isExported": true,
@@ -87847,7 +87883,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "183": {
+            "184": {
                 "name": "Line2",
                 "flags": {
                     "isExported": true,
@@ -87858,7 +87894,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "184": {
+            "185": {
                 "name": "State",
                 "flags": {
                     "isExported": true,
@@ -87869,7 +87905,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "185": {
+            "186": {
                 "name": "ZipCode",
                 "flags": {
                     "isExported": true,
@@ -87880,7 +87916,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "186": {
+            "187": {
                 "name": "ZipCodeSuffix",
                 "flags": {
                     "isExported": true,
@@ -87891,8 +87927,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "188": [
-                "189",
+            "189": [
                 "190",
                 "191",
                 "192",
@@ -87917,9 +87952,10 @@ function fetch(api, sch) {
                 "211",
                 "212",
                 "213",
-                "214"
+                "214",
+                "215"
             ],
-            "189": {
+            "190": {
                 "name": "address1",
                 "flags": {
                     "isExported": true,
@@ -87930,7 +87966,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "190": {
+            "191": {
                 "name": "address2",
                 "flags": {
                     "isExported": true,
@@ -87951,7 +87987,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "191": {
+            "192": {
                 "name": "apiKey",
                 "flags": {
                     "isExported": true,
@@ -87962,7 +87998,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "192": {
+            "193": {
                 "name": "apiSecret",
                 "flags": {
                     "isExported": true,
@@ -87973,7 +88009,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "193": {
+            "194": {
                 "name": "appName",
                 "flags": {
                     "isExported": true,
@@ -87994,7 +88030,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "194": {
+            "195": {
                 "name": "channelName",
                 "flags": {
                     "isExported": true,
@@ -88015,7 +88051,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "195": {
+            "196": {
                 "name": "city",
                 "flags": {
                     "isExported": true,
@@ -88026,7 +88062,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "196": {
+            "197": {
                 "name": "deliveryDateMessage",
                 "flags": {
                     "isExported": true,
@@ -88047,7 +88083,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "197": {
+            "198": {
                 "name": "deliveryEndDate",
                 "flags": {
                     "isExported": true,
@@ -88068,7 +88104,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "198": {
+            "199": {
                 "name": "deliveryStartDate",
                 "flags": {
                     "isExported": true,
@@ -88089,7 +88125,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "199": {
+            "200": {
                 "name": "deviceType",
                 "flags": {
                     "isExported": true,
@@ -88110,7 +88146,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "200": {
+            "201": {
                 "name": "electronicPaymentId",
                 "flags": {
                     "isExported": true,
@@ -88131,7 +88167,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "201": {
+            "202": {
                 "name": "electronicPaymentType",
                 "flags": {
                     "isExported": true,
@@ -88152,7 +88188,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "202": {
+            "203": {
                 "name": "env",
                 "flags": {
                     "isExported": true,
@@ -88173,7 +88209,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "203": {
+            "204": {
                 "name": "hasColdPack",
                 "flags": {
                     "isExported": true,
@@ -88198,7 +88234,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "204": {
+            "205": {
                 "name": "memberEmailAddress",
                 "flags": {
                     "isExported": true,
@@ -88219,7 +88255,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "205": {
+            "206": {
                 "name": "memberInfo",
                 "flags": {
                     "isExported": true,
@@ -88231,7 +88267,7 @@ function fetch(api, sch) {
                     "name": "any"
                 }
             },
-            "206": {
+            "207": {
                 "name": "outstandingBalance",
                 "flags": {
                     "isExported": true,
@@ -88242,7 +88278,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "207": {
+            "208": {
                 "name": "rxNumber",
                 "flags": {
                     "isExported": true,
@@ -88251,10 +88287,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "RxNumber",
-                    "id": 215
+                    "id": 216
                 }
             },
-            "208": {
+            "209": {
                 "name": "shippingCost",
                 "flags": {
                     "isExported": true,
@@ -88265,7 +88301,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "209": {
+            "210": {
                 "name": "shippingMethod",
                 "flags": {
                     "isExported": true,
@@ -88276,7 +88312,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "210": {
+            "211": {
                 "name": "state",
                 "flags": {
                     "isExported": true,
@@ -88287,7 +88323,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "211": {
+            "212": {
                 "name": "tokenId",
                 "flags": {
                     "isExported": true,
@@ -88298,7 +88334,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "212": {
+            "213": {
                 "name": "usageTypeCode",
                 "flags": {
                     "isExported": true,
@@ -88309,7 +88345,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "213": {
+            "214": {
                 "name": "zipCode",
                 "flags": {
                     "isExported": true,
@@ -88320,7 +88356,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "214": {
+            "215": {
                 "name": "zipSuffixCode",
                 "flags": {
                     "isExported": true,
@@ -88341,12 +88377,12 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "215": [
-                "216",
+            "216": [
                 "217",
-                "218"
+                "218",
+                "219"
             ],
-            "216": {
+            "217": {
                 "name": "refill",
                 "flags": {
                     "isExported": true,
@@ -88361,7 +88397,7 @@ function fetch(api, sch) {
                     }
                 }
             },
-            "217": {
+            "218": {
                 "name": "renewExpired",
                 "flags": {
                     "isExported": true,
@@ -88376,7 +88412,7 @@ function fetch(api, sch) {
                     }
                 }
             },
-            "218": {
+            "219": {
                 "name": "renewZeroRefill",
                 "flags": {
                     "isExported": true,
@@ -88391,8 +88427,7 @@ function fetch(api, sch) {
                     }
                 }
             },
-            "220": [
-                "221",
+            "221": [
                 "222",
                 "223",
                 "224",
@@ -88411,9 +88446,10 @@ function fetch(api, sch) {
                 "237",
                 "238",
                 "239",
-                "240"
+                "240",
+                "241"
             ],
-            "221": {
+            "222": {
                 "name": "address",
                 "flags": {
                     "isExported": true,
@@ -88424,7 +88460,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "222": {
+            "223": {
                 "name": "city",
                 "flags": {
                     "isExported": true,
@@ -88435,7 +88471,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "223": {
+            "224": {
                 "name": "distance",
                 "flags": {
                     "isExported": true,
@@ -88446,7 +88482,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "224": {
+            "225": {
                 "name": "latitude",
                 "flags": {
                     "isExported": true,
@@ -88457,7 +88493,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "225": {
+            "226": {
                 "name": "longitude",
                 "flags": {
                     "isExported": true,
@@ -88468,7 +88504,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "226": {
+            "227": {
                 "name": "maintenanceChoice",
                 "flags": {
                     "isExported": true,
@@ -88479,7 +88515,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "227": {
+            "228": {
                 "name": "nintyDayRetail",
                 "flags": {
                     "isExported": true,
@@ -88490,7 +88526,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "228": {
+            "229": {
                 "name": "npiNumber",
                 "flags": {
                     "isExported": true,
@@ -88501,7 +88537,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "229": {
+            "230": {
                 "name": "pharmacyAdditionalDetails",
                 "flags": {
                     "isExported": true,
@@ -88510,10 +88546,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "PharmacyAdditionalDetails",
-                    "id": 241
+                    "id": 242
                 }
             },
-            "230": {
+            "231": {
                 "name": "pharmacyHoursOfOperation",
                 "flags": {
                     "isExported": true,
@@ -88522,10 +88558,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "PharmacyHoursOfOperation",
-                    "id": 249
+                    "id": 250
                 }
             },
-            "231": {
+            "232": {
                 "name": "pharmacyName",
                 "flags": {
                     "isExported": true,
@@ -88536,7 +88572,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "232": {
+            "233": {
                 "name": "pharmacyNumber",
                 "flags": {
                     "isExported": true,
@@ -88547,7 +88583,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "233": {
+            "234": {
                 "name": "phoneNumber",
                 "flags": {
                     "isExported": true,
@@ -88558,7 +88594,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "234": {
+            "235": {
                 "name": "prefPharmInd",
                 "flags": {
                     "isExported": true,
@@ -88569,7 +88605,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "235": {
+            "236": {
                 "name": "preferred",
                 "flags": {
                     "isExported": true,
@@ -88580,7 +88616,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "236": {
+            "237": {
                 "name": "proximityNetworkInd",
                 "flags": {
                     "isExported": true,
@@ -88591,7 +88627,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "237": {
+            "238": {
                 "name": "state",
                 "flags": {
                     "isExported": true,
@@ -88602,7 +88638,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "238": {
+            "239": {
                 "name": "storeId",
                 "flags": {
                     "isExported": true,
@@ -88613,7 +88649,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "239": {
+            "240": {
                 "name": "vaccineNetwork",
                 "flags": {
                     "isExported": true,
@@ -88624,7 +88660,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "240": {
+            "241": {
                 "name": "zipCode",
                 "flags": {
                     "isExported": true,
@@ -88635,16 +88671,16 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "241": [
-                "242",
+            "242": [
                 "243",
                 "244",
                 "245",
                 "246",
                 "247",
-                "248"
+                "248",
+                "249"
             ],
-            "242": {
+            "243": {
                 "name": "cctInd",
                 "flags": {
                     "isExported": true,
@@ -88655,7 +88691,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "243": {
+            "244": {
                 "name": "county",
                 "flags": {
                     "isExported": true,
@@ -88666,7 +88702,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "244": {
+            "245": {
                 "name": "dispenseType",
                 "flags": {
                     "isExported": true,
@@ -88677,7 +88713,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "245": {
+            "246": {
                 "name": "physicalDisabilityInd",
                 "flags": {
                     "isExported": true,
@@ -88688,7 +88724,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "246": {
+            "247": {
                 "name": "spokenLanguages",
                 "flags": {
                     "isExported": true,
@@ -88699,7 +88735,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "247": {
+            "248": {
                 "name": "stateLicense",
                 "flags": {
                     "isExported": true,
@@ -88710,7 +88746,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "248": {
+            "249": {
                 "name": "websiteURL",
                 "flags": {
                     "isExported": true,
@@ -88721,17 +88757,17 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "249": [
-                "250",
+            "250": [
                 "251",
                 "252",
                 "253",
                 "254",
                 "255",
                 "256",
-                "257"
+                "257",
+                "258"
             ],
-            "250": {
+            "251": {
                 "name": "friday",
                 "flags": {
                     "isExported": true,
@@ -88742,7 +88778,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "251": {
+            "252": {
                 "name": "monday",
                 "flags": {
                     "isExported": true,
@@ -88753,7 +88789,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "252": {
+            "253": {
                 "name": "open24hours",
                 "flags": {
                     "isExported": true,
@@ -88764,7 +88800,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "253": {
+            "254": {
                 "name": "saturday",
                 "flags": {
                     "isExported": true,
@@ -88775,7 +88811,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "254": {
+            "255": {
                 "name": "sunday",
                 "flags": {
                     "isExported": true,
@@ -88786,7 +88822,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "255": {
+            "256": {
                 "name": "thursday",
                 "flags": {
                     "isExported": true,
@@ -88797,7 +88833,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "256": {
+            "257": {
                 "name": "tuesday",
                 "flags": {
                     "isExported": true,
@@ -88808,7 +88844,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "257": {
+            "258": {
                 "name": "wednesday",
                 "flags": {
                     "isExported": true,
@@ -88819,8 +88855,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "259": [
-                "260",
+            "260": [
                 "261",
                 "262",
                 "263",
@@ -88835,9 +88870,10 @@ function fetch(api, sch) {
                 "272",
                 "273",
                 "274",
-                "275"
+                "275",
+                "276"
             ],
-            "260": {
+            "261": {
                 "name": "apiKey",
                 "flags": {
                     "isExported": true,
@@ -88848,7 +88884,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "261": {
+            "262": {
                 "name": "apiSecret",
                 "flags": {
                     "isExported": true,
@@ -88859,7 +88895,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "262": {
+            "263": {
                 "name": "appName",
                 "flags": {
                     "isExported": true,
@@ -88880,7 +88916,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "263": {
+            "264": {
                 "name": "channelName",
                 "flags": {
                     "isExported": true,
@@ -88901,7 +88937,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "264": {
+            "265": {
                 "name": "deviceType",
                 "flags": {
                     "isExported": true,
@@ -88922,7 +88958,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "265": {
+            "266": {
                 "name": "env",
                 "flags": {
                     "isExported": true,
@@ -88943,7 +88979,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "266": {
+            "267": {
                 "name": "memberInfo",
                 "flags": {
                     "isExported": true,
@@ -88955,7 +88991,7 @@ function fetch(api, sch) {
                     "name": "any"
                 }
             },
-            "267": {
+            "268": {
                 "name": "pharmacyAddress",
                 "flags": {
                     "isExported": true,
@@ -88966,7 +89002,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "268": {
+            "269": {
                 "name": "pharmacyCity",
                 "flags": {
                     "isExported": true,
@@ -88977,7 +89013,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "269": {
+            "270": {
                 "name": "pharmacyName",
                 "flags": {
                     "isExported": true,
@@ -88988,7 +89024,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "270": {
+            "271": {
                 "name": "pharmacyNumber",
                 "flags": {
                     "isExported": true,
@@ -88999,7 +89035,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "271": {
+            "272": {
                 "name": "pharmacyPhone",
                 "flags": {
                     "isExported": true,
@@ -89010,7 +89046,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "272": {
+            "273": {
                 "name": "pharmacyState",
                 "flags": {
                     "isExported": true,
@@ -89021,7 +89057,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "273": {
+            "274": {
                 "name": "pharmacyZipCode",
                 "flags": {
                     "isExported": true,
@@ -89032,7 +89068,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "274": {
+            "275": {
                 "name": "primaryPharmacyPresent",
                 "flags": {
                     "isExported": true,
@@ -89043,7 +89079,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "275": {
+            "276": {
                 "name": "tokenId",
                 "flags": {
                     "isExported": true,
@@ -89054,8 +89090,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "277": [
-                "278",
+            "278": [
                 "279",
                 "280",
                 "281",
@@ -89083,9 +89118,10 @@ function fetch(api, sch) {
                 "303",
                 "304",
                 "305",
-                "306"
+                "306",
+                "307"
             ],
-            "278": {
+            "279": {
                 "name": "apiKey",
                 "flags": {
                     "isExported": true,
@@ -89096,7 +89132,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "279": {
+            "280": {
                 "name": "apiSecret",
                 "flags": {
                     "isExported": true,
@@ -89107,7 +89143,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "280": {
+            "281": {
                 "name": "appName",
                 "flags": {
                     "isExported": true,
@@ -89128,7 +89164,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "281": {
+            "282": {
                 "name": "bloodPressureScreening",
                 "flags": {
                     "isExported": true,
@@ -89153,7 +89189,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "282": {
+            "283": {
                 "name": "channelName",
                 "flags": {
                     "isExported": true,
@@ -89174,7 +89210,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "283": {
+            "284": {
                 "name": "city",
                 "flags": {
                     "isExported": true,
@@ -89195,7 +89231,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "284": {
+            "285": {
                 "name": "county",
                 "flags": {
                     "isExported": true,
@@ -89216,7 +89252,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "285": {
+            "286": {
                 "name": "deviceType",
                 "flags": {
                     "isExported": true,
@@ -89237,7 +89273,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "286": {
+            "287": {
                 "name": "distance",
                 "flags": {
                     "isExported": true,
@@ -89258,7 +89294,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "287": {
+            "288": {
                 "name": "dme",
                 "flags": {
                     "isExported": true,
@@ -89283,7 +89319,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "288": {
+            "289": {
                 "name": "driveThru",
                 "flags": {
                     "isExported": true,
@@ -89308,7 +89344,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "289": {
+            "290": {
                 "name": "edsPharmacy",
                 "flags": {
                     "isExported": true,
@@ -89333,7 +89369,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "290": {
+            "291": {
                 "name": "env",
                 "flags": {
                     "isExported": true,
@@ -89354,7 +89390,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "291": {
+            "292": {
                 "name": "hawaiiIsland",
                 "flags": {
                     "isExported": true,
@@ -89375,7 +89411,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "292": {
+            "293": {
                 "name": "languageSelected",
                 "flags": {
                     "isExported": true,
@@ -89396,7 +89432,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "293": {
+            "294": {
                 "name": "memberInfo",
                 "flags": {
                     "isExported": true,
@@ -89408,7 +89444,7 @@ function fetch(api, sch) {
                     "name": "any"
                 }
             },
-            "294": {
+            "295": {
                 "name": "onsiteMedicalClinic",
                 "flags": {
                     "isExported": true,
@@ -89433,7 +89469,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "295": {
+            "296": {
                 "name": "open24HoursADay",
                 "flags": {
                     "isExported": true,
@@ -89458,7 +89494,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "296": {
+            "297": {
                 "name": "open7DaysAWeek",
                 "flags": {
                     "isExported": true,
@@ -89483,7 +89519,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "297": {
+            "298": {
                 "name": "pharmacyName",
                 "flags": {
                     "isExported": true,
@@ -89504,7 +89540,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "298": {
+            "299": {
                 "name": "pharmacyResult",
                 "flags": {
                     "isExported": true,
@@ -89525,7 +89561,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "299": {
+            "300": {
                 "name": "pharmacyType",
                 "flags": {
                     "isExported": true,
@@ -89546,7 +89582,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "300": {
+            "301": {
                 "name": "preferredPharmacy",
                 "flags": {
                     "isExported": true,
@@ -89571,7 +89607,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "301": {
+            "302": {
                 "name": "preparesCompounds",
                 "flags": {
                     "isExported": true,
@@ -89596,7 +89632,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "302": {
+            "303": {
                 "name": "prescriptionDeliveryService",
                 "flags": {
                     "isExported": true,
@@ -89621,7 +89657,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "303": {
+            "304": {
                 "name": "providesFluShots",
                 "flags": {
                     "isExported": true,
@@ -89646,7 +89682,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "304": {
+            "305": {
                 "name": "state",
                 "flags": {
                     "isExported": true,
@@ -89667,7 +89703,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "305": {
+            "306": {
                 "name": "tokenId",
                 "flags": {
                     "isExported": true,
@@ -89678,7 +89714,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "306": {
+            "307": {
                 "name": "zipCode",
                 "flags": {
                     "isExported": true,
@@ -89699,10 +89735,10 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "307": [
-                "308"
+            "308": [
+                "309"
             ],
-            "308": {
+            "309": {
                 "name": "pharmacyList",
                 "flags": {
                     "isExported": true,
@@ -89713,12 +89749,11 @@ function fetch(api, sch) {
                     "elementType": {
                         "type": "reference",
                         "name": "Pharmacy",
-                        "id": 309
+                        "id": 310
                     }
                 }
             },
-            "309": [
-                "310",
+            "310": [
                 "311",
                 "312",
                 "313",
@@ -89737,9 +89772,10 @@ function fetch(api, sch) {
                 "326",
                 "327",
                 "328",
-                "329"
+                "329",
+                "330"
             ],
-            "310": {
+            "311": {
                 "name": "address",
                 "flags": {
                     "isExported": true,
@@ -89750,7 +89786,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "311": {
+            "312": {
                 "name": "city",
                 "flags": {
                     "isExported": true,
@@ -89761,7 +89797,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "312": {
+            "313": {
                 "name": "distance",
                 "flags": {
                     "isExported": true,
@@ -89772,7 +89808,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "313": {
+            "314": {
                 "name": "latitude",
                 "flags": {
                     "isExported": true,
@@ -89783,7 +89819,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "314": {
+            "315": {
                 "name": "longitude",
                 "flags": {
                     "isExported": true,
@@ -89794,7 +89830,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "315": {
+            "316": {
                 "name": "maintenanceChoice",
                 "flags": {
                     "isExported": true,
@@ -89805,7 +89841,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "316": {
+            "317": {
                 "name": "nintyDayRetail",
                 "flags": {
                     "isExported": true,
@@ -89816,7 +89852,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "317": {
+            "318": {
                 "name": "npiNumber",
                 "flags": {
                     "isExported": true,
@@ -89827,7 +89863,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "318": {
+            "319": {
                 "name": "pharmacyAdditionalDetails",
                 "flags": {
                     "isExported": true,
@@ -89836,10 +89872,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "PharmacyAdditionalDetails",
-                    "id": 330
+                    "id": 331
                 }
             },
-            "319": {
+            "320": {
                 "name": "pharmacyHoursOfOperation",
                 "flags": {
                     "isExported": true,
@@ -89848,10 +89884,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "PharmacyHoursOfOperation",
-                    "id": 338
+                    "id": 339
                 }
             },
-            "320": {
+            "321": {
                 "name": "pharmacyName",
                 "flags": {
                     "isExported": true,
@@ -89862,7 +89898,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "321": {
+            "322": {
                 "name": "pharmacyNumber",
                 "flags": {
                     "isExported": true,
@@ -89873,7 +89909,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "322": {
+            "323": {
                 "name": "phoneNumber",
                 "flags": {
                     "isExported": true,
@@ -89884,7 +89920,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "323": {
+            "324": {
                 "name": "prefPharmInd",
                 "flags": {
                     "isExported": true,
@@ -89895,7 +89931,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "324": {
+            "325": {
                 "name": "preferred",
                 "flags": {
                     "isExported": true,
@@ -89906,7 +89942,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "325": {
+            "326": {
                 "name": "proximityNetworkInd",
                 "flags": {
                     "isExported": true,
@@ -89917,7 +89953,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "326": {
+            "327": {
                 "name": "state",
                 "flags": {
                     "isExported": true,
@@ -89928,7 +89964,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "327": {
+            "328": {
                 "name": "storeId",
                 "flags": {
                     "isExported": true,
@@ -89939,7 +89975,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "328": {
+            "329": {
                 "name": "vaccineNetwork",
                 "flags": {
                     "isExported": true,
@@ -89950,7 +89986,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "329": {
+            "330": {
                 "name": "zipCode",
                 "flags": {
                     "isExported": true,
@@ -89961,16 +89997,16 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "330": [
-                "331",
+            "331": [
                 "332",
                 "333",
                 "334",
                 "335",
                 "336",
-                "337"
+                "337",
+                "338"
             ],
-            "331": {
+            "332": {
                 "name": "cctInd",
                 "flags": {
                     "isExported": true,
@@ -89981,7 +90017,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "332": {
+            "333": {
                 "name": "county",
                 "flags": {
                     "isExported": true,
@@ -89992,7 +90028,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "333": {
+            "334": {
                 "name": "dispenseType",
                 "flags": {
                     "isExported": true,
@@ -90003,7 +90039,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "334": {
+            "335": {
                 "name": "physicalDisabilityInd",
                 "flags": {
                     "isExported": true,
@@ -90014,7 +90050,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "335": {
+            "336": {
                 "name": "spokenLanguages",
                 "flags": {
                     "isExported": true,
@@ -90025,7 +90061,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "336": {
+            "337": {
                 "name": "stateLicense",
                 "flags": {
                     "isExported": true,
@@ -90036,7 +90072,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "337": {
+            "338": {
                 "name": "websiteURL",
                 "flags": {
                     "isExported": true,
@@ -90047,17 +90083,17 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "338": [
-                "339",
+            "339": [
                 "340",
                 "341",
                 "342",
                 "343",
                 "344",
                 "345",
-                "346"
+                "346",
+                "347"
             ],
-            "339": {
+            "340": {
                 "name": "friday",
                 "flags": {
                     "isExported": true,
@@ -90068,7 +90104,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "340": {
+            "341": {
                 "name": "monday",
                 "flags": {
                     "isExported": true,
@@ -90079,7 +90115,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "341": {
+            "342": {
                 "name": "open24hours",
                 "flags": {
                     "isExported": true,
@@ -90090,7 +90126,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "342": {
+            "343": {
                 "name": "saturday",
                 "flags": {
                     "isExported": true,
@@ -90101,7 +90137,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "343": {
+            "344": {
                 "name": "sunday",
                 "flags": {
                     "isExported": true,
@@ -90112,7 +90148,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "344": {
+            "345": {
                 "name": "thursday",
                 "flags": {
                     "isExported": true,
@@ -90123,7 +90159,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "345": {
+            "346": {
                 "name": "tuesday",
                 "flags": {
                     "isExported": true,
@@ -90134,7 +90170,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "346": {
+            "347": {
                 "name": "wednesday",
                 "flags": {
                     "isExported": true,
@@ -90145,8 +90181,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "348": [
-                "349",
+            "349": [
                 "350",
                 "351",
                 "352",
@@ -90154,9 +90189,10 @@ function fetch(api, sch) {
                 "354",
                 "355",
                 "356",
-                "357"
+                "357",
+                "358"
             ],
-            "349": {
+            "350": {
                 "name": "coldPack",
                 "flags": {
                     "isExported": true,
@@ -90167,7 +90203,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "350": {
+            "351": {
                 "name": "controlledSubstance",
                 "flags": {
                     "isExported": true,
@@ -90178,7 +90214,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "351": {
+            "352": {
                 "name": "deaClassCode",
                 "flags": {
                     "isExported": true,
@@ -90189,7 +90225,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "352": {
+            "353": {
                 "name": "drugForm",
                 "flags": {
                     "isExported": true,
@@ -90200,7 +90236,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "353": {
+            "354": {
                 "name": "drugName",
                 "flags": {
                     "isExported": true,
@@ -90211,7 +90247,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "354": {
+            "355": {
                 "name": "drugStrength",
                 "flags": {
                     "isExported": true,
@@ -90222,7 +90258,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "355": {
+            "356": {
                 "name": "gpiCode",
                 "flags": {
                     "isExported": true,
@@ -90233,7 +90269,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "356": {
+            "357": {
                 "name": "ndcId",
                 "flags": {
                     "isExported": true,
@@ -90244,7 +90280,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "357": {
+            "358": {
                 "name": "sensitive",
                 "flags": {
                     "isExported": true,
@@ -90255,17 +90291,17 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "358": [
-                "359",
+            "359": [
                 "360",
                 "361",
                 "362",
                 "363",
                 "364",
                 "365",
-                "366"
+                "366",
+                "367"
             ],
-            "359": {
+            "360": {
                 "name": "canAutoRefill",
                 "flags": {
                     "isExported": true,
@@ -90276,7 +90312,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "360": {
+            "361": {
                 "name": "canAutoRenew",
                 "flags": {
                     "isExported": true,
@@ -90287,7 +90323,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "361": {
+            "362": {
                 "name": "cardholderInternalID",
                 "flags": {
                     "isExported": true,
@@ -90298,7 +90334,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "362": {
+            "363": {
                 "name": "dateOfBirth",
                 "flags": {
                     "isExported": true,
@@ -90309,7 +90345,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "363": {
+            "364": {
                 "name": "externalID",
                 "flags": {
                     "isExported": true,
@@ -90320,7 +90356,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "364": {
+            "365": {
                 "name": "internalID",
                 "flags": {
                     "isExported": true,
@@ -90331,7 +90367,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "365": {
+            "366": {
                 "name": "relationShipCode",
                 "flags": {
                     "isExported": true,
@@ -90342,7 +90378,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "366": {
+            "367": {
                 "name": "rxRefills",
                 "flags": {
                     "isExported": true,
@@ -90353,12 +90389,11 @@ function fetch(api, sch) {
                     "elementType": {
                         "type": "reference",
                         "name": "RxRefills",
-                        "id": 367
+                        "id": 368
                     }
                 }
             },
-            "367": [
-                "368",
+            "368": [
                 "369",
                 "370",
                 "371",
@@ -90383,9 +90418,10 @@ function fetch(api, sch) {
                 "390",
                 "391",
                 "392",
-                "393"
+                "393",
+                "394"
             ],
-            "368": {
+            "369": {
                 "name": "autoRefill",
                 "flags": {
                     "isExported": true,
@@ -90396,7 +90432,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "369": {
+            "370": {
                 "name": "autoRefillEligible",
                 "flags": {
                     "isExported": true,
@@ -90407,7 +90443,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "370": {
+            "371": {
                 "name": "autoRenew",
                 "flags": {
                     "isExported": true,
@@ -90418,7 +90454,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "371": {
+            "372": {
                 "name": "autoRenewalEligible",
                 "flags": {
                     "isExported": true,
@@ -90429,7 +90465,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "372": {
+            "373": {
                 "name": "canAutoRefill",
                 "flags": {
                     "isExported": true,
@@ -90440,7 +90476,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "373": {
+            "374": {
                 "name": "canAutoRenew",
                 "flags": {
                     "isExported": true,
@@ -90451,7 +90487,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "374": {
+            "375": {
                 "name": "daysSupplyQuantity",
                 "flags": {
                     "isExported": true,
@@ -90462,7 +90498,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "375": {
+            "376": {
                 "name": "dispensedQuantitiy",
                 "flags": {
                     "isExported": true,
@@ -90473,7 +90509,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "376": {
+            "377": {
                 "name": "drug",
                 "flags": {
                     "isExported": true,
@@ -90482,10 +90518,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "Drug",
-                    "id": 348
+                    "id": 349
                 }
             },
-            "377": {
+            "378": {
                 "name": "estimatedCost",
                 "flags": {
                     "isExported": true,
@@ -90496,7 +90532,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "378": {
+            "379": {
                 "name": "expirationDate",
                 "flags": {
                     "isExported": true,
@@ -90507,7 +90543,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "379": {
+            "380": {
                 "name": "fromRefills",
                 "flags": {
                     "isExported": true,
@@ -90518,7 +90554,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "380": {
+            "381": {
                 "name": "lastFillDate",
                 "flags": {
                     "isExported": true,
@@ -90529,7 +90565,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "381": {
+            "382": {
                 "name": "maintenanceChoice",
                 "flags": {
                     "isExported": true,
@@ -90540,7 +90576,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "382": {
+            "383": {
                 "name": "orderNumber",
                 "flags": {
                     "isExported": true,
@@ -90551,7 +90587,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "383": {
+            "384": {
                 "name": "patientName",
                 "flags": {
                     "isExported": true,
@@ -90562,7 +90598,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "384": {
+            "385": {
                 "name": "payAmount",
                 "flags": {
                     "isExported": true,
@@ -90573,7 +90609,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "385": {
+            "386": {
                 "name": "prescriberFirstName",
                 "flags": {
                     "isExported": true,
@@ -90584,7 +90620,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "386": {
+            "387": {
                 "name": "prescriberLastName",
                 "flags": {
                     "isExported": true,
@@ -90595,7 +90631,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "387": {
+            "388": {
                 "name": "prescriberNpiKey",
                 "flags": {
                     "isExported": true,
@@ -90606,7 +90642,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "388": {
+            "389": {
                 "name": "refillStatusText",
                 "flags": {
                     "isExported": true,
@@ -90617,7 +90653,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "389": {
+            "390": {
                 "name": "refillable",
                 "flags": {
                     "isExported": true,
@@ -90628,7 +90664,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "390": {
+            "391": {
                 "name": "refillsLeft",
                 "flags": {
                     "isExported": true,
@@ -90639,7 +90675,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "391": {
+            "392": {
                 "name": "renewStatusText",
                 "flags": {
                     "isExported": true,
@@ -90650,7 +90686,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "392": {
+            "393": {
                 "name": "rxNumber",
                 "flags": {
                     "isExported": true,
@@ -90661,7 +90697,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "393": {
+            "394": {
                 "name": "tooSoonToRefill",
                 "flags": {
                     "isExported": true,
@@ -90672,8 +90708,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "395": [
-                "396",
+            "396": [
                 "397",
                 "398",
                 "399",
@@ -90681,9 +90716,10 @@ function fetch(api, sch) {
                 "401",
                 "402",
                 "403",
-                "404"
+                "404",
+                "405"
             ],
-            "396": {
+            "397": {
                 "name": "apiKey",
                 "flags": {
                     "isExported": true,
@@ -90694,7 +90730,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "397": {
+            "398": {
                 "name": "apiSecret",
                 "flags": {
                     "isExported": true,
@@ -90705,29 +90741,8 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "398": {
-                "name": "appName",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true,
-                    "isOptional": true
-                },
-                "type": {
-                    "type": "union",
-                    "types": [
-                        {
-                            "type": "intrinsic",
-                            "name": "undefined"
-                        },
-                        {
-                            "type": "intrinsic",
-                            "name": "string"
-                        }
-                    ]
-                }
-            },
             "399": {
-                "name": "channelName",
+                "name": "appName",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -90748,7 +90763,7 @@ function fetch(api, sch) {
                 }
             },
             "400": {
-                "name": "deviceType",
+                "name": "channelName",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -90769,7 +90784,7 @@ function fetch(api, sch) {
                 }
             },
             "401": {
-                "name": "env",
+                "name": "deviceType",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -90790,6 +90805,27 @@ function fetch(api, sch) {
                 }
             },
             "402": {
+                "name": "env",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true,
+                    "isOptional": true
+                },
+                "type": {
+                    "type": "union",
+                    "types": [
+                        {
+                            "type": "intrinsic",
+                            "name": "undefined"
+                        },
+                        {
+                            "type": "intrinsic",
+                            "name": "string"
+                        }
+                    ]
+                }
+            },
+            "403": {
                 "name": "memberInfo",
                 "flags": {
                     "isExported": true,
@@ -90801,7 +90837,7 @@ function fetch(api, sch) {
                     "name": "any"
                 }
             },
-            "403": {
+            "404": {
                 "name": "shippingRequest",
                 "flags": {
                     "isExported": true,
@@ -90812,11 +90848,11 @@ function fetch(api, sch) {
                     "elementType": {
                         "type": "reference",
                         "name": "ShippingRequest",
-                        "id": 416
+                        "id": 417
                     }
                 }
             },
-            "404": {
+            "405": {
                 "name": "tokenId",
                 "flags": {
                     "isExported": true,
@@ -90827,12 +90863,12 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "405": [
-                "406",
+            "406": [
                 "407",
-                "408"
+                "408",
+                "409"
             ],
-            "406": {
+            "407": {
                 "name": "responseCount",
                 "flags": {
                     "isExported": true,
@@ -90843,7 +90879,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "407": {
+            "408": {
                 "name": "shippingResponse",
                 "flags": {
                     "isExported": true,
@@ -90854,11 +90890,11 @@ function fetch(api, sch) {
                     "elementType": {
                         "type": "reference",
                         "name": "ShippingResponse",
-                        "id": 422
+                        "id": 423
                     }
                 }
             },
-            "408": {
+            "409": {
                 "name": "status",
                 "flags": {
                     "isExported": true,
@@ -90869,12 +90905,12 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "409": [
-                "410",
+            "410": [
                 "411",
-                "412"
+                "412",
+                "413"
             ],
-            "410": {
+            "411": {
                 "name": "message",
                 "flags": {
                     "isExported": true,
@@ -90885,7 +90921,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "411": {
+            "412": {
                 "name": "messageCode",
                 "flags": {
                     "isExported": true,
@@ -90896,7 +90932,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "412": {
+            "413": {
                 "name": "messageId",
                 "flags": {
                     "isExported": true,
@@ -90907,11 +90943,11 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "413": [
-                "414",
-                "415"
+            "414": [
+                "415",
+                "416"
             ],
-            "414": {
+            "415": {
                 "name": "beginDate",
                 "flags": {
                     "isExported": true,
@@ -90922,7 +90958,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "415": {
+            "416": {
                 "name": "endDate",
                 "flags": {
                     "isExported": true,
@@ -90933,26 +90969,15 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "416": [
-                "417",
+            "417": [
                 "418",
                 "419",
                 "420",
-                "421"
+                "421",
+                "422"
             ],
-            "417": {
-                "name": "orderNumber",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
             "418": {
-                "name": "orderTypeCode",
+                "name": "orderNumber",
                 "flags": {
                     "isExported": true,
                     "isExternal": true
@@ -90963,6 +90988,17 @@ function fetch(api, sch) {
                 }
             },
             "419": {
+                "name": "orderTypeCode",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "420": {
                 "name": "requestId",
                 "flags": {
                     "isExported": true,
@@ -90973,7 +91009,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "420": {
+            "421": {
                 "name": "requestType",
                 "flags": {
                     "isExported": true,
@@ -90984,7 +91020,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "421": {
+            "422": {
                 "name": "shippingAddress",
                 "flags": {
                     "isExported": true,
@@ -90994,11 +91030,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "ShppingAddress",
-                    "id": 433
+                    "id": 434
                 }
             },
-            "422": [
-                "423",
+            "423": [
                 "424",
                 "425",
                 "426",
@@ -91007,9 +91042,10 @@ function fetch(api, sch) {
                 "429",
                 "430",
                 "431",
-                "432"
+                "432",
+                "433"
             ],
-            "423": {
+            "424": {
                 "name": "beneficiaryId",
                 "flags": {
                     "isExported": true,
@@ -91020,7 +91056,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "424": {
+            "425": {
                 "name": "nextDayShipping",
                 "flags": {
                     "isExported": true,
@@ -91029,10 +91065,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "ShippingDate",
-                    "id": 413
+                    "id": 414
                 }
             },
-            "425": {
+            "426": {
                 "name": "orderNumber",
                 "flags": {
                     "isExported": true,
@@ -91043,7 +91079,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "426": {
+            "427": {
                 "name": "responseId",
                 "flags": {
                     "isExported": true,
@@ -91054,7 +91090,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "427": {
+            "428": {
                 "name": "responseMessage",
                 "flags": {
                     "isExported": true,
@@ -91063,10 +91099,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "ResponseMessage",
-                    "id": 409
+                    "id": 410
                 }
             },
-            "428": {
+            "429": {
                 "name": "secondDayShipping",
                 "flags": {
                     "isExported": true,
@@ -91075,10 +91111,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "ShippingDate",
-                    "id": 413
+                    "id": 414
                 }
             },
-            "429": {
+            "430": {
                 "name": "shipBeginDate",
                 "flags": {
                     "isExported": true,
@@ -91089,7 +91125,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "430": {
+            "431": {
                 "name": "shipEndDate",
                 "flags": {
                     "isExported": true,
@@ -91100,7 +91136,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "431": {
+            "432": {
                 "name": "shippingMethod",
                 "flags": {
                     "isExported": true,
@@ -91111,7 +91147,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "432": {
+            "433": {
                 "name": "standardShipping",
                 "flags": {
                     "isExported": true,
@@ -91120,17 +91156,17 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "ShippingDate",
-                    "id": 413
+                    "id": 414
                 }
             },
-            "433": [
-                "434",
+            "434": [
                 "435",
                 "436",
                 "437",
-                "438"
+                "438",
+                "439"
             ],
-            "434": {
+            "435": {
                 "name": "addressLine1",
                 "flags": {
                     "isExported": true,
@@ -91151,7 +91187,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "435": {
+            "436": {
                 "name": "addressLine2",
                 "flags": {
                     "isExported": true,
@@ -91172,7 +91208,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "436": {
+            "437": {
                 "name": "addressLine3",
                 "flags": {
                     "isExported": true,
@@ -91193,7 +91229,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "437": {
+            "438": {
                 "name": "addressLine4",
                 "flags": {
                     "isExported": true,
@@ -91214,7 +91250,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "438": {
+            "439": {
                 "name": "city",
                 "flags": {
                     "isExported": true,
@@ -91235,11 +91271,11 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "440": [
-                "441",
-                "442"
+            "441": [
+                "442",
+                "443"
             ],
-            "441": {
+            "442": {
                 "name": "message",
                 "flags": {
                     "isExported": true,
@@ -91250,7 +91286,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "442": {
+            "443": {
                 "name": "shortText",
                 "flags": {
                     "isExported": true,
@@ -91261,8 +91297,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "443": [
-                "444",
+            "444": [
                 "445",
                 "446",
                 "447",
@@ -91272,9 +91307,10 @@ function fetch(api, sch) {
                 "451",
                 "452",
                 "453",
-                "454"
+                "454",
+                "455"
             ],
-            "444": {
+            "445": {
                 "name": "apiKey",
                 "flags": {
                     "isExported": true,
@@ -91285,7 +91321,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "445": {
+            "446": {
                 "name": "apiSecret",
                 "flags": {
                     "isExported": true,
@@ -91296,7 +91332,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "446": {
+            "447": {
                 "name": "appName",
                 "flags": {
                     "isExported": true,
@@ -91317,7 +91353,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "447": {
+            "448": {
                 "name": "autoRefill",
                 "flags": {
                     "isExported": true,
@@ -91326,10 +91362,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "UpdateParam",
-                    "id": 455
+                    "id": 456
                 }
             },
-            "448": {
+            "449": {
                 "name": "autoRenewal",
                 "flags": {
                     "isExported": true,
@@ -91338,32 +91374,11 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "UpdateParam",
-                    "id": 455
-                }
-            },
-            "449": {
-                "name": "channelName",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true,
-                    "isOptional": true
-                },
-                "type": {
-                    "type": "union",
-                    "types": [
-                        {
-                            "type": "intrinsic",
-                            "name": "undefined"
-                        },
-                        {
-                            "type": "intrinsic",
-                            "name": "string"
-                        }
-                    ]
+                    "id": 456
                 }
             },
             "450": {
-                "name": "deviceType",
+                "name": "channelName",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -91384,7 +91399,7 @@ function fetch(api, sch) {
                 }
             },
             "451": {
-                "name": "env",
+                "name": "deviceType",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -91405,103 +91420,7 @@ function fetch(api, sch) {
                 }
             },
             "452": {
-                "name": "memberInfo",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true,
-                    "isOptional": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "any"
-                }
-            },
-            "453": {
-                "name": "rxNumber",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
-            "454": {
-                "name": "tokenId",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
-            "455": [
-                "456",
-                "457"
-            ],
-            "456": {
-                "name": "previouslyEnrolled",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "boolean"
-                }
-            },
-            "457": {
-                "name": "statusCode",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "number"
-                }
-            },
-            "459": [
-                "460",
-                "461",
-                "462",
-                "463",
-                "464",
-                "465",
-                "466",
-                "467",
-                "468",
-                "469",
-                "470",
-                "471"
-            ],
-            "460": {
-                "name": "apiKey",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
-            "461": {
-                "name": "apiSecret",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
-            "462": {
-                "name": "appName",
+                "name": "env",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -91521,8 +91440,104 @@ function fetch(api, sch) {
                     ]
                 }
             },
+            "453": {
+                "name": "memberInfo",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true,
+                    "isOptional": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "any"
+                }
+            },
+            "454": {
+                "name": "rxNumber",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "455": {
+                "name": "tokenId",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "456": [
+                "457",
+                "458"
+            ],
+            "457": {
+                "name": "previouslyEnrolled",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "boolean"
+                }
+            },
+            "458": {
+                "name": "statusCode",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "number"
+                }
+            },
+            "460": [
+                "461",
+                "462",
+                "463",
+                "464",
+                "465",
+                "466",
+                "467",
+                "468",
+                "469",
+                "470",
+                "471",
+                "472"
+            ],
+            "461": {
+                "name": "apiKey",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "462": {
+                "name": "apiSecret",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
             "463": {
-                "name": "channelName",
+                "name": "appName",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -91543,7 +91558,7 @@ function fetch(api, sch) {
                 }
             },
             "464": {
-                "name": "deviceType",
+                "name": "channelName",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -91564,7 +91579,7 @@ function fetch(api, sch) {
                 }
             },
             "465": {
-                "name": "env",
+                "name": "deviceType",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -91585,6 +91600,27 @@ function fetch(api, sch) {
                 }
             },
             "466": {
+                "name": "env",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true,
+                    "isOptional": true
+                },
+                "type": {
+                    "type": "union",
+                    "types": [
+                        {
+                            "type": "intrinsic",
+                            "name": "undefined"
+                        },
+                        {
+                            "type": "intrinsic",
+                            "name": "string"
+                        }
+                    ]
+                }
+            },
+            "467": {
                 "name": "memberInfo",
                 "flags": {
                     "isExported": true,
@@ -91596,7 +91632,7 @@ function fetch(api, sch) {
                     "name": "any"
                 }
             },
-            "467": {
+            "468": {
                 "name": "orderNumber",
                 "flags": {
                     "isExported": true,
@@ -91607,7 +91643,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "468": {
+            "469": {
                 "name": "previouslyEnrolledAutoRefill",
                 "flags": {
                     "isExported": true,
@@ -91618,7 +91654,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "469": {
+            "470": {
                 "name": "previouslyEnrolledAutoRenewal",
                 "flags": {
                     "isExported": true,
@@ -91629,7 +91665,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "470": {
+            "471": {
                 "name": "rxNumber",
                 "flags": {
                     "isExported": true,
@@ -91640,7 +91676,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "471": {
+            "472": {
                 "name": "tokenId",
                 "flags": {
                     "isExported": true,
@@ -91651,11 +91687,11 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "472": [
-                "473",
-                "474"
+            "473": [
+                "474",
+                "475"
             ],
-            "473": {
+            "474": {
                 "name": "message",
                 "flags": {
                     "isExported": true,
@@ -91676,7 +91712,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "474": {
+            "475": {
                 "name": "shortText",
                 "flags": {
                     "isExported": true,
@@ -91697,13 +91733,13 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "476": [
-                "477",
+            "477": [
                 "478",
                 "479",
-                "480"
+                "480",
+                "481"
             ],
-            "477": {
+            "478": {
                 "name": "consentResponse",
                 "flags": {
                     "isExported": true,
@@ -91714,7 +91750,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "478": {
+            "479": {
                 "name": "reasonCode",
                 "flags": {
                     "isExported": true,
@@ -91725,7 +91761,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "479": {
+            "480": {
                 "name": "responseTimestamp",
                 "flags": {
                     "isExported": true,
@@ -91736,7 +91772,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "480": {
+            "481": {
                 "name": "rxNumber",
                 "flags": {
                     "isExported": true,
@@ -91747,16 +91783,16 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "481": [
-                "482",
+            "482": [
                 "483",
                 "484",
                 "485",
                 "486",
                 "487",
-                "488"
+                "488",
+                "489"
             ],
-            "482": {
+            "483": {
                 "name": "errorMessage",
                 "flags": {
                     "isExported": true,
@@ -91767,7 +91803,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "483": {
+            "484": {
                 "name": "orderLineNum",
                 "flags": {
                     "isExported": true,
@@ -91778,7 +91814,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "484": {
+            "485": {
                 "name": "orderNumber",
                 "flags": {
                     "isExported": true,
@@ -91789,7 +91825,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "485": {
+            "486": {
                 "name": "rxNumber",
                 "flags": {
                     "isExported": true,
@@ -91800,7 +91836,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "486": {
+            "487": {
                 "name": "rxVersion",
                 "flags": {
                     "isExported": true,
@@ -91811,7 +91847,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "487": {
+            "488": {
                 "name": "sqlResponse",
                 "flags": {
                     "isExported": true,
@@ -91822,7 +91858,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "488": {
+            "489": {
                 "name": "stored",
                 "flags": {
                     "isExported": true,
@@ -91833,8 +91869,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "489": [
-                "490",
+            "490": [
                 "491",
                 "492",
                 "493",
@@ -91842,9 +91877,10 @@ function fetch(api, sch) {
                 "495",
                 "496",
                 "497",
-                "498"
+                "498",
+                "499"
             ],
-            "490": {
+            "491": {
                 "name": "apiKey",
                 "flags": {
                     "isExported": true,
@@ -91855,7 +91891,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "491": {
+            "492": {
                 "name": "apiSecret",
                 "flags": {
                     "isExported": true,
@@ -91866,29 +91902,8 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "492": {
-                "name": "appName",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true,
-                    "isOptional": true
-                },
-                "type": {
-                    "type": "union",
-                    "types": [
-                        {
-                            "type": "intrinsic",
-                            "name": "undefined"
-                        },
-                        {
-                            "type": "intrinsic",
-                            "name": "string"
-                        }
-                    ]
-                }
-            },
             "493": {
-                "name": "channelName",
+                "name": "appName",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -91909,184 +91924,6 @@ function fetch(api, sch) {
                 }
             },
             "494": {
-                "name": "deviceType",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true,
-                    "isOptional": true
-                },
-                "type": {
-                    "type": "union",
-                    "types": [
-                        {
-                            "type": "intrinsic",
-                            "name": "undefined"
-                        },
-                        {
-                            "type": "intrinsic",
-                            "name": "string"
-                        }
-                    ]
-                }
-            },
-            "495": {
-                "name": "env",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true,
-                    "isOptional": true
-                },
-                "type": {
-                    "type": "union",
-                    "types": [
-                        {
-                            "type": "intrinsic",
-                            "name": "undefined"
-                        },
-                        {
-                            "type": "intrinsic",
-                            "name": "string"
-                        }
-                    ]
-                }
-            },
-            "496": {
-                "name": "memberInfo",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true,
-                    "isOptional": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "any"
-                }
-            },
-            "497": {
-                "name": "rxNumbers",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "array",
-                    "elementType": {
-                        "type": "intrinsic",
-                        "name": "number"
-                    }
-                }
-            },
-            "498": {
-                "name": "tokenId",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
-            "499": [
-                "500",
-                "501"
-            ],
-            "500": {
-                "name": "orderConsentConfirmations",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "array",
-                    "elementType": {
-                        "type": "reference",
-                        "name": "OrderConsentConfirmation",
-                        "id": 481
-                    }
-                }
-            },
-            "501": {
-                "name": "status",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
-            "503": [
-                "504"
-            ],
-            "504": {
-                "name": "country",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
-            "505": [
-                "506",
-                "507",
-                "508",
-                "509",
-                "510",
-                "511",
-                "512",
-                "513",
-                "514",
-                "515"
-            ],
-            "506": {
-                "name": "apiKey",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
-            "507": {
-                "name": "apiSecret",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
-            "508": {
-                "name": "appName",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true,
-                    "isOptional": true
-                },
-                "type": {
-                    "type": "union",
-                    "types": [
-                        {
-                            "type": "intrinsic",
-                            "name": "undefined"
-                        },
-                        {
-                            "type": "intrinsic",
-                            "name": "string"
-                        }
-                    ]
-                }
-            },
-            "509": {
                 "name": "channelName",
                 "flags": {
                     "isExported": true,
@@ -92107,7 +91944,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "510": {
+            "495": {
                 "name": "deviceType",
                 "flags": {
                     "isExported": true,
@@ -92128,18 +91965,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "511": {
-                "name": "endDate",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true
-                },
-                "type": {
-                    "type": "intrinsic",
-                    "name": "string"
-                }
-            },
-            "512": {
+            "496": {
                 "name": "env",
                 "flags": {
                     "isExported": true,
@@ -92160,7 +91986,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "513": {
+            "497": {
                 "name": "memberInfo",
                 "flags": {
                     "isExported": true,
@@ -92172,18 +91998,21 @@ function fetch(api, sch) {
                     "name": "any"
                 }
             },
-            "514": {
-                "name": "startDate",
+            "498": {
+                "name": "rxNumbers",
                 "flags": {
                     "isExported": true,
                     "isExternal": true
                 },
                 "type": {
-                    "type": "intrinsic",
-                    "name": "string"
+                    "type": "array",
+                    "elementType": {
+                        "type": "intrinsic",
+                        "name": "number"
+                    }
                 }
             },
-            "515": {
+            "499": {
                 "name": "tokenId",
                 "flags": {
                     "isExported": true,
@@ -92194,10 +92023,217 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "516": [
-                "517"
+            "500": [
+                "501",
+                "502"
             ],
-            "517": {
+            "501": {
+                "name": "orderConsentConfirmations",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "array",
+                    "elementType": {
+                        "type": "reference",
+                        "name": "OrderConsentConfirmation",
+                        "id": 482
+                    }
+                }
+            },
+            "502": {
+                "name": "status",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "504": [
+                "505"
+            ],
+            "505": {
+                "name": "country",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "506": [
+                "507",
+                "508",
+                "509",
+                "510",
+                "511",
+                "512",
+                "513",
+                "514",
+                "515",
+                "516"
+            ],
+            "507": {
+                "name": "apiKey",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "508": {
+                "name": "apiSecret",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "509": {
+                "name": "appName",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true,
+                    "isOptional": true
+                },
+                "type": {
+                    "type": "union",
+                    "types": [
+                        {
+                            "type": "intrinsic",
+                            "name": "undefined"
+                        },
+                        {
+                            "type": "intrinsic",
+                            "name": "string"
+                        }
+                    ]
+                }
+            },
+            "510": {
+                "name": "channelName",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true,
+                    "isOptional": true
+                },
+                "type": {
+                    "type": "union",
+                    "types": [
+                        {
+                            "type": "intrinsic",
+                            "name": "undefined"
+                        },
+                        {
+                            "type": "intrinsic",
+                            "name": "string"
+                        }
+                    ]
+                }
+            },
+            "511": {
+                "name": "deviceType",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true,
+                    "isOptional": true
+                },
+                "type": {
+                    "type": "union",
+                    "types": [
+                        {
+                            "type": "intrinsic",
+                            "name": "undefined"
+                        },
+                        {
+                            "type": "intrinsic",
+                            "name": "string"
+                        }
+                    ]
+                }
+            },
+            "512": {
+                "name": "endDate",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "513": {
+                "name": "env",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true,
+                    "isOptional": true
+                },
+                "type": {
+                    "type": "union",
+                    "types": [
+                        {
+                            "type": "intrinsic",
+                            "name": "undefined"
+                        },
+                        {
+                            "type": "intrinsic",
+                            "name": "string"
+                        }
+                    ]
+                }
+            },
+            "514": {
+                "name": "memberInfo",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true,
+                    "isOptional": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "any"
+                }
+            },
+            "515": {
+                "name": "startDate",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "516": {
+                "name": "tokenId",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true
+                },
+                "type": {
+                    "type": "intrinsic",
+                    "name": "string"
+                }
+            },
+            "517": [
+                "518"
+            ],
+            "518": {
                 "name": "memberClaims",
                 "flags": {
                     "isExported": true,
@@ -92208,12 +92244,11 @@ function fetch(api, sch) {
                     "elementType": {
                         "type": "reference",
                         "name": "RxFill",
-                        "id": 535
+                        "id": 536
                     }
                 }
             },
-            "518": [
-                "519",
+            "519": [
                 "520",
                 "521",
                 "522",
@@ -92224,9 +92259,10 @@ function fetch(api, sch) {
                 "527",
                 "528",
                 "529",
-                "530"
+                "530",
+                "531"
             ],
-            "519": {
+            "520": {
                 "name": "abbreviateDrugForm",
                 "flags": {
                     "isExported": true,
@@ -92237,7 +92273,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "520": {
+            "521": {
                 "name": "brand",
                 "flags": {
                     "isExported": true,
@@ -92248,7 +92284,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "521": {
+            "522": {
                 "name": "dosageForm",
                 "flags": {
                     "isExported": true,
@@ -92259,7 +92295,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "522": {
+            "523": {
                 "name": "genericAvailable",
                 "flags": {
                     "isExported": true,
@@ -92270,7 +92306,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "523": {
+            "524": {
                 "name": "gpiCode",
                 "flags": {
                     "isExported": true,
@@ -92281,7 +92317,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "524": {
+            "525": {
                 "name": "isSensitive",
                 "flags": {
                     "isExported": true,
@@ -92292,7 +92328,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "525": {
+            "526": {
                 "name": "labelName",
                 "flags": {
                     "isExported": true,
@@ -92303,7 +92339,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "526": {
+            "527": {
                 "name": "name",
                 "flags": {
                     "isExported": true,
@@ -92314,7 +92350,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "527": {
+            "528": {
                 "name": "ndcId",
                 "flags": {
                     "isExported": true,
@@ -92325,7 +92361,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "528": {
+            "529": {
                 "name": "packageSize",
                 "flags": {
                     "isExported": true,
@@ -92336,7 +92372,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "529": {
+            "530": {
                 "name": "preferred",
                 "flags": {
                     "isExported": true,
@@ -92347,7 +92383,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "530": {
+            "531": {
                 "name": "strength",
                 "flags": {
                     "isExported": true,
@@ -92358,12 +92394,12 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "531": [
-                "532",
+            "532": [
                 "533",
-                "534"
+                "534",
+                "535"
             ],
-            "532": {
+            "533": {
                 "name": "address",
                 "flags": {
                     "isExported": true,
@@ -92372,10 +92408,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "Address",
-                    "id": 503
+                    "id": 504
                 }
             },
-            "533": {
+            "534": {
                 "name": "fullName",
                 "flags": {
                     "isExported": true,
@@ -92386,7 +92422,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "534": {
+            "535": {
                 "name": "npiNumber",
                 "flags": {
                     "isExported": true,
@@ -92397,8 +92433,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "535": [
-                "536",
+            "536": [
                 "537",
                 "538",
                 "539",
@@ -92446,9 +92481,10 @@ function fetch(api, sch) {
                 "581",
                 "582",
                 "583",
-                "584"
+                "584",
+                "585"
             ],
-            "536": {
+            "537": {
                 "name": "adjudicationBenefitTypeCode",
                 "flags": {
                     "isExported": true,
@@ -92459,7 +92495,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "537": {
+            "538": {
                 "name": "bestChoiceDrug",
                 "flags": {
                     "isExported": true,
@@ -92470,7 +92506,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "538": {
+            "539": {
                 "name": "bestChoiceMail",
                 "flags": {
                     "isExported": true,
@@ -92481,7 +92517,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "539": {
+            "540": {
                 "name": "claimCOBIndicator",
                 "flags": {
                     "isExported": true,
@@ -92492,7 +92528,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "540": {
+            "541": {
                 "name": "claimNumber",
                 "flags": {
                     "isExported": true,
@@ -92503,7 +92539,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "541": {
+            "542": {
                 "name": "claimSequenceNumber",
                 "flags": {
                     "isExported": true,
@@ -92514,7 +92550,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "542": {
+            "543": {
                 "name": "clientPayAmount",
                 "flags": {
                     "isExported": true,
@@ -92525,7 +92561,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "543": {
+            "544": {
                 "name": "compound",
                 "flags": {
                     "isExported": true,
@@ -92536,7 +92572,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "544": {
+            "545": {
                 "name": "coverageGapDiscountAmountIndicator",
                 "flags": {
                     "isExported": true,
@@ -92547,7 +92583,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "545": {
+            "546": {
                 "name": "dawPenaltyAmount",
                 "flags": {
                     "isExported": true,
@@ -92558,7 +92594,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "546": {
+            "547": {
                 "name": "dawPriceDiffAmount",
                 "flags": {
                     "isExported": true,
@@ -92569,7 +92605,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "547": {
+            "548": {
                 "name": "daysSupplyQuantity",
                 "flags": {
                     "isExported": true,
@@ -92580,7 +92616,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "548": {
+            "549": {
                 "name": "deductibleAmount",
                 "flags": {
                     "isExported": true,
@@ -92591,7 +92627,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "549": {
+            "550": {
                 "name": "deliverySystem",
                 "flags": {
                     "isExported": true,
@@ -92602,7 +92638,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "550": {
+            "551": {
                 "name": "dispensedQuantity",
                 "flags": {
                     "isExported": true,
@@ -92613,7 +92649,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "551": {
+            "552": {
                 "name": "drug",
                 "flags": {
                     "isExported": true,
@@ -92622,10 +92658,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "Drug",
-                    "id": 518
+                    "id": 519
                 }
             },
-            "552": {
+            "553": {
                 "name": "eisName",
                 "flags": {
                     "isExported": true,
@@ -92636,7 +92672,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "553": {
+            "554": {
                 "name": "excessClaimLimitAmount",
                 "flags": {
                     "isExported": true,
@@ -92647,7 +92683,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "554": {
+            "555": {
                 "name": "excessMABAmount",
                 "flags": {
                     "isExported": true,
@@ -92658,7 +92694,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "555": {
+            "556": {
                 "name": "fSAEligibleClaim",
                 "flags": {
                     "isExported": true,
@@ -92669,7 +92705,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "556": {
+            "557": {
                 "name": "fillDate",
                 "flags": {
                     "isExported": true,
@@ -92680,7 +92716,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "557": {
+            "558": {
                 "name": "gender",
                 "flags": {
                     "isExported": true,
@@ -92691,7 +92727,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "558": {
+            "559": {
                 "name": "genericCoinsuranceIndicator",
                 "flags": {
                     "isExported": true,
@@ -92702,7 +92738,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "559": {
+            "560": {
                 "name": "healthcareReimbursementAcctAppliedAmount",
                 "flags": {
                     "isExported": true,
@@ -92713,7 +92749,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "560": {
+            "561": {
                 "name": "ltcShortenDaySupplyIndicator",
                 "flags": {
                     "isExported": true,
@@ -92724,7 +92760,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "561": {
+            "562": {
                 "name": "mchoiceIndicator",
                 "flags": {
                     "isExported": true,
@@ -92735,7 +92771,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "562": {
+            "563": {
                 "name": "medcoMail",
                 "flags": {
                     "isExported": true,
@@ -92746,7 +92782,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "563": {
+            "564": {
                 "name": "mfrFinalPatientPay",
                 "flags": {
                     "isExported": true,
@@ -92757,7 +92793,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "564": {
+            "565": {
                 "name": "mfrManufacturerDiscountAmount",
                 "flags": {
                     "isExported": true,
@@ -92768,7 +92804,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "565": {
+            "566": {
                 "name": "otherPayerIndicator",
                 "flags": {
                     "isExported": true,
@@ -92779,7 +92815,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "566": {
+            "567": {
                 "name": "paidByMedicare",
                 "flags": {
                     "isExported": true,
@@ -92790,7 +92826,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "567": {
+            "568": {
                 "name": "payAmount",
                 "flags": {
                     "isExported": true,
@@ -92801,7 +92837,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "568": {
+            "569": {
                 "name": "personCode",
                 "flags": {
                     "isExported": true,
@@ -92812,7 +92848,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "569": {
+            "570": {
                 "name": "pharmacyNCPDP",
                 "flags": {
                     "isExported": true,
@@ -92823,7 +92859,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "570": {
+            "571": {
                 "name": "pharmacyNPI",
                 "flags": {
                     "isExported": true,
@@ -92834,7 +92870,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "571": {
+            "572": {
                 "name": "pharmacyName",
                 "flags": {
                     "isExported": true,
@@ -92845,7 +92881,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "572": {
+            "573": {
                 "name": "pharmacyOutOfNetwork",
                 "flags": {
                     "isExported": true,
@@ -92856,7 +92892,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "573": {
+            "574": {
                 "name": "pharmacyTypeCode",
                 "flags": {
                     "isExported": true,
@@ -92867,7 +92903,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "574": {
+            "575": {
                 "name": "prescriber",
                 "flags": {
                     "isExported": true,
@@ -92876,10 +92912,10 @@ function fetch(api, sch) {
                 "type": {
                     "type": "reference",
                     "name": "Prescriber",
-                    "id": 531
+                    "id": 532
                 }
             },
-            "575": {
+            "576": {
                 "name": "prescriberName",
                 "flags": {
                     "isExported": true,
@@ -92890,7 +92926,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "576": {
+            "577": {
                 "name": "priorPbmRx",
                 "flags": {
                     "isExported": true,
@@ -92901,7 +92937,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "577": {
+            "578": {
                 "name": "refillOriginator",
                 "flags": {
                     "isExported": true,
@@ -92912,7 +92948,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "578": {
+            "579": {
                 "name": "refillsLeft",
                 "flags": {
                     "isExported": true,
@@ -92923,7 +92959,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "579": {
+            "580": {
                 "name": "rxNumber",
                 "flags": {
                     "isExported": true,
@@ -92934,7 +92970,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "580": {
+            "581": {
                 "name": "status",
                 "flags": {
                     "isExported": true,
@@ -92945,7 +92981,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "581": {
+            "582": {
                 "name": "totalCopayAmount",
                 "flags": {
                     "isExported": true,
@@ -92956,7 +92992,7 @@ function fetch(api, sch) {
                     "name": "number"
                 }
             },
-            "582": {
+            "583": {
                 "name": "useGeneric",
                 "flags": {
                     "isExported": true,
@@ -92967,7 +93003,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "583": {
+            "584": {
                 "name": "useMail",
                 "flags": {
                     "isExported": true,
@@ -92978,7 +93014,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "584": {
+            "585": {
                 "name": "usePrefer",
                 "flags": {
                     "isExported": true,
@@ -92989,8 +93025,7 @@ function fetch(api, sch) {
                     "name": "boolean"
                 }
             },
-            "586": [
-                "587",
+            "587": [
                 "588",
                 "589",
                 "590",
@@ -93002,9 +93037,10 @@ function fetch(api, sch) {
                 "596",
                 "597",
                 "598",
-                "599"
+                "599",
+                "600"
             ],
-            "587": {
+            "588": {
                 "name": "apiKey",
                 "flags": {
                     "isExported": true,
@@ -93015,7 +93051,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "588": {
+            "589": {
                 "name": "apiSecret",
                 "flags": {
                     "isExported": true,
@@ -93026,7 +93062,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "589": {
+            "590": {
                 "name": "appName",
                 "flags": {
                     "isExported": true,
@@ -93047,7 +93083,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "590": {
+            "591": {
                 "name": "channelName",
                 "flags": {
                     "isExported": true,
@@ -93068,29 +93104,8 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "591": {
-                "name": "city",
-                "flags": {
-                    "isExported": true,
-                    "isExternal": true,
-                    "isOptional": true
-                },
-                "type": {
-                    "type": "union",
-                    "types": [
-                        {
-                            "type": "intrinsic",
-                            "name": "undefined"
-                        },
-                        {
-                            "type": "intrinsic",
-                            "name": "string"
-                        }
-                    ]
-                }
-            },
             "592": {
-                "name": "deviceType",
+                "name": "city",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -93111,7 +93126,7 @@ function fetch(api, sch) {
                 }
             },
             "593": {
-                "name": "env",
+                "name": "deviceType",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -93132,7 +93147,7 @@ function fetch(api, sch) {
                 }
             },
             "594": {
-                "name": "firstName",
+                "name": "env",
                 "flags": {
                     "isExported": true,
                     "isExternal": true,
@@ -93153,6 +93168,27 @@ function fetch(api, sch) {
                 }
             },
             "595": {
+                "name": "firstName",
+                "flags": {
+                    "isExported": true,
+                    "isExternal": true,
+                    "isOptional": true
+                },
+                "type": {
+                    "type": "union",
+                    "types": [
+                        {
+                            "type": "intrinsic",
+                            "name": "undefined"
+                        },
+                        {
+                            "type": "intrinsic",
+                            "name": "string"
+                        }
+                    ]
+                }
+            },
+            "596": {
                 "name": "lastName",
                 "flags": {
                     "isExported": true,
@@ -93163,7 +93199,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "596": {
+            "597": {
                 "name": "memberInfo",
                 "flags": {
                     "isExported": true,
@@ -93175,7 +93211,7 @@ function fetch(api, sch) {
                     "name": "any"
                 }
             },
-            "597": {
+            "598": {
                 "name": "state",
                 "flags": {
                     "isExported": true,
@@ -93196,7 +93232,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "598": {
+            "599": {
                 "name": "tokenId",
                 "flags": {
                     "isExported": true,
@@ -93207,7 +93243,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "599": {
+            "600": {
                 "name": "zipCode",
                 "flags": {
                     "isExported": true,
@@ -93228,10 +93264,10 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "600": [
-                "601"
+            "601": [
+                "602"
             ],
-            "601": {
+            "602": {
                 "name": "prescriberList",
                 "flags": {
                     "isExported": true,
@@ -93242,12 +93278,11 @@ function fetch(api, sch) {
                     "elementType": {
                         "type": "reference",
                         "name": "Prescriber",
-                        "id": 602
+                        "id": 603
                     }
                 }
             },
-            "602": [
-                "603",
+            "603": [
                 "604",
                 "605",
                 "606",
@@ -93256,9 +93291,10 @@ function fetch(api, sch) {
                 "609",
                 "610",
                 "611",
-                "612"
+                "612",
+                "613"
             ],
-            "603": {
+            "604": {
                 "name": "addressLine1",
                 "flags": {
                     "isExported": true,
@@ -93269,7 +93305,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "604": {
+            "605": {
                 "name": "city",
                 "flags": {
                     "isExported": true,
@@ -93280,7 +93316,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "605": {
+            "606": {
                 "name": "firstName",
                 "flags": {
                     "isExported": true,
@@ -93291,7 +93327,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "606": {
+            "607": {
                 "name": "fullName",
                 "flags": {
                     "isExported": true,
@@ -93302,7 +93338,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "607": {
+            "608": {
                 "name": "lastName",
                 "flags": {
                     "isExported": true,
@@ -93313,7 +93349,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "608": {
+            "609": {
                 "name": "middleName",
                 "flags": {
                     "isExported": true,
@@ -93324,7 +93360,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "609": {
+            "610": {
                 "name": "npiNumber",
                 "flags": {
                     "isExported": true,
@@ -93335,7 +93371,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "610": {
+            "611": {
                 "name": "prescriberCompositeKey",
                 "flags": {
                     "isExported": true,
@@ -93346,7 +93382,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "611": {
+            "612": {
                 "name": "state",
                 "flags": {
                     "isExported": true,
@@ -93357,7 +93393,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "612": {
+            "613": {
                 "name": "zipCode",
                 "flags": {
                     "isExported": true,
@@ -93368,12 +93404,12 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "614": [
-                "615",
+            "615": [
                 "616",
-                "617"
+                "617",
+                "618"
             ],
-            "615": {
+            "616": {
                 "name": "RefId",
                 "flags": {
                     "isExported": true,
@@ -93394,7 +93430,7 @@ function fetch(api, sch) {
                     ]
                 }
             },
-            "616": {
+            "617": {
                 "name": "StatusCode",
                 "flags": {
                     "isExported": true,
@@ -93405,7 +93441,7 @@ function fetch(api, sch) {
                     "name": "string"
                 }
             },
-            "617": {
+            "618": {
                 "name": "StatusDescription",
                 "flags": {
                     "isExported": true,

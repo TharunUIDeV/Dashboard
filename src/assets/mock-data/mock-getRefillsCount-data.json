@@ -6,7 +6,7 @@
     "statusCode": "0000",
     "statusDesc": "Success"
   }, "detail": {
-  "refillsAvailable": "60",
+  "refillsAvailable": "3",
   "renewalsAvailable": "0"
 }
 }
