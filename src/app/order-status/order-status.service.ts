@@ -5,9 +5,12 @@ import {
   FASTSTART_ORDER_STATUS,
   FASTSTART_ORDER_STATUS_MAP,
   ORDER_STATUS_CODES_MAP,
-  ORDER_STATUS_CODES_ON_HOLD
+  ORDER_STATUS_CODES_ON_HOLD, PZN_CONSTANTS
 } from './order-status.constants';
 import {OrderStatus} from './order-status.interface';
+import {MemberService} from '../service/member.service';
+import {resource} from 'selenium-webdriver/http';
+import moment = require('moment');
 
 @Injectable()
 export class OrderStatusService {
@@ -16,11 +19,65 @@ export class OrderStatusService {
 
 
   constructor(private caremarkDataService: CaremarkDataService,
+              private memberSerivce: MemberService,
               private orderStatusFilter: OrderStatusFilterPipe) { }
 
-  private applyFamilyFilter() {
-
+  private getAge(dob) {
+    if (dob) {
+      const now = moment(new Date());
+      const end = moment(dob);
+      const duration = moment.duration(now.diff(end));
+      const years = Math.ceil(duration.asYears());
+      console.log(years);
+      return years;
+    }
+    return undefined;
   }
+
+  private applyFamilyFilter(orders: OrderStatus[]) {
+    let ageNotMinor;
+    const nonEligibles = [];
+    const familyAccessDenied = [];
+    const mainMember: any = this.memberSerivce.memberDetails;
+    const underageLimit = this.memberSerivce.underageLimit;
+    const filteredOrders = [];
+    // No family members
+    if (!orders || (orders && orders.length === 0)) {
+      return orders;
+    }
+
+    if (!mainMember || !underageLimit) {
+      return [];
+    }
+
+    if (mainMember.family &&  mainMember.family.dependentList) {
+
+      // Apply family accesss filter
+      for (const member of mainMember.family.dependentList) {
+        ageNotMinor = this.getAge(member.DateOfBirth) > underageLimit.toInteger();
+
+        if (member.securityOptions && member.securityOptions.fastStart
+          && member.securityOptions.fastStart === 'false' && ageNotMinor) {
+          familyAccessDenied.push(member.internalID);
+        }
+
+        if (member.eligibility.eligible === 'false') {
+          nonEligibles.push(member.internalID);
+        }
+
+      }
+      for (const order of orders) {
+        if (!familyAccessDenied.includes(order.ParticipantID) &&
+          !nonEligibles.includes(order.ParticipantID)) {
+          filteredOrders.push(order);
+        }
+      }
+      return filteredOrders;
+    }
+
+    return orders;
+  }
+
 
   public getRecentOrders() {
     return new Promise((resolve, reject) => {
@@ -35,6 +92,7 @@ export class OrderStatusService {
           orderStatusDetail.OrderDate = order.OrderDate;
           orderStatusDetail.OrderNumber = order.OrderNumber;
           orderStatusDetail.OrderType = order.OrderType;
+          orderStatusDetail.ParticipantID = order.ParticipantID;
           // Order Status takes priority of prescription on hold otherwise first prescriotion status
           if (order.PrescriptionList) {
 
@@ -91,7 +149,7 @@ export class OrderStatusService {
         console.error(JSON.stringify(error));
         recentOrders = [];
       }).then(() => {
-        resolve(recentOrders);
+        resolve(this.applyFamilyFilter(recentOrders));
       });
     });
   }
@@ -110,7 +168,7 @@ export class OrderStatusService {
       }).catch((error) => {
         console.error('Failed to getRecentOrders');
         holdOrders = [];
-      }).then (() => { resolve(holdOrders); });
+      }).then (() => { resolve(this.applyFamilyFilter(holdOrders)); });
     });
   }
 

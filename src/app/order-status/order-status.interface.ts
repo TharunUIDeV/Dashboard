@@ -13,4 +13,5 @@ export interface OrderStatus {
   DrugDosage: string;
   DrugStrength: string;
   RxFills: number;
+  ParticipantID: string;
 }

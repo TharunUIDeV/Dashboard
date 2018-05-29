@@ -123,4 +123,8 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
     });*/
   }
 
+  public getPznByIdandResource(pznID, resourceTag, deliveryResourceTag): Promise<any> {
+    return this.vordelPbmService.getPznByIdandResource(pznID, resourceTag, deliveryResourceTag);
+  }
+
 }
