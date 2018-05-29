@@ -6,7 +6,7 @@
     <p> Your order(s) <em>on hold</em> because we need some additional information about the prescriptions listed</p>
 
     <section class="hold-order">
-      <ul *ngFor="let order of  attentionData.Orders">
+      <ul *ngFor="let order of  attentionData.Orders | slice:0:3">
         <li class="name"><b>{{order.DrugName}}</b> {{order.DrugStrength}} {{order.DrugDosage}}</li>
         <li class="order">Order #{{order.OrderNumber}}</li>
         <li class="prescriber">Prescriber: Dr. {{order.DoctorFullName}}</li>
