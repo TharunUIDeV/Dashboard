@@ -18,6 +18,10 @@ export class ConfigService {
   public homePageUrl: string;
   public memberId: string;
   public emailAddr: string;
+  public userProfile: string;
+  public pznId: string;
+  public iceMemberToken: string;
+
 
   ready = new BehaviorSubject(false);
 
@@ -48,6 +52,8 @@ export class ConfigService {
         this.apiSecret = data.apiData.apiSecret;
         this.apiBaseUrl = data.apiData.apiBaseUrl;
         this.token = data.apiData.tokenId;
+        this.userProfile = data.apiData.profileType;
+        this.iceMemberToken = data.apiData.iceToken;
         if (this.apiBaseUrl.includes('devservices-west.caremark.com')) {
           this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
         }
@@ -57,17 +63,23 @@ export class ConfigService {
         this.homePageUrl = data.appData.HomePageUrl;
         this.memberId = data.appData.ParticipantExternalId;
         this.emailAddr = data.appData.ParticpantUserId;
+        this.pznId = data.appData.pznNewDashboardV2;
       }
     } catch (e) {
       console.log('config service --> init() :' + e);
     } finally {
       this.ready.next(this.validate());
     }
-  };
-
+  }
 
   private validate(): boolean {
-    console.log(`Env => ${this.env}\nParticipant Name => ${this.participantFirstName}\nOrder_Status_Url => ${this.orderStatusUrl}\nRefill_Rx_Url => ${this.refillRxUrl}\nHome_Page_Url => ${this.homePageUrl}`);
+    console.log(`Env => ${this.env}\n
+    Participant Name => ${this.participantFirstName}\n
+    Order_Status_Url => ${this.orderStatusUrl}\n
+    Refill_Rx_Url => ${this.refillRxUrl}\n
+    Home_Page_Url => ${this.homePageUrl}\n
+    User_Profile_Preference => ${this.userProfile}\n
+    PZN_ID => ${this.pznId}`);
     return !(isNullOrUndefined(this.env) || isNullOrUndefined(this.apiKey)
       || isNullOrUndefined(this.apiBaseUrl) || isNullOrUndefined(this.token)) || (!isNullOrUndefined(this.env) && this.env.includes('demo'));
   }
