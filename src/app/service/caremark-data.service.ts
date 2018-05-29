@@ -60,8 +60,8 @@ export class CaremarkDataService implements CaremarkDataServiceInterface {
     return this._serviceInstance.getRefillsCount();
   }
 
-  getPznByIdandResource(pznId, resourceTag, deliveryResourceTag ): Promise<any> {
-    return this._serviceInstance.getPznByIdandResource();
+  getPznByIdAndResource(params: any): Promise<any> {
+    return this._serviceInstance.getPznByIdAndResource(params);
   }
 
 

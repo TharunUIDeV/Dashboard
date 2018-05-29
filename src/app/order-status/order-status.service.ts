@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {CaremarkDataService} from '../service/caremark-data.service';
 import {OrderStatusFilterPipe} from './order-status-filter.pipe';
 import {
@@ -11,6 +11,8 @@ import {OrderStatus} from './order-status.interface';
 import {MemberService} from '../service/member.service';
 import {resource} from 'selenium-webdriver/http';
 import moment = require('moment');
+import {caremarksdk} from '../types/caremarksdk';
+import MemberInfoResult = caremarksdk.MemberInfoResult;
 
 @Injectable()
 export class OrderStatusService {
@@ -20,7 +22,8 @@ export class OrderStatusService {
 
   constructor(private caremarkDataService: CaremarkDataService,
               private memberSerivce: MemberService,
-              private orderStatusFilter: OrderStatusFilterPipe) { }
+              private orderStatusFilter: OrderStatusFilterPipe) {
+  }
 
   private getAge(dob) {
     if (dob) {
@@ -35,11 +38,20 @@ export class OrderStatusService {
   }
 
   private applyFamilyFilter(orders: OrderStatus[]) {
+    return new Promise((resolve, reject) => {
+      this.memberSerivce.getMemberDetails().then((memberDetails: any) => {
+        this.memberSerivce.getUnderAgeLimitPzn().then((underageLimit: string) => {
+          resolve(this.processFamilyFilter(orders, memberDetails, underageLimit));
+        }).catch((error) => {resolve([]); });
+      }).catch((error) => {resolve([]); });
+    });
+  }
+
+  private processFamilyFilter(orders: OrderStatus[], memberDetails: any, underageLimit: string) {
     let ageNotMinor;
     const nonEligibles = [];
     const familyAccessDenied = [];
-    const mainMember: any = this.memberSerivce.memberDetails;
-    const underageLimit = this.memberSerivce.underageLimit;
+    const mainMember: any = memberDetails;
     const filteredOrders = [];
     // No family members
     if (!orders || (orders && orders.length === 0)) {
@@ -50,11 +62,13 @@ export class OrderStatusService {
       return [];
     }
 
-    if (mainMember.family &&  mainMember.family.dependentList) {
+    if (mainMember.family && mainMember.family.dependentList) {
 
       // Apply family accesss filter
-      for (const member of mainMember.family.dependentList) {
-        ageNotMinor = this.getAge(member.DateOfBirth) > underageLimit.toInteger();
+      for (const member of mainMember.family.dependentList.memberInfo) {
+        const age: number = this.getAge(member.dateOfBirth);
+        const minorAge: number = parseInt(underageLimit, 10);
+        ageNotMinor = age > minorAge ? true : false;
 
         if (member.securityOptions && member.securityOptions.fastStart
           && member.securityOptions.fastStart === 'false' && ageNotMinor) {
@@ -76,12 +90,13 @@ export class OrderStatusService {
     }
 
     return orders;
+
   }
 
 
   public getRecentOrders() {
     return new Promise((resolve, reject) => {
-    let recentOrders: OrderStatus[] = [];
+      let recentOrders: OrderStatus[] = [];
 
       this.caremarkDataService.getOrderStatus().then((ordersResponse: any) => {
         const orders = ordersResponse.Results;
@@ -149,7 +164,10 @@ export class OrderStatusService {
         console.error(JSON.stringify(error));
         recentOrders = [];
       }).then(() => {
-        resolve(this.applyFamilyFilter(recentOrders));
+        this.applyFamilyFilter(recentOrders).then((filteredOrders) => {
+          console.log(filteredOrders);
+          resolve(filteredOrders);
+        });
       });
     });
   }
@@ -161,14 +179,18 @@ export class OrderStatusService {
 
       this.getRecentOrders().then((orders: OrderStatus[]) => {
         for (const order of orders) {
-          if (ORDER_STATUS_CODES_ON_HOLD.includes(order.OrderStatusCode) ) {
+          if (ORDER_STATUS_CODES_ON_HOLD.includes(order.OrderStatusCode)) {
             holdOrders.push(order);
           }
         }
       }).catch((error) => {
         console.error('Failed to getRecentOrders');
         holdOrders = [];
-      }).then (() => { resolve(this.applyFamilyFilter(holdOrders)); });
+      }).then(() => {
+        this.applyFamilyFilter(holdOrders).then((filteredOrders) => {
+          resolve(filteredOrders);
+        });
+      });
     });
   }
 

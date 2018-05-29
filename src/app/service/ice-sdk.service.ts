@@ -123,4 +123,10 @@ export class IceSdkService implements CaremarkDataServiceInterface {
     });
   }
 
+  public getPznByIdAndResource(params: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      reject('Not implemented yet');
+    });
+  }
+
 }

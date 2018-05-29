@@ -51,6 +51,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       deviceToken: this.QueryConstants.deviceToken,
       lineOfBusiness: this.QueryConstants.lineOfBusiness,
       serviceCORS: 'TRUE',
+      version: '1.0',
       serviceName: 'personalization',
       operationName: 'getPZNByIDandResourcetag',
       env: this.configService.env
@@ -83,9 +84,12 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       );
   }
 
-  public getPznByIdandResource(pznID, resourceTag, deliveryResourceTag): Promise<any> {
+  public getPznByIdAndResource(params: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      this.getPznByIdandResourceObserve(pznID, resourceTag, deliveryResourceTag).subscribe((result) => {
+      const pznId = params.pznId;
+      const resourceTag = params.resourceTag;
+      const deliveryResourceTag =  params.deliveryResourceTag;
+      this.getPznByIdandResourceObserve(pznId, resourceTag, deliveryResourceTag).subscribe((result) => {
         this.xml2jsParser.parseString(result, (error, jsonData) => {
           if (error) {
             console.log(error);
