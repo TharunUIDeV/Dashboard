@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {OrderStatusService} from '../order-status/order-status.service';
+import {OrderStatus} from '../order-status/order-status.interface';
 
 interface RecentOrdersWidgetData {
   OrdersCount: number;
@@ -34,7 +35,10 @@ export class RecentOrdersComponent implements OnInit {
         this.recentOrders.OrdersCount = orders.length;
         this.recentOrders.Orders = orders;
       }
-    });
+    }).catch((error) => {
+      console.error('Failed to get WidgetData in attention');
+      console.error(JSON.stringify(error));
+    }).then (() => { this.loading = false; });
   }
 
   ngOnInit(): void {

@@ -1,5 +1,5 @@
 
-interface OrderStatus {
+export interface OrderStatus {
   OrderNumber: string;
   OrderType: string;
   OrderDate: string;

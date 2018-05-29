@@ -25,7 +25,7 @@ export class RefillComponent implements  OnInit {
 
   public getWidgetData2() {
     this.caremarkDataService.getRefillsCount().then((refillsData: any) => {
-      console.log(JSON.stringify(refillsData));
+      // console.log(JSON.stringify(refillsData));
       this.refillWidgetData.RefillPrescriptionCount = refillsData.refillsAvailable;
     }).catch((error) => {
       console.error('Failed to get WidgetData');

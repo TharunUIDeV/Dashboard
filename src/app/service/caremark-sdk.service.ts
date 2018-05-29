@@ -72,12 +72,13 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
         return reject(error);
       }
       this.setAuthConfigParams(params);
-      params.historyCount = '30';
+      params.historyCount = '366';
       params.historyMetric = 'days';
       params.fastStartOrders = true;
       params.mailOrders = true;
       // console.log(JSON.stringify(params));
       this.sdkInstance.Order.getOrderStatus(params, (result) => {
+        // console.log(JSON.stringify(result));
         if (result.Header.StatusCode === '0000') {
           return resolve(result.Details);
         }

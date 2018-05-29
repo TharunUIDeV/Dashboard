@@ -3,6 +3,7 @@ import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
 import {OrderStatusService} from '../order-status/order-status.service';
+import {OrderStatus} from '../order-status/order-status.interface';
 
 interface AttentionWidgetData {
   Orders: OrderStatus[];
@@ -23,7 +24,7 @@ export class AttentionComponent implements OnInit {
               private orderStatusService: OrderStatusService) { }
 
   public getWidgetData() {
-    this.orderStatusService.getRecentOrders().then((orders: OrderStatus[]) => {
+    this.orderStatusService.getRecentOrdersOnHold().then((orders: OrderStatus[]) => {
       if (orders && orders.length) {
         this.attentionData.Orders = orders;
       }
