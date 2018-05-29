@@ -6,12 +6,13 @@ import { RefillComponent } from './refill/refill.component';
 import { RecentOrdersComponent } from './recent-orders/recent-orders.component';
 
 import { AttentionComponent } from './attention/attention.component';
-import { OrderStatusFilterPipe } from './recent-orders/order-status-filter.pipe';
+import { OrderStatusFilterPipe } from './order-status/order-status-filter.pipe';
 import {HttpClientModule} from '@angular/common/http';
 
 import * as fromServices from './service';
 import {NgModule} from '@angular/core';
 import { SpinnerComponent } from './spinner/spinner.component';
+import {OrderStatusService} from './order-status/order-status.service';
 
 
 
@@ -30,7 +31,8 @@ import { SpinnerComponent } from './spinner/spinner.component';
   ],
 
   providers: [
-    [...fromServices.services],
+    [...fromServices.services,
+    OrderStatusService],
   ],
   bootstrap: [AppComponent]
 })

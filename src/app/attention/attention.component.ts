@@ -2,20 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
+import {OrderStatusService} from '../order-status/order-status.service';
 
 interface AttentionWidgetData {
-  Orders: AttentionWidgetOrderStatus[];
-}
-
-interface AttentionWidgetOrderStatus {
-  OrderNumber: string;
-  OrderDate: string;
-  OrderedFor: string;
-  OrderStatus: string;
-  DoctorFullName: string;
-  DrugName: string;
-  DrugDosage: string;
-  DrugStrength: string;
+  Orders: OrderStatus[];
 }
 
 @Component({
@@ -24,34 +14,18 @@ interface AttentionWidgetOrderStatus {
   styleUrls: ['./attention.component.css']
 })
 export class AttentionComponent implements OnInit {
-  public attentionWidgetData: AttentionWidgetData = { Orders: []};
+  public attentionData: AttentionWidgetData = { Orders: []};
   public ORDER_HOLD_STATUS_TEXT = 'On Hold';
   public loading = true;
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
-              private caremarkDataService: CaremarkDataService) { }
+              private orderStatusService: OrderStatusService) { }
 
   public getWidgetData() {
-    this.caremarkDataService.getOrderStatus().then((historyStatus: any) => {
-      for (const history of historyStatus.Results) {
-        if (history.PrescriptionList) {
-          for (const prescription of history.PrescriptionList) {
-            if (prescription.Status.toUpperCase() ===  this.ORDER_HOLD_STATUS_TEXT.toUpperCase()) {
-              this.attentionWidgetData.Orders.push(
-                {
-                  OrderDate: history.OrderDate,
-                  OrderedFor: prescription.PatientFirstName + ' ' + prescription.PatientLastName,
-                  DoctorFullName: prescription.DoctorFullName,
-                  OrderNumber: history.OrderNumber,
-                  DrugDosage: prescription.DrugDosage,
-                  DrugName: prescription.DrugName,
-                  DrugStrength: prescription.DrugStrength,
-                  OrderStatus: prescription.OrderStatus
-                });
-            }
-          }
-        }
+    this.orderStatusService.getRecentOrders().then((orders: OrderStatus[]) => {
+      if (orders && orders.length) {
+        this.attentionData.Orders = orders;
       }
     }).catch((error) => {
       console.error('Failed to get WidgetData in attention');

@@ -1,4 +1,4 @@
-<section class="block" *ngIf="attentionWidgetData.Orders.length > 0">
+<section class="block" *ngIf="attentionData.Orders.length > 0">
   <app-spinner [loading]="loading"></app-spinner>
   <h2 class="block-title tasks">Your Tasks</h2>
   <section class="block-item" >
@@ -6,7 +6,7 @@
     <p> Your order(s) <em>on hold</em> because we need some additional information about the prescriptions listed</p>
 
     <section class="hold-order">
-      <ul *ngFor="let order of  attentionWidgetData.Orders">
+      <ul *ngFor="let order of  attentionData.Orders">
         <li class="name"><b>{{order.DrugName}}</b> {{order.DrugStrength}} {{order.DrugDosage}}</li>
         <li class="order">Order #{{order.OrderNumber}}</li>
         <li class="prescriber">Prescriber: Dr. {{order.DoctorFullName}}</li>
