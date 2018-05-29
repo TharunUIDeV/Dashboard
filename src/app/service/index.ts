@@ -10,7 +10,6 @@ import {MockCaremarkSdkService} from './mock-caremark-sdk.service';
 import {environment} from '../../environments/environment';
 import {APP_INITIALIZER} from '@angular/core';
 import {MemberService} from './member.service';
-import {OrderStatusFilterPipe} from '../order-status/order-status-filter.pipe';
 
 
 const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService)  => {
@@ -45,5 +44,4 @@ export const services: any[]  = [
   IceSdkService,
   VordelPbmService,
   MemberService,
-  OrderStatusFilterPipe
 ];

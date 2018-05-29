@@ -32,6 +32,7 @@ export class RecentOrdersComponent implements OnInit {
   public getWidgetData() {
     this.orderStatusService.getRecentOrders().then((orders: OrderStatus[]) => {
       if (orders && orders.length) {
+        // console.log(orders);
         this.recentOrders.OrdersCount = orders.length;
         this.recentOrders.Orders = orders;
       }

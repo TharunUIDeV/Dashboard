@@ -1,6 +1,5 @@
 import {Injectable} from '@angular/core';
 import {CaremarkDataService} from '../service/caremark-data.service';
-import {OrderStatusFilterPipe} from './order-status-filter.pipe';
 import {
   FASTSTART_ORDER_STATUS,
   FASTSTART_ORDER_STATUS_MAP,
@@ -10,7 +9,7 @@ import {
 import {OrderStatus} from './order-status.interface';
 import {MemberService} from '../service/member.service';
 import {resource} from 'selenium-webdriver/http';
-import moment = require('moment');
+import * as moment from 'moment';
 import {caremarksdk} from '../types/caremarksdk';
 import MemberInfoResult = caremarksdk.MemberInfoResult;
 
@@ -21,8 +20,7 @@ export class OrderStatusService {
 
 
   constructor(private caremarkDataService: CaremarkDataService,
-              private memberSerivce: MemberService,
-              private orderStatusFilter: OrderStatusFilterPipe) {
+              private memberSerivce: MemberService) {
   }
 
   private getAge(dob) {
