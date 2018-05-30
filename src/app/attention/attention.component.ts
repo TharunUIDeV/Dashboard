@@ -4,6 +4,7 @@ import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
 import {OrderStatusService} from '../order-status/order-status.service';
 import {OrderStatus} from '../order-status/order-status.interface';
+import {ORDER_STATUS_TYPES} from '../order-status/order-status.constants';
 
 interface AttentionWidgetData {
   Orders: OrderStatus[];
@@ -16,7 +17,7 @@ interface AttentionWidgetData {
 })
 export class AttentionComponent implements OnInit {
   public attentionData: AttentionWidgetData = { Orders: []};
-  public ORDER_HOLD_STATUS_TEXT = 'On Hold';
+
   public loading = true;
 
   constructor(private analytics: TealiumUtagService,
@@ -32,6 +33,13 @@ export class AttentionComponent implements OnInit {
       console.error('Failed to get WidgetData in attention');
       console.error(JSON.stringify(error));
     }).then (() => { this.loading = false; });
+  }
+
+  public isFastStartOrder(order) {
+    if (order && order.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER ) {
+      return true;
+    }
+    return false;
   }
 
   ngOnInit(): void {

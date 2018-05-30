@@ -68,3 +68,8 @@ export const enum PZN_CONSTANTS {
   PZN_UNDER_AGE_TAG   = '2725',
   DELIVERY_DATE_RANGE_PZN = '50061',
 }
+
+export const enum ORDER_STATUS_TYPES {
+  FAST_ORDER = 'FASTSTART',
+  REFILL     = 'REFILL'
+}
