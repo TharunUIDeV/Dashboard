@@ -6,8 +6,14 @@
     <h1>
       {{getTitle()}}
     </h1>
-      <app-attention></app-attention>
-      <app-order-status></app-order-status>
-      <app-refill></app-refill>
+    <app-attention *ngIf="!isIceMember"></app-attention>
+    <app-order-status *ngIf="!isIceMember"></app-order-status>
+    <app-refill *ngIf="!isIceMember"></app-refill>
+    <section class="block" *ngIf="isIceMember">
+      <app-default-order-status></app-default-order-status>
+    </section>
+    <section class="block" *ngIf="isIceMember">
+      <app-default-refill></app-default-refill>
+    </section>
   </div>
 </main>
