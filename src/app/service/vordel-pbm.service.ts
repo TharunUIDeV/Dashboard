@@ -38,6 +38,76 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
     return Observable.throw(res.error || 'Server error');
   }
 
+  private getPznByIdandResourceObserve(pznID, resourceTag, deliveryResourceTag): Observable<any> {
+
+    const queryParam: any = {
+      apiKey: this.configService.apiKey,
+      apiSecret: this.configService.apiSecret,
+      appName: this.QueryConstants.appName,
+      channelName: this.QueryConstants.channelName,
+      deviceType: this.QueryConstants.deviceType,
+      tokenID: this.configService.token,
+      deviceID: this.QueryConstants.deviceID,
+      deviceToken: this.QueryConstants.deviceToken,
+      lineOfBusiness: this.QueryConstants.lineOfBusiness,
+      serviceCORS: 'TRUE',
+      version: '1.0',
+      serviceName: 'personalization',
+      operationName: 'getPZNByIDandResourcetag',
+      env: this.configService.env
+    };
+
+    const url = this.baseUrl + '/PZN/getPZNByIDandResourcetag?' + VordelPbmService.createQueryString(queryParam);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/xml'
+      }),
+      responseType: 'text' as 'text',
+    };
+
+    const body =  {
+      'personalizationServiceRequest' : {
+        'pznID': pznID,
+        'tag': [
+          { 'resourceTag': resourceTag },
+          { 'resourceTag': deliveryResourceTag }
+          ]
+      }
+    };
+
+    const body_xml = this.xml2jsXmlBuilder.buildObject(body);
+
+
+    return this.httpClient.post(url,  body_xml,   httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  public getPznByIdAndResource(params: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const pznId = params.pznId;
+      const resourceTag = params.resourceTag;
+      const deliveryResourceTag =  params.deliveryResourceTag;
+      this.getPznByIdandResourceObserve(pznId, resourceTag, deliveryResourceTag).subscribe((result) => {
+        this.xml2jsParser.parseString(result, (error, jsonData) => {
+          if (error) {
+            console.log(error);
+            return reject(error);
+          }
+          const response = jsonData.response;
+          if (response.header.statusCode === '0000') {
+            console.log(JSON.stringify(response.details));
+            return resolve(response.details);
+          }
+          console.error(JSON.stringify(response.header));
+          return reject(response.header);
+        } );
+
+      });
+    });
+  }
+
   private getOrderStatusObserve(): Observable<any> {
 
     const queryParam: any = {

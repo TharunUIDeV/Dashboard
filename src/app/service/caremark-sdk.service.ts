@@ -72,7 +72,7 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
         return reject(error);
       }
       this.setAuthConfigParams(params);
-      params.historyCount = '366';
+      params.historyCount = '30';
       params.historyMetric = 'days';
       params.fastStartOrders = true;
       params.mailOrders = true;
@@ -121,6 +121,10 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
       const params: any = {};
      return this.vordelPbmService.getRefillsCount();
     });*/
+  }
+
+  public getPznByIdAndResource(params: any): Promise<any> {
+    return this.vordelPbmService.getPznByIdAndResource(params);
   }
 
 }
