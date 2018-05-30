@@ -24,7 +24,7 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
   }
 
   constructor(private configService: ConfigService, private vordelPbmService: VordelPbmService) {
-    this.sdkInstance = CaremarkSdkService.getCareMarkSdk();
+    this.sdkInstance = CaremarkSdkService.getCareMarkWrapperSdk();
   }
 
   private setAuthConfigParams(params): void {

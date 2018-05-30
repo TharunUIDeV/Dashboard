@@ -2,13 +2,11 @@ import {Injectable} from '@angular/core';
 import {CaremarkDataService} from '../service/caremark-data.service';
 import {
   FASTSTART_ORDER_STATUS,
-  FASTSTART_ORDER_STATUS_MAP,
+  FASTSTART_ORDER_STATUS_MAP, ORDER_STATUS_CODES_ATTENTION_ONHOLDS,
   ORDER_STATUS_CODES_MAP,
-  ORDER_STATUS_CODES_ON_HOLD, PZN_CONSTANTS
 } from './order-status.constants';
 import {OrderStatus} from './order-status.interface';
 import {MemberService} from '../service/member.service';
-import {resource} from 'selenium-webdriver/http';
 import * as moment from 'moment';
 import {caremarksdk} from '../types/caremarksdk';
 import MemberInfoResult = caremarksdk.MemberInfoResult;
@@ -16,7 +14,6 @@ import MemberInfoResult = caremarksdk.MemberInfoResult;
 @Injectable()
 export class OrderStatusService {
   public static ORDER_STATUS_HOLD_TEXT = 'On Hold';
-  private OrderStatusData: OrderStatus[] = [];
 
 
   constructor(private caremarkDataService: CaremarkDataService,
@@ -66,7 +63,7 @@ export class OrderStatusService {
       for (const member of mainMember.family.dependentList.memberInfo) {
         const age: number = this.getAge(member.dateOfBirth);
         const minorAge: number = parseInt(underageLimit, 10);
-        ageNotMinor = age > minorAge ? true : false;
+        ageNotMinor = age > minorAge;
 
         if (member.securityOptions && member.securityOptions.fastStart
           && member.securityOptions.fastStart === 'false' && ageNotMinor) {
@@ -177,7 +174,7 @@ export class OrderStatusService {
 
       this.getRecentOrders().then((orders: OrderStatus[]) => {
         for (const order of orders) {
-          if (ORDER_STATUS_CODES_ON_HOLD.includes(order.OrderStatusCode)) {
+          if (ORDER_STATUS_CODES_ATTENTION_ONHOLDS.includes(order.OrderStatusCode)) {
             holdOrders.push(order);
           }
         }

@@ -55,6 +55,8 @@ for (const entry of (<any>ORDER_STATUS_REASONCODES).StatusCodes) {
    ORDER_STATUS_CODES_MAP[entry.ReasonCode] = {ReasonCodePriority: entry.ReasonCodePriority, RxStatus: entry.RxStatus, RxStatusDescription: entry.RxStatusDescription};
 }
 
+export const ORDER_STATUS_CODES_ATTENTION_ONHOLDS = ['12'];
+
 export const ORDER_STATUS_CODES_ON_HOLD = [];
 for (const key in  ORDER_STATUS_CODES_MAP) {
   if (ORDER_STATUS_CODES_MAP[key].RxStatus.toUpperCase() === 'On Hold'.toUpperCase()) {
