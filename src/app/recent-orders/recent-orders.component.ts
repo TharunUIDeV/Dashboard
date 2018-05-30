@@ -3,6 +3,7 @@ import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {OrderStatusService} from '../order-status/order-status.service';
 import {OrderStatus} from '../order-status/order-status.interface';
+import {ORDER_STATUS_TYPES} from '../order-status/order-status.constants';
 
 interface RecentOrdersWidgetData {
   OrdersCount: number;
@@ -18,7 +19,6 @@ interface RecentOrdersWidgetData {
 export class RecentOrdersComponent implements OnInit {
   public RECENT_ORDERS_TEXT = 'Recent Orders';
   public ORDER_STATUS_HREF_TEXT = 'View all orders';
-  public ORDERED_FOR_PREFIX = 'For ';
   public orderStatusWT: any;
   public recentOrders: RecentOrdersWidgetData = {OrdersCount: undefined, Orders: []};
   public ORDER_STATUS_HOLD_TEXT = 'On Hold';
@@ -27,6 +27,13 @@ export class RecentOrdersComponent implements OnInit {
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
               private orderStatusService: OrderStatusService) {
+  }
+
+  public isFastStartOrder(order) {
+    if (order && order.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER ) {
+      return true;
+    }
+    return false;
   }
 
   public getWidgetData() {

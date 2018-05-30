@@ -3,7 +3,7 @@ import {CaremarkDataService} from '../service/caremark-data.service';
 import {
   FASTSTART_ORDER_STATUS,
   FASTSTART_ORDER_STATUS_MAP, ORDER_STATUS_CODES_ATTENTION_ONHOLDS,
-  ORDER_STATUS_CODES_MAP,
+  ORDER_STATUS_CODES_MAP, ORDER_STATUS_CODES_ON_HOLD,
 } from './order-status.constants';
 import {OrderStatus} from './order-status.interface';
 import {MemberService} from '../service/member.service';
@@ -13,7 +13,7 @@ import MemberInfoResult = caremarksdk.MemberInfoResult;
 
 @Injectable()
 export class OrderStatusService {
-  public static ORDER_STATUS_HOLD_TEXT = 'On Hold';
+  public static ORDER_STATUS_FOR_PREFIX = 'for ';
 
 
   constructor(private caremarkDataService: CaremarkDataService,
@@ -109,22 +109,23 @@ export class OrderStatusService {
             orderStatusDetail.OrderStatusCode = order.PrescriptionList[0].StatusReasonCode;
             orderStatusDetail.OrderStatus = order.PrescriptionList[0].Status;
             orderStatusDetail.OrderStatusDescription = order.PrescriptionList[0].StatusDescription;
-            orderStatusDetail.OrderedFor = order.PrescriptionList[0].PatientFirstName + ' ' + order.PrescriptionList[0].PatientLastName;
+            orderStatusDetail.OrderedFor = OrderStatusService.ORDER_STATUS_FOR_PREFIX + order.PrescriptionList[0].PatientFirstName + ' ' +
+                                            order.PrescriptionList[0].PatientLastName;
             orderStatusDetail.RxFills = order.PrescriptionList.length;
             orderStatusDetail.DoctorFullName = order.PrescriptionList[0].DoctorFullName;
             orderStatusDetail.DrugName = order.PrescriptionList[0].DrugName;
             orderStatusDetail.DrugDosage = order.PrescriptionList[0].DrugDosage;
             orderStatusDetail.DrugStrength = order.PrescriptionList[0].DrugStrength;
             for (const prescription of order.PrescriptionList) {
-              if (prescription.StatusDescription &&
-                prescription.StatusDescription.toUpperCase() === OrderStatusService.ORDER_STATUS_HOLD_TEXT.toUpperCase()) {
+              if (ORDER_STATUS_CODES_ON_HOLD.includes(prescription.StatusReasonCode)) {
                 orderStatusDetail.DoctorFullName = prescription.DoctorFullName;
                 orderStatusDetail.DrugName = prescription.DrugName;
                 orderStatusDetail.DrugDosage = prescription.DrugDosage;
                 orderStatusDetail.DrugStrength = prescription.DrugStrength;
                 orderStatusDetail.OrderStatus = prescription.Status;
                 orderStatusDetail.OrderStatusDescription = prescription.StatusDescription;
-                orderStatusDetail.OrderedFor = prescription.PatientFirstName + ' ' + prescription.PatientLastName;
+                orderStatusDetail.OrderedFor = OrderStatusService.ORDER_STATUS_FOR_PREFIX + prescription.PatientFirstName + ' ' +
+                                        prescription.PatientLastName;
                 break;
               }
             }
@@ -134,7 +135,6 @@ export class OrderStatusService {
             orderStatusDetail.OrderStatus = ORDER_STATUS_CODES_MAP[orderStatusDetail.OrderStatusCode].RxStatus;
             orderStatusDetail.OrderStatusDescription = ORDER_STATUS_CODES_MAP[orderStatusDetail.OrderStatusCode].RxStatusDescription;
             orderStatusDetail.OrderPriority = ORDER_STATUS_CODES_MAP[orderStatusDetail.OrderStatusCode].ReasonCodePriority;
-            // console.log(JSON.stringify(orderStatusDetail));
           }
 
 
@@ -145,7 +145,6 @@ export class OrderStatusService {
             if (!orderStatusDetail.OrderStatus) {
               orderStatusDetail.OrderStatus = FASTSTART_ORDER_STATUS.FASTSTART_STATUS_DEFAULT;
             }
-            orderStatusDetail.OrderNumber = 'not assigned yet';
           }
           // Skip Orders when No Rxs
           if (!orderStatusDetail.RxFills) {
