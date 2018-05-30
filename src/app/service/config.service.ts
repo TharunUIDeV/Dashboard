@@ -63,7 +63,7 @@ export class ConfigService {
         this.homePageUrl = data.appData.HomePageUrl;
         this.memberId = data.appData.ParticipantExternalId;
         this.emailAddr = data.appData.ParticpantUserId;
-        this.pznId = data.appData.pznNewDashboardV2;
+        this.pznId = data.appData.PersonalizationId;
         this.clientID = data.appData.clientId;
       }
     } catch (e) {
