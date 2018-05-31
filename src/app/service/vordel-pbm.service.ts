@@ -53,8 +53,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       serviceCORS: 'TRUE',
       version: '1.0',
       serviceName: 'personalization',
-      operationName: 'getPZNByIDandResourcetag',
-      env: this.configService.env
+      operation: 'getPZNByIDandResourcetag',
     };
 
     const url = this.baseUrl + '/PZN/getPZNByIDandResourcetag?' + VordelPbmService.createQueryString(queryParam);
