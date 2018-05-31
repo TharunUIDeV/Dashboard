@@ -91,7 +91,7 @@ export class OrderStatusService {
 
   public getRecentOrders() {
     return new Promise((resolve, reject) => {
-      let recentOrders: OrderStatus[] = [];
+      const recentOrders: OrderStatus[] = [];
 
       this.caremarkDataService.getOrderStatus().then((ordersResponse: any) => {
         const orders = ordersResponse.Results;
@@ -153,15 +153,14 @@ export class OrderStatusService {
           // console.log(JSON.stringify(orderStatusDetail));
           recentOrders.push(orderStatusDetail);
         }
-      }).catch((error) => {
-        console.error('Failed to get WidgetData in OrderStatus');
-        console.error(JSON.stringify(error));
-        recentOrders = [];
-      }).then(() => {
         this.applyFamilyFilter(recentOrders).then((filteredOrders) => {
           // console.log(filteredOrders);
           resolve(filteredOrders);
         });
+      }).catch((error) => {
+        console.error('Failed to get WidgetData in OrderStatus');
+        console.error(JSON.stringify(error));
+        reject(error);
       });
     });
   }
@@ -169,7 +168,7 @@ export class OrderStatusService {
   public getRecentOrdersOnHold() {
 
     return new Promise((resolve, reject) => {
-      let holdOrders: OrderStatus[] = [];
+      const holdOrders: OrderStatus[] = [];
 
       this.getRecentOrders().then((orders: OrderStatus[]) => {
         for (const order of orders) {
@@ -177,13 +176,12 @@ export class OrderStatusService {
             holdOrders.push(order);
           }
         }
-      }).catch((error) => {
-        console.error('Failed to getRecentOrders');
-        holdOrders = [];
-      }).then(() => {
         this.applyFamilyFilter(holdOrders).then((filteredOrders) => {
           resolve(filteredOrders);
         });
+      }).catch((error) => {
+        console.error('Failed to getRecentOrders');
+        reject(error);
       });
     });
   }
