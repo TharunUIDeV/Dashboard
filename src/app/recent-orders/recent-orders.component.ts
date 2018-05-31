@@ -29,6 +29,13 @@ export class RecentOrdersComponent implements OnInit {
               private orderStatusService: OrderStatusService) {
   }
 
+  public getRxFillsFormatted(RxFills: number) {
+    if (RxFills !== undefined) {
+       return  RxFills > 1  ? RxFills.toString() + ' ' + 'Rxs' : RxFills.toString() + ' ' + 'Rx';
+    }
+    return RxFills;
+  }
+
   public isFastStartOrder(order) {
     if (order && order.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER ) {
       return true;

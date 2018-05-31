@@ -61,7 +61,7 @@
           "PreferredAccount": "false",
           "PreferredIndicatorCode": "0"
         },
-        "OrderDate": "2018-01-10T00:00:00-06:00",
+        "OrderDate": "2018-03-13T00:00:00-06:00",
         "OrderNumber": "2740291003",
         "OrderType": "Refill",
         "ParentOrderNumber": "0",
@@ -90,9 +90,36 @@
                 "RxNumber": "Private"
               }
             ],
-            "Status": "Processing",
-            "StatusDescription": "In Process",
-            "StatusReasonCode": "3",
+            "Status": "Hold",
+            "StatusDescription": "On Hold",
+            "StatusReasonCode": "12",
+            "StatusReasonDescription": "We are processing your prescription."
+          },
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "Private",
+            "DrugName": "Private",
+            "DrugStrength": "Private",
+            "FillDate": "2018-05-05T00:00:00-06:00",
+            "GPICode": "86409902142015",
+            "GenericAvailable": "false",
+            "LastStatusDate": "2018-01-10T00:00:00-06:00",
+            "NdcId": "10119002090",
+            "ParticipantID": "849915924",
+            "PatientFirstName": "WARREN",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "5.45",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "15.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "Private"
+              }
+            ],
+            "Status": "Hold",
+            "StatusDescription": "On Hold",
+            "StatusReasonCode": "12",
             "StatusReasonDescription": "We are processing your prescription."
           }
         ],
@@ -137,7 +164,7 @@
             "ParticipantID": "849915923",
             "PatientFirstName": "WILSON",
             "PatientLastName": "JOHNSON",
-            "Status": "NX:Ready to Process(Fax Not Sent)"
+            "Status": "On Hold"
           }
         ],
         "ShipMethod": "bestMethod",
