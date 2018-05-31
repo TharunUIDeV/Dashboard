@@ -96,8 +96,8 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
           }
           const response = jsonData.response;
           if (response.header.statusCode === '0000') {
-            console.log(JSON.stringify(response.details));
-            return resolve(response.details);
+            // console.log(JSON.stringify(response.detail));
+            return resolve(response.detail);
           }
           console.error(JSON.stringify(response.header));
           return reject(response.header);
@@ -222,10 +222,10 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
             return reject({error: 'failed to convert xml to json'});
           }
           const response = jsonData.response;
-          console.log(JSON.stringify(response));
+          // console.log(JSON.stringify(response));
 
           if (response.header.statusCode === '0000') {
-            console.log(JSON.stringify(response.detail));
+            // console.log(JSON.stringify(response.detail));
             return resolve(response.detail);
           }
           console.error(JSON.stringify(response.header));

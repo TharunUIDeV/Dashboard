@@ -52,7 +52,7 @@ export class MemberService {
             && result.detail.personalizationContent.personalizationContents.length > 0) {
             result.detail.personalizationContent.personalizationContents.forEach(pznContent => {
               if (pznContent.resourceTagId === PZN_CONSTANTS.PZN_UNDER_AGE_TAG) {
-                ageLimit = pznContent.contentText.__cdata;
+                ageLimit = pznContent.contentText;
               } else if (pznContent.resourceTagId === PZN_CONSTANTS.DELIVERY_DATE_RANGE_PZN && pznContent.resourceVisibleIndicator === 1) {
                 deliveryDateRange = true;
               }
