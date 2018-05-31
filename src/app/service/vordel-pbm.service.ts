@@ -56,7 +56,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       operation: 'getPZNByIDandResourcetag',
     };
 
-    const url = this.baseUrl + '/PZN/getPZNByIDandResourcetag?' + VordelPbmService.createQueryString(queryParam);
+    const url = this.baseUrl + 'PZN/getPZNByIDandResourcetag?' + VordelPbmService.createQueryString(queryParam);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type':  'application/xml'

@@ -159,7 +159,7 @@ export class OrderStatusService {
         recentOrders = [];
       }).then(() => {
         this.applyFamilyFilter(recentOrders).then((filteredOrders) => {
-          console.log(filteredOrders);
+          // console.log(filteredOrders);
           resolve(filteredOrders);
         });
       });
