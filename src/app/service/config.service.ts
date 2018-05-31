@@ -30,13 +30,13 @@ export class ConfigService {
       this.env = 'prod';
     }
     if (this.env) {
-      if (this.env.includes('sit')) {
+      if (_.includes (this.env, 'sit')) {
         this.apiBaseUrl = `https://${this.env}pbmservices.caremark.com/`;
-      } else if (this.env.includes('dev')) {
+      } else if (_.includes (this.env, 'dev')) {
         this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
-      } else if (this.env.includes('stp')) {
+      } else if (_.includes (this.env, 'stp')) {
         this.apiBaseUrl = `https://stpservices.caremark.com:11101/`;
-      } else if (this.env.includes('prod')) {
+      } else if (_.includes (this.env, 'prod')) {
         this.apiBaseUrl = `https://pbmservices.caremark.com/`;
       }
     }
@@ -54,7 +54,7 @@ export class ConfigService {
         this.token = data.apiData.tokenId;
         this.userProfile = data.apiData.profileType;
         this.iceMemberToken = data.apiData.iceToken;
-        if (this.apiBaseUrl.includes('devservices-west.caremark.com')) {
+        if (_.includes(this.apiBaseUrl, 'devservices-west.caremark.com')) {
           this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
         }
         this.participantFirstName = data.appData.ParticipantFirstName;

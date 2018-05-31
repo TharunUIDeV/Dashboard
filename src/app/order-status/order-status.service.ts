@@ -10,6 +10,7 @@ import {MemberService} from '../service/member.service';
 import * as moment from 'moment';
 import {caremarksdk} from '../types/caremarksdk';
 import MemberInfoResult = caremarksdk.MemberInfoResult;
+import * as _ from 'lodash';
 
 @Injectable()
 export class OrderStatusService {
@@ -76,8 +77,8 @@ export class OrderStatusService {
 
       }
       for (const order of orders) {
-        if (!familyAccessDenied.includes(order.ParticipantID) &&
-          !nonEligibles.includes(order.ParticipantID)) {
+        if (!_.includes(familyAccessDenied, order.ParticipantID) &&
+          !_.includes(nonEligibles, order.ParticipantID)) {
           filteredOrders.push(order);
         }
       }
@@ -117,7 +118,7 @@ export class OrderStatusService {
             orderStatusDetail.DrugDosage = order.PrescriptionList[0].DrugDosage;
             orderStatusDetail.DrugStrength = order.PrescriptionList[0].DrugStrength;
             for (const prescription of order.PrescriptionList) {
-              if (ORDER_STATUS_CODES_ON_HOLD.includes(prescription.StatusReasonCode)) {
+              if (_.includes(ORDER_STATUS_CODES_ON_HOLD, prescription.StatusReasonCode)) {
                 orderStatusDetail.DoctorFullName = prescription.DoctorFullName;
                 orderStatusDetail.DrugName = prescription.DrugName;
                 orderStatusDetail.DrugDosage = prescription.DrugDosage;
@@ -172,7 +173,7 @@ export class OrderStatusService {
 
       this.getRecentOrders().then((orders: OrderStatus[]) => {
         for (const order of orders) {
-          if (ORDER_STATUS_CODES_ATTENTION_ONHOLDS.includes(order.OrderStatusCode)) {
+          if (_.includes(ORDER_STATUS_CODES_ATTENTION_ONHOLDS, order.OrderStatusCode)) {
             holdOrders.push(order);
           }
         }
