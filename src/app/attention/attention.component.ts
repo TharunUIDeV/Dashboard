@@ -19,6 +19,7 @@ export class AttentionComponent implements OnInit {
   public attentionData: AttentionWidgetData = { Orders: []};
 
   public loading = true;
+  public ORDER_STATUS_HREF_TEXT = 'View all orders';
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
@@ -51,6 +52,11 @@ export class AttentionComponent implements OnInit {
 
   ngOnInit(): void {
     this.getWidgetData();
+  }
+
+  orderClickTag() {
+    window.parent.location.href = this.configSvc.orderStatusUrl;
+
   }
 
   orderNumberClick(OrderNumber) {
