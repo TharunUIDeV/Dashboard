@@ -80,9 +80,6 @@ export class TealiumUtagService {
       environment: TealiumUtagService.environment,
       time_stamp: this.getEST(),
       document_title: document.title,
-      query_string: null,
-      state_city_ipaddress: null,
-      Error_Messages: null,
       member_id: TealiumUtagService.memberId,
       unencypted_email_id: TealiumUtagService.unEncyptedEmailAddress,
     };
@@ -112,7 +109,7 @@ export class TealiumUtagService {
     this.faststyle = this.query();
     const utagData = {
       environment: TealiumUtagService.environment,
-      site_name: this.faststyle === 'caremark' ? 'FASTINT' : ('FAST ' + this.faststyle),
+      site_name: 'FASTINT',
       platform: this.platform,
       clientId: TealiumUtagService.clientID,
       PBM_Client_Name: 'caremark'
