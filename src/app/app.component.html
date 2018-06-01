@@ -1,4 +1,4 @@
-<main>
+<main *ngIf="showLatestVersion">
   <app-spinner [loading]="loading"></app-spinner>
 
   <div *ngIf="!loading" class="content-wrapper">
@@ -6,14 +6,24 @@
     <h1>
       {{getTitle()}}
     </h1>
-    <app-attention *ngIf="showLatestVersion"></app-attention>
-    <app-order-status *ngIf="showLatestVersion"></app-order-status>
-    <app-refill *ngIf="showLatestVersion"></app-refill>
-    <section class="block" *ngIf="!showLatestVersion">
-      <app-default-order-status></app-default-order-status>
-    </section>
-    <section class="block" *ngIf="!showLatestVersion">
-      <app-default-refill></app-default-refill>
-    </section>
+    <app-attention></app-attention>
+    <app-order-status></app-order-status>
+    <app-refill></app-refill>
   </div>
 </main>
+<main *ngIf="!showLatestVersion">
+  <app-spinner [loading]="loading"></app-spinner>
+  <div *ngIf="!loading" class="content-wrapper">
+    <h1 style="padding-bottom: 50px">
+      {{getTitle()}}
+    </h1>
+    <section class="block">
+      <app-default-order-status></app-default-order-status>
+    </section>
+    <section class="block">
+      <app-default-refill></app-default-refill>
+    </section>
+    <a href="#" (click)="gotoDashboard()" class="with-caret">Go to full site</a>
+  </div>
+</main>
+
