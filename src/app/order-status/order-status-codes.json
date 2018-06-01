@@ -1,0 +1,238 @@
+{
+  "StatusCodes": [
+    {
+      "ReasonCode": "0",
+      "ReasonCodePriority": "0",
+      "RxStatus": "Unavailable",
+      "RxStatusDescription": "The status is temporarily unavailable. Please try again later."
+    },
+    {
+      "ReasonCode": "1",
+      "ReasonCodePriority": "28",
+      "RxStatus": "In Process",
+      "RxStatusDescription": "We have requested more information from your prescriber. We need it before we can process this prescription."
+    },
+    {
+      "ReasonCode": "2",
+      "ReasonCodePriority": "29",
+      "RxStatus": "In Process",
+      "RxStatusDescription": "We are evaluating a response from your prescriber related to this prescription."
+    },
+    {
+      "ReasonCode": "3",
+      "ReasonCodePriority": "31",
+      "RxStatus": "In Process",
+      "RxStatusDescription": "We are processing your prescription."
+    },
+    {
+      "ReasonCode": "4",
+      "ReasonCodePriority": "32",
+      "RxStatus": "In Process",
+      "RxStatusDescription": "We are checking inventory to ensure we can fill your prescription."
+    },
+    {
+      "ReasonCode": "5",
+      "ReasonCodePriority": "27",
+      "RxStatus": "In Process",
+      "RxStatusDescription": "A pharmacist is reviewing your prescription. This is a standard process to ensure accuracy."
+    },
+    {
+      "ReasonCode": "6",
+      "ReasonCodePriority": "33",
+      "RxStatus": "In Process",
+      "RxStatusDescription": "We are dispensing your prescription."
+    },
+    {
+      "ReasonCode": "7",
+      "ReasonCodePriority": "30",
+      "RxStatus": "In Process",
+      "RxStatusDescription": "We need more information from you before we can fill your prescription."
+    },
+    {
+      "ReasonCode": "8",
+      "ReasonCodePriority": "1",
+      "RxStatus": "Shipped",
+      "RxStatusDescription": "This prescription shipped on <MM/DD/YYYY>."
+    },
+    {
+      "ReasonCode": "9",
+      "ReasonCodePriority": "23",
+      "RxStatus": "Future Fill",
+      "RxStatusDescription": "This prescription is scheduled to begin processing on <MM/DD/YYYY>."
+    },
+    {
+      "ReasonCode": "10",
+      "ReasonCodePriority": "24",
+      "RxStatus": "Future Fill",
+      "RxStatusDescription": "This prescription is enrolled in our auto refill or auto renewal program and is scheduled to begin processing on <MM/DD/YYYY>."
+    },
+    {
+      "ReasonCode": "11",
+      "ReasonCodePriority": "14",
+      "RxStatus": "On Hold",
+      "RxStatusDescription": "Medicare regulations require us to get your consent before we can ship this prescription to you. Either your prescriber submitted it, or it is enrolled in our auto refill/renewal program."
+    },
+    {
+      "ReasonCode": "12",
+      "ReasonCodePriority": "21",
+      "RxStatus": "On Hold",
+      "RxStatusDescription": "We are waiting for a response from your prescriber before we can process this prescription."
+    },
+    {
+      "ReasonCode": "13",
+      "ReasonCodePriority": "17",
+      "RxStatus": "On Hold",
+      "RxStatusDescription": "There was a problem with your payment for this prescription."
+    },
+    {
+      "ReasonCode": "14",
+      "ReasonCodePriority": "19",
+      "RxStatus": "On Hold",
+      "RxStatusDescription": "This prescription order is on hold."
+    },
+    {
+      "ReasonCode": "15",
+      "ReasonCodePriority": "20",
+      "RxStatus": "On Hold",
+      "RxStatusDescription": "We are waiting for a prescriber to provide a prior authorization for this prescription."
+    },
+    {
+      "ReasonCode": "16",
+      "ReasonCodePriority": "6",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription because we could not obtain additional required information from your prescriber."
+    },
+    {
+      "ReasonCode": "17",
+      "ReasonCodePriority": "8",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription because this drug is not covered by your plan."
+    },
+    {
+      "ReasonCode": "18",
+      "ReasonCodePriority": "4",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription because it is expired."
+    },
+    {
+      "ReasonCode": "19",
+      "ReasonCodePriority": "5",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription because there are no refills remaining."
+    },
+    {
+      "ReasonCode": "20",
+      "ReasonCodePriority": "10",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription because your prescriber denied it."
+    },
+    {
+      "ReasonCode": "21",
+      "ReasonCodePriority": "9",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription because the drug was not available, and we have no approved alternative from your prescriber."
+    },
+    {
+      "ReasonCode": "22",
+      "ReasonCodePriority": "7",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription because taking it is not advised based on your allergies, health conditions or potential interaction with another drug you are taking."
+    },
+    {
+      "ReasonCode": "23",
+      "ReasonCodePriority": "11",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription."
+    },
+    {
+      "ReasonCode": "24",
+      "ReasonCodePriority": "2",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "You or someone in your household asked to cancel this prescription."
+    },
+    {
+      "ReasonCode": "25",
+      "ReasonCodePriority": "13",
+      "RxStatus": "Moved",
+      "RxStatusDescription": "This prescription is now being processed in a new order."
+    },
+    {
+      "ReasonCode": "26",
+      "ReasonCodePriority": "12",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We have processed your returned prescription."
+    },
+    {
+      "ReasonCode": "27",
+      "ReasonCodePriority": "22",
+      "RxStatus": "On Hold",
+      "RxStatusDescription": "This prescription is being held as requested."
+    },
+    {
+      "ReasonCode": "28",
+      "ReasonCodePriority": "3",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription because your coverage is invalid."
+    },
+    {
+      "ReasonCode": "29",
+      "ReasonCodePriority": "26",
+      "RxStatus": "In Process",
+      "RxStatusDescription": "We are processing your request to dispense a small supply of medicine from your CVS/pharmacy."
+    },
+    {
+      "ReasonCode": "30",
+      "ReasonCodePriority": "18",
+      "RxStatus": "On Hold",
+      "RxStatusDescription": "Your plan does not usually cover this drug. We are waiting for your prescriber to either prescribe a different drug or request prior authorization."
+    },
+    {
+      "ReasonCode": "31",
+      "ReasonCodePriority": "15",
+      "RxStatus": "On Hold",
+      "RxStatusDescription": "Medicare regulations require us to get your consent before we can ship this prescription to you. Because we have not received your consent, we have placed it on file for you to fill when you need it."
+    },
+    {
+      "ReasonCode": "32",
+      "ReasonCodePriority": "16",
+      "RxStatus": "On Hold",
+      "RxStatusDescription": "You denied consent to ship this prescription. We have placed it on file for you to fill when you need it."
+    },
+    {
+      "ReasonCode": "33",
+      "ReasonCodePriority": "25",
+      "RxStatus": "Future Fill",
+      "RxStatusDescription": "This prescription is enrolled in our ScriptSync program and is scheduled to begin processing on <MM/DD/YYYY>."
+    },
+    {
+      "ReasonCode": "34",
+      "ReasonCodePriority": "34",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription because it is expired."
+    },
+    {
+      "ReasonCode": "35",
+      "ReasonCodePriority": "34",
+      "RxStatus": "Canceled",
+      "RxStatusDescription": "We were unable to fill this prescription because the future fill date is invalid."
+    },
+    {
+      "ReasonCode": "101",
+      "ReasonCodePriority": "23",
+      "RxStatus": "Future Fill",
+      "RxStatusDescription": "N/A"
+    },
+    {
+      "ReasonCode": "102",
+      "ReasonCodePriority": "10",
+      "RxStatus": "CANNOT FILL",
+      "RxStatusDescription": "Some of the prescriptions for your family cannot be filled.For  more details, please sign in to your online account."
+    },
+    {
+      "ReasonCode": "103",
+      "ReasonCodePriority": "23",
+      "RxStatus": "Future Fill",
+      "RxStatusDescription": "N/A"
+    }
+  ]
+}

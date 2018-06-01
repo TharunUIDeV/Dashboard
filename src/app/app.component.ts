@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ConfigService} from './service/config.service';
 import {TealiumUtagService} from './service/utag.service';
-import {isNullOrUndefined} from "util";
+import {isNullOrUndefined} from 'util';
 import * as _ from 'lodash';
 
 @Component({
@@ -13,10 +13,12 @@ export class AppComponent implements OnInit {
   title: String;
   loading = false;
   public environment: string;
+  public showLatestVersion = true;
 
   constructor(private configSvc: ConfigService, private analytics: TealiumUtagService) { }
 
   ngOnInit(): void {
+    this.getUserProfilePreference();
     this.environment = this.configSvc.env === 'demo' ? 'sit3' : this.configSvc.env;
     const that = this;
       if (!isNullOrUndefined(this.environment)) {
@@ -35,12 +37,18 @@ export class AppComponent implements OnInit {
     });
   }
 
+  getUserProfilePreference() {
+    if ((this.configSvc.userProfile === 'ICE') || (this.configSvc.showLatestVersion === false)) {
+      this.showLatestVersion = false;
+    }
+  }
+
   gotoDashboard() {
     this.analytics.link({
       key_activity: 'new dashboard view my current dashboard',
       link_name: 'Custom: New Dashboard view my current dashboard clicked'
     });
-    window.parent.location.href=this.configSvc.homePageUrl;
+    window.parent.location.href = this.configSvc.homePageUrl;
   }
 
   getTitle() {

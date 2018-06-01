@@ -1,13 +1,13 @@
 import {Component} from '@angular/core';
 import {TealiumUtagService} from '../service/utag.service';
-import {ConfigService} from "../service/config.service";
+import {ConfigService} from '../service/config.service';
 
 @Component({
-  selector: 'app-order-status',
-  templateUrl: './order-status.component.html',
-  styleUrls: ['./order-status.component.scss']
+  selector: 'app-default-order-status',
+  templateUrl: './default-order-status.component.html',
+  styleUrls: ['./default-order-status.component.scss']
 })
-export class OrderStatusComponent {
+export class DefaultOrderStatusComponent {
   public ORDER_STATUS_TEXT = 'Recent Orders';
   public ORDER_STATUS_HREF_TEXT = 'View orders';
   public orderStatusWT: any;

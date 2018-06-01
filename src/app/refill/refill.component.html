@@ -1,4 +1,4 @@
-<div class="block-title">
-  <h2>{{REFILL_TEXT}}</h2>
-  <a href="#" (click)="refillClickTag()">{{REFILL_URL_TEXT}}</a>
-</div>
+<section class="block refill">
+    <h2 class="block-title"> <a href="#" (click)="refillClickTag()" class="with-caret">{{refillWidgetData.RefillPrescriptionCount}} {{REFILL_URL_TEXT}}</a></h2>
+  <app-spinner [loading]="loading"></app-spinner>
+</section>

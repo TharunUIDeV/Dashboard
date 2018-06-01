@@ -1,0 +1,850 @@
+{
+  "Details": {
+    "Results": [
+      {
+        "OrderDate": "2018-03-14T00:00:00-05:00",
+        "OrderNumber": "0",
+        "OrderType": "Refill",
+        "ParentOrderNumber": "0",
+        "ParticipantID": "849915923",
+        "PayAmount": "0.0",
+        "ShipMethod": "B",
+        "ShipMethodDescription": "Best Method",
+        "ShipperName": "",
+        "ShippingCost": "0.0",
+        "TrackingNumber": ""
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "ElectronicPaymentAccountID": "500113436",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "0",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2018-03-13T00:00:00-05:00",
+        "OrderNumber": "6072735554250",
+        "OrderType": "Faststart",
+        "ParticipantID": "849915923",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "WELBY, MARCUS  JR",
+            "DrugDosage": "TAB",
+            "DrugName": "LIPITOR",
+            "DrugStrength": "10MG",
+            "NdcId": "0",
+            "ParticipantID": "849915923",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "Status": "NX:Ready to Process(Fax Not Sent)"
+          }
+        ],
+        "ShipMethod": "bestMethod",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "NORTHBROOK",
+          "Line1": "2211 SANDERS ROAD",
+          "Line2": "",
+          "State": "IL",
+          "ZipCode": "60062"
+        }
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "CreditCardNumber": "7223",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "10",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2018-03-13T00:00:00-06:00",
+        "OrderNumber": "2740291003",
+        "OrderType": "Refill",
+        "ParentOrderNumber": "0",
+        "ParticipantID": "849915924",
+        "PayAmount": "5.45",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "Private",
+            "DrugName": "Private",
+            "DrugStrength": "Private",
+            "FillDate": "2018-01-10T00:00:00-06:00",
+            "GPICode": "86409902142015",
+            "GenericAvailable": "false",
+            "LastStatusDate": "2018-01-10T00:00:00-06:00",
+            "NdcId": "10119002090",
+            "ParticipantID": "849915924",
+            "PatientFirstName": "WARREN",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "5.45",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "15.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "Private"
+              }
+            ],
+            "Status": "Hold",
+            "StatusDescription": "On Hold",
+            "StatusReasonCode": "12",
+            "StatusReasonDescription": "We are processing your prescription."
+          },
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "Private",
+            "DrugName": "Private",
+            "DrugStrength": "Private",
+            "FillDate": "2018-05-05T00:00:00-06:00",
+            "GPICode": "86409902142015",
+            "GenericAvailable": "false",
+            "LastStatusDate": "2018-01-10T00:00:00-06:00",
+            "NdcId": "10119002090",
+            "ParticipantID": "849915924",
+            "PatientFirstName": "WARREN",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "5.45",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "15.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "Private"
+              }
+            ],
+            "Status": "Hold",
+            "StatusDescription": "On Hold",
+            "StatusReasonCode": "12",
+            "StatusReasonDescription": "We are processing your prescription."
+          }
+        ],
+        "ShipMethod": "D",
+        "ShipMethodDescription": "UPS Urgent Next Day",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "FirstName": "WARREN",
+          "LastName": "JOHNSON",
+          "Line1": "1703 PLANO RD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081",
+          "ZipCodeSuffix": ""
+        },
+        "ShippingCost": "23.0",
+        "TrackingNumber": "",
+        "TrackingURL": "http://wwwapps.ups.com/WebTracking/track?track=yes&trackNums="
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "ElectronicPaymentAccountID": "500113436",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "0",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-12-29T00:00:00-06:00",
+        "OrderNumber": "6363467117965",
+        "OrderType": "Faststart",
+        "ParticipantID": "849915923",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "PATEL, PRAVIN-KUMAR KANTILAL",
+            "DrugDosage": "TAB",
+            "DrugName": "LIPITOR",
+            "DrugStrength": "80MG",
+            "NdcId": "0",
+            "ParticipantID": "849915923",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "Status": "On Hold"
+          }
+        ],
+        "ShipMethod": "bestMethod",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "NORTHBROOK",
+          "Line1": "2211 SANDERS RD",
+          "Line2": "ROAD",
+          "State": "IL",
+          "ZipCode": "60062"
+        }
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "ElectronicPaymentAccountID": "500113436",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "0",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-12-27T00:00:00-06:00",
+        "OrderNumber": "6361633662508",
+        "OrderType": "Faststart",
+        "ParticipantID": "849915923",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "PATEL, PRAVIN-KUMAR KANTILAL",
+            "DrugDosage": "TAB",
+            "DrugName": "LIPITOR",
+            "DrugStrength": "40MG",
+            "NdcId": "0",
+            "ParticipantID": "849915923",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "Status": "NX:Ready to Process(Fax Not Sent)"
+          }
+        ],
+        "ShipMethod": "bestMethod",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "Line1": "909 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081"
+        }
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "ElectronicPaymentAccountID": "500113436",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "0",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-12-27T00:00:00-06:00",
+        "OrderNumber": "6361665722474",
+        "OrderType": "Faststart",
+        "ParticipantID": "849915923",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "PATEL, PRAVIN-KUMAR KANTILAL",
+            "DrugDosage": "CAP",
+            "DrugName": "PROZAC",
+            "DrugStrength": "10MG",
+            "NdcId": "0",
+            "ParticipantID": "849915923",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "Status": "NX:Ready to Process(Fax Not Sent)"
+          }
+        ],
+        "ShipMethod": "bestMethod",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "Line1": "909 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081"
+        }
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "ElectronicPaymentAccountID": "500113436",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "0",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-12-27T00:00:00-06:00",
+        "OrderNumber": "6361682831242",
+        "OrderType": "Faststart",
+        "ParticipantID": "849915923",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "WELBY, MARCUS  JR",
+            "DrugDosage": "TAB",
+            "DrugName": "LIPITOR",
+            "DrugStrength": "20MG",
+            "NdcId": "0",
+            "ParticipantID": "849915923",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "Status": "NX:Ready to Process(Fax Not Sent)"
+          }
+        ],
+        "ShipMethod": "bestMethod",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "Line1": "909 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081"
+        }
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "ElectronicPaymentAccountID": "500113436",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "0",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-12-27T00:00:00-06:00",
+        "OrderNumber": "6361904751447",
+        "OrderType": "Faststart",
+        "ParticipantID": "849915923",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "WELBY, MARCUS  JR",
+            "DrugDosage": "TAB",
+            "DrugName": "LIPITOR",
+            "DrugStrength": "10MG",
+            "NdcId": "0",
+            "ParticipantID": "849915923",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "Status": "NX:Ready to Process(Fax Not Sent)"
+          }
+        ],
+        "ShipMethod": "bestMethod",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "Line1": "909 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081"
+        }
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "CreditCardNumber": "7223",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "10",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-12-04T00:00:00-06:00",
+        "OrderNumber": "2180291003",
+        "OrderType": "Refill",
+        "ParentOrderNumber": "0",
+        "ParticipantID": "849915923",
+        "PayAmount": "0.0",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "TAB",
+            "DrugName": "METFORMIN",
+            "DrugStrength": "500MG",
+            "FillDate": "2018-01-10T00:00:00-06:00",
+            "GPICode": "27250050000320",
+            "GenericAvailable": "true",
+            "LastStatusDate": "2018-01-10T00:00:00-06:00",
+            "NdcId": "65862000899",
+            "ParticipantID": "849915923",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "0.0",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "90.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "671855065"
+              }
+            ],
+            "Status": "Prescription Entry",
+            "StatusDescription": "In Process",
+            "StatusReasonCode": "3",
+            "StatusReasonDescription": "We are processing your prescription."
+          }
+        ],
+        "ShipMethod": "B",
+        "ShipMethodDescription": "Best Method",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "FirstName": "WILSON",
+          "LastName": "JOHNSON",
+          "Line1": "911 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081",
+          "ZipCodeSuffix": ""
+        },
+        "ShippingCost": "0.0",
+        "TrackingNumber": ""
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "CreditCardNumber": "0",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "12",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-11-08T00:00:00-06:00",
+        "OrderNumber": "2870291003",
+        "OrderType": "Refill",
+        "ParentOrderNumber": "0",
+        "ParticipantID": "849915924",
+        "PayAmount": "0.0",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "Private",
+            "DrugName": "Private",
+            "DrugStrength": "Private",
+            "FillDate": "2018-01-10T00:00:00-06:00",
+            "GPICode": "39400060100305",
+            "GenericAvailable": "true",
+            "LastStatusDate": "2018-01-10T00:00:00-06:00",
+            "NdcId": "310075590",
+            "ParticipantID": "849915924",
+            "PatientFirstName": "WARREN",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "0.0",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "90.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "Private"
+              }
+            ],
+            "Status": "Processing",
+            "StatusDescription": "In Process",
+            "StatusReasonCode": "3",
+            "StatusReasonDescription": "We are processing your prescription."
+          }
+        ],
+        "ShipMethod": "B",
+        "ShipMethodDescription": "Best Method",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "FirstName": "WARREN",
+          "LastName": "JOHNSON",
+          "Line1": "4250 EAST RENNER ROAD",
+          "Line2": "7895",
+          "State": "TX",
+          "ZipCode": "75082",
+          "ZipCodeSuffix": ""
+        },
+        "ShippingCost": "0.0",
+        "TrackingNumber": ""
+      },
+      {
+        "OrderDate": "2017-11-07T00:00:00-06:00",
+        "OrderNumber": "6311160400768",
+        "OrderType": "Faststart",
+        "ParticipantID": "849915924",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "Private",
+            "DrugDosage": "Private",
+            "DrugName": "Private",
+            "DrugStrength": "Private",
+            "NdcId": "0",
+            "ParticipantID": "849915924",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "Status": "NX:Ready to Process(Fax Not Sent)"
+          }
+        ],
+        "ShipMethod": "bestMethod",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "Line1": "4250 RENNER ROAD",
+          "Line2": "1987",
+          "State": "TX",
+          "ZipCode": "75082"
+        }
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "CreditCardNumber": "0",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "1",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-06-22T00:00:00-05:00",
+        "OrderNumber": "2751981003",
+        "OrderType": "Refill",
+        "ParentOrderNumber": "0",
+        "ParticipantID": "849915923",
+        "PayAmount": "0.0",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "TAB",
+            "DrugName": "CRESTOR",
+            "DrugStrength": "5MG",
+            "FillDate": "2017-06-22T00:00:00-05:00",
+            "GPICode": "39400060100305",
+            "GenericAvailable": "true",
+            "LastStatusDate": "2017-06-22T00:00:00-05:00",
+            "NdcId": "310075590",
+            "ParticipantID": "849915923",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "0.0",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "90.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "671855064"
+              }
+            ],
+            "Status": "Prescription Entry",
+            "StatusDescription": "In Process",
+            "StatusReasonCode": "3",
+            "StatusReasonDescription": "We are processing your prescription."
+          }
+        ],
+        "ShipMethod": "B",
+        "ShipMethodDescription": "Best Method",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "FirstName": "WILSON",
+          "LastName": "JOHNSON",
+          "Line1": "911 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081",
+          "ZipCodeSuffix": ""
+        },
+        "ShippingCost": "0.0",
+        "TrackingNumber": ""
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "CreditCardNumber": "0",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "1",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-06-22T00:00:00-05:00",
+        "OrderNumber": "2661981003",
+        "OrderType": "Refill",
+        "ParentOrderNumber": "0",
+        "ParticipantID": "849915924",
+        "PayAmount": "0.0",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "Private",
+            "DrugName": "Private",
+            "DrugStrength": "Private",
+            "FillDate": "2017-06-22T00:00:00-05:00",
+            "GPICode": "27607050100340",
+            "GenericAvailable": "true",
+            "LastStatusDate": "2017-06-22T00:00:00-05:00",
+            "NdcId": "64764045125",
+            "ParticipantID": "849915924",
+            "PatientFirstName": "WARREN",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "0.0",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "90.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "Private"
+              }
+            ],
+            "Status": "Processing",
+            "StatusDescription": "In Process",
+            "StatusReasonCode": "3",
+            "StatusReasonDescription": "We are processing your prescription."
+          }
+        ],
+        "ShipMethod": "B",
+        "ShipMethodDescription": "Best Method",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "FirstName": "WARREN",
+          "LastName": "JOHNSON",
+          "Line1": "911 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081",
+          "ZipCodeSuffix": ""
+        },
+        "ShippingCost": "0.0",
+        "TrackingNumber": ""
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "CreditCardNumber": "0",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "1",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-06-22T00:00:00-05:00",
+        "OrderNumber": "2651981003",
+        "OrderType": "Refill",
+        "ParentOrderNumber": "0",
+        "ParticipantID": "849915923",
+        "PayAmount": "0.0",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "TAB",
+            "DrugName": "CRESTOR",
+            "DrugStrength": "5MG",
+            "FillDate": "2017-06-22T00:00:00-05:00",
+            "GPICode": "39400060100305",
+            "GenericAvailable": "true",
+            "LastStatusDate": "2017-06-22T00:00:00-05:00",
+            "NdcId": "310075590",
+            "ParticipantID": "849915923",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "0.0",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "90.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "671855063"
+              }
+            ],
+            "Status": "Processing",
+            "StatusDescription": "In Process",
+            "StatusReasonCode": "3",
+            "StatusReasonDescription": "We are processing your prescription."
+          }
+        ],
+        "ShipMethod": "B",
+        "ShipMethodDescription": "Best Method",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "FirstName": "WILSON",
+          "LastName": "JOHNSON",
+          "Line1": "911 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081",
+          "ZipCodeSuffix": ""
+        },
+        "ShippingCost": "0.0",
+        "TrackingNumber": ""
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "CreditCardNumber": "0",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "1",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-06-22T00:00:00-05:00",
+        "OrderNumber": "2551981003",
+        "OrderType": "Refill",
+        "ParentOrderNumber": "0",
+        "ParticipantID": "849915923",
+        "PayAmount": "0.0",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "TAB",
+            "DrugName": "CRESTOR",
+            "DrugStrength": "5MG",
+            "FillDate": "2017-06-22T00:00:00-05:00",
+            "GPICode": "39400060100305",
+            "GenericAvailable": "true",
+            "LastStatusDate": "2017-06-22T00:00:00-05:00",
+            "NdcId": "310075590",
+            "ParticipantID": "849915923",
+            "PatientFirstName": "WILSON",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "0.0",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "90.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "671855062"
+              }
+            ],
+            "Status": "Processing",
+            "StatusDescription": "In Process",
+            "StatusReasonCode": "3",
+            "StatusReasonDescription": "We are processing your prescription."
+          }
+        ],
+        "ShipMethod": "B",
+        "ShipMethodDescription": "Best Method",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "FirstName": "WILSON",
+          "LastName": "JOHNSON",
+          "Line1": "911 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081",
+          "ZipCodeSuffix": ""
+        },
+        "ShippingCost": "0.0",
+        "TrackingNumber": ""
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "CreditCardNumber": "0",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "1",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-06-22T00:00:00-05:00",
+        "OrderNumber": "2012981003",
+        "OrderType": "Refill",
+        "ParentOrderNumber": "0",
+        "ParticipantID": "849915924",
+        "PayAmount": "3.4",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "Private",
+            "DrugName": "Private",
+            "DrugStrength": "Private",
+            "FillDate": "2017-06-22T00:00:00-05:00",
+            "GPICode": "43401003404200",
+            "GenericAvailable": "false",
+            "LastStatusDate": "2017-06-22T00:00:00-05:00",
+            "NdcId": "23900000361",
+            "ParticipantID": "849915924",
+            "PatientFirstName": "WARREN",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "3.4",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "50.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "Private"
+              }
+            ],
+            "Status": "Processing",
+            "StatusDescription": "In Process",
+            "StatusReasonCode": "3",
+            "StatusReasonDescription": "We are processing your prescription."
+          }
+        ],
+        "ShipMethod": "B",
+        "ShipMethodDescription": "Best Method",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "FirstName": "WARREN",
+          "LastName": "JOHNSON",
+          "Line1": "911 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081",
+          "ZipCodeSuffix": ""
+        },
+        "ShippingCost": "0.0",
+        "TrackingNumber": ""
+      },
+      {
+        "ElectronicPaymentAccount": {
+          "CreditCardNumber": "0",
+          "ExclusivityIndicatorCode": "0",
+          "FsaCodeTwo": "false",
+          "FsaIndicatorCode": "0",
+          "PaymentTypeCode": "1",
+          "PreferredAccount": "false",
+          "PreferredIndicatorCode": "0"
+        },
+        "OrderDate": "2017-06-22T00:00:00-05:00",
+        "OrderNumber": "2902981003",
+        "OrderType": "Refill",
+        "ParentOrderNumber": "0",
+        "ParticipantID": "849915924",
+        "PayAmount": "0.0",
+        "PrescriptionList": [
+          {
+            "DoctorFullName": "JAMIESONSR, CLABORN CPMSEBQ",
+            "DrugDosage": "Private",
+            "DrugName": "Private",
+            "DrugStrength": "Private",
+            "FillDate": "2017-06-22T00:00:00-05:00",
+            "GPICode": "27607050100320",
+            "GenericAvailable": "true",
+            "LastStatusDate": "2017-06-22T00:00:00-05:00",
+            "NdcId": "64764015105",
+            "ParticipantID": "849915924",
+            "PatientFirstName": "WARREN",
+            "PatientLastName": "JOHNSON",
+            "PayAmount": "0.0",
+            "RxFillList": [
+              {
+                "DaysSupply": "90",
+                "DispensedQuantity": "90.0",
+                "PriorPBMFlag": "false",
+                "RxNumber": "Private"
+              }
+            ],
+            "Status": "Processing",
+            "StatusDescription": "In Process",
+            "StatusReasonCode": "3",
+            "StatusReasonDescription": "We are processing your prescription."
+          }
+        ],
+        "ShipMethod": "B",
+        "ShipMethodDescription": "Best Method",
+        "ShipperName": "",
+        "ShippingAddress": {
+          "City": "RICHARDSON",
+          "FirstName": "WARREN",
+          "LastName": "JOHNSON",
+          "Line1": "911 E COLLINS BLVD",
+          "Line2": "",
+          "State": "TX",
+          "ZipCode": "75081",
+          "ZipCodeSuffix": ""
+        },
+        "ShippingCost": "0.0",
+        "TrackingNumber": ""
+      }
+    ]
+  },
+  "Header": {
+    "StatusCode": "0000",
+    "StatusDescription": "Success"
+  }
+}

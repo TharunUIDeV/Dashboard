@@ -1,0 +1,45 @@
+{
+  "response": {
+    "header": {
+      "statusCode": "0000",
+      "statusDescription": "SUCCESS",
+      "refId": "Id-e1ba4359aeb6c63347ea0be2",
+      "tokenID": "90EBCB54CE133FC2A0162B6229B25348"
+    },
+    "detail": {
+      "detail": {
+        "personalizationContent": {
+          "personalizationContents": [
+            {
+              "contentText": {
+                "__cdata": "13"
+              },
+              "id": {
+                "__cdata": "19427"
+              },
+              "personalizationId": "19427",
+              "resourceContentId": "2725",
+              "resourceTagId": "2725",
+              "resourceVisibleIndicator": "1"
+            },
+            {
+              "contentText": {
+                "__cdata": "40"
+              },
+              "id": {
+                "__cdata": "19427"
+              },
+              "personalizationId": "19427",
+              "resourceContentId": "50061",
+              "resourceTagAlternateText": {
+                "__cdata": "ORDER_STATUS_DELIVERY_DATE_SWITCH"
+              },
+              "resourceTagId": "50061",
+              "resourceVisibleIndicator": "1"
+            }
+          ]
+        }
+      }
+    }
+  }
+}

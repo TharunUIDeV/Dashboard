@@ -1,30 +1,36 @@
 import {BrowserModule} from '@angular/platform-browser';
-import {APP_INITIALIZER, NgModule} from '@angular/core';
-import {ConfigService} from './service/config.service';
-import {BrowserService} from './service/browser.service';
-import {FrameService} from './service/frame.service';
-
 import {AppComponent} from './app.component';
 import {RefillComponent} from './refill/refill.component';
-import {OrderStatusComponent} from './order-status/order-status.component';
-import {TealiumUtagService} from "./service/utag.service";
+import {RecentOrdersComponent} from './recent-orders/recent-orders.component';
+import {AttentionComponent} from './attention/attention.component';
+import {HttpClientModule} from '@angular/common/http';
+import * as fromServices from './service';
+import {NgModule} from '@angular/core';
+import {SpinnerComponent} from './spinner/spinner.component';
+import {OrderStatusService} from './order-status/order-status.service';
+import {DefaultRefillComponent} from './default-refill/default-refill.component';
+import {DefaultOrderStatusComponent} from './default-order-status/default-order-status.component';
 
-export function configServiceFactory(configSvc: ConfigService) {
-  return () => configSvc.init;
-}
 
 @NgModule({
   declarations: [
     AppComponent,
     RefillComponent,
-    OrderStatusComponent
+    RecentOrdersComponent,
+    AttentionComponent,
+    SpinnerComponent,
+    DefaultRefillComponent,
+    DefaultOrderStatusComponent
   ],
   imports: [
-    BrowserModule
+    BrowserModule,
+    HttpClientModule
   ],
-  providers: [ConfigService,
-    {provide: APP_INITIALIZER, useFactory: configServiceFactory, deps: [ConfigService], multi: true},
-    BrowserService, FrameService, TealiumUtagService],
+
+  providers: [
+    [...fromServices.services,
+    OrderStatusService],
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }
