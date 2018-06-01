@@ -14,7 +14,8 @@ interface RefillWidgetData {
   styleUrls: ['./refill.component.scss']
 })
 export class RefillComponent implements  OnInit {
-  public REFILL_URL_TEXT = 'Prescriptions Ready For Refill';
+  public REFILL_URL_TEXT = 'Prescription Ready For Refill';
+  public REFILLS_URL_TEXT = 'Prescriptions Ready For Refill';
   // public REFILL_URL_TEXT = 'View prescriptions';
   public webTrends: any;
   public refillWidgetData: RefillWidgetData = { RefillPrescriptionCount: undefined};
@@ -62,5 +63,14 @@ export class RefillComponent implements  OnInit {
       link_name: 'Custom: New Dashboard view prescriptions clicked'
     });
     window.parent.location.href = this.configSvc.refillRxUrl;
+  }
+
+  getRefillUrlFormatted (refillsCount: string) {
+
+    if (refillsCount !== undefined) {
+       return parseInt(refillsCount, 10) === 1 ? this.REFILL_URL_TEXT : this.REFILLS_URL_TEXT;
+    }
+    return this.REFILLS_URL_TEXT;
+
   }
 }

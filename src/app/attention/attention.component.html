@@ -3,7 +3,8 @@
   <h2 class="block-title tasks">Your Tasks</h2>
   <section class="block-item" >
     <em class="important">Ask your doctor to contact us</em>
-    <p> Your order(s) <em>on hold</em> because we need some additional information about the prescriptions listed</p>
+    <p *ngIf="attentionData.Orders.length > 1"> Your orders are <em>on hold</em> because we need some additional information about the prescriptions listed</p>
+    <p *ngIf="attentionData.Orders.length === 1"> Your order is <em>on hold</em> because we need some additional information about the prescriptions listed</p>
 
     <section class="hold-order">
       <ul *ngFor="let order of  attentionData.Orders | slice:0:3">
@@ -11,7 +12,9 @@
         <li class="order">Order #{{getOrderNumberFormatted(order)}}</li>
         <li class="prescriber">Prescriber: Dr. {{order.DoctorFullName}}</li>
         <li class="date">Requested {{order.OrderDate | date:"MM/dd/yy" }} {{order.OrderedFor}}</li>
-        <li class="viewall"><a href="#" class="with-caret" (click)="orderNumberClick(order.OrderNumber)">View order</a></li>
+      </ul>
+      <ul>
+        <a href="" class="with-caret all-orders" style= "margin-left: 0px; float: left" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a>
       </ul>
     </section>
   </section>

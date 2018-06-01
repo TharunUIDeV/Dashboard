@@ -57,7 +57,8 @@ for (const entry of (<any>ORDER_STATUS_REASONCODES).StatusCodes) {
 
 export const ORDER_STATUS_CODES_ATTENTION_ONHOLDS = ['12'];
 
-export const ORDER_STATUS_CODES_ON_HOLD = [];
+//  make Dr.On hold order status as priority being first element
+export const ORDER_STATUS_CODES_ON_HOLD = ['12'];
 for (const key in  ORDER_STATUS_CODES_MAP) {
   if (ORDER_STATUS_CODES_MAP[key].RxStatus.toUpperCase() === 'On Hold'.toUpperCase()) {
     ORDER_STATUS_CODES_ON_HOLD.push(key);
