@@ -22,6 +22,7 @@ export class ConfigService {
   public pznId: string;
   public iceMemberToken: string;
   public clientID; string;
+  public showLatestVersion: boolean;
 
   ready = new BehaviorSubject(false);
 
@@ -65,6 +66,7 @@ export class ConfigService {
         this.emailAddr = data.appData.ParticpantUserId;
         this.pznId = data.appData.PersonalizationId;
         this.clientID = data.appData.clientId;
+        this.showLatestVersion = data.appData.ShowNewDashboardV2;
       }
     } catch (e) {
       console.log('config service --> init() :' + e);

@@ -6,13 +6,13 @@
     <h1>
       {{getTitle()}}
     </h1>
-    <app-attention *ngIf="!isIceMember"></app-attention>
-    <app-order-status *ngIf="!isIceMember"></app-order-status>
-    <app-refill *ngIf="!isIceMember"></app-refill>
-    <section class="block" *ngIf="isIceMember">
+    <app-attention *ngIf="showLatestVersion"></app-attention>
+    <app-order-status *ngIf="showLatestVersion"></app-order-status>
+    <app-refill *ngIf="showLatestVersion"></app-refill>
+    <section class="block" *ngIf="!showLatestVersion">
       <app-default-order-status></app-default-order-status>
     </section>
-    <section class="block" *ngIf="isIceMember">
+    <section class="block" *ngIf="!showLatestVersion">
       <app-default-refill></app-default-refill>
     </section>
   </div>

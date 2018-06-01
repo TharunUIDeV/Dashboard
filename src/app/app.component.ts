@@ -13,7 +13,7 @@ export class AppComponent implements OnInit {
   title: String;
   loading = false;
   public environment: string;
-  public isIceMember: boolean;
+  public showLatestVersion = true;
 
   constructor(private configSvc: ConfigService, private analytics: TealiumUtagService) { }
 
@@ -38,10 +38,8 @@ export class AppComponent implements OnInit {
   }
 
   getUserProfilePreference() {
-    if (this.configSvc.userProfile === 'ICE') {
-      this.isIceMember = true;
-    } else {
-      this.isIceMember = false;
+    if ((this.configSvc.userProfile === 'ICE') || (this.configSvc.showLatestVersion === false)) {
+      this.showLatestVersion = false;
     }
   }
 
