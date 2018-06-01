@@ -35,6 +35,13 @@ export class AttentionComponent implements OnInit {
     }).then (() => { this.loading = false; });
   }
 
+  public getOrderNumberFormatted(order: OrderStatus) {
+    if (this.isFastStartOrder(order)) {
+      return  'not assigned';
+    }
+    return order.OrderNumber;
+  }
+
   public isFastStartOrder(order) {
     if (order && order.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER ) {
       return true;

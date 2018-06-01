@@ -8,8 +8,7 @@
     <section class="hold-order">
       <ul *ngFor="let order of  attentionData.Orders | slice:0:3">
         <li class="name"><b>{{order.DrugName}}</b> {{order.DrugStrength}} {{order.DrugDosage}}</li>
-        <li *ngIf="!isFastStartOrder(Order); else elseBlock" class="order">Order #{{order.OrderNumber}}</li>
-        <ng-template #elseBlock><li class="order">Order # not assigned</li></ng-template>
+        <li class="order">Order #{{getOrderNumberFormatted(order)}}</li>
         <li class="prescriber">Prescriber: Dr. {{order.DoctorFullName}}</li>
         <li class="date">Request {{order.OrderDate | date:"MM/dd/yy" }} for {{order.OrderedFor}}</li>
         <li class="viewall"><a href="#" class="with-caret" (click)="orderNumberClick(order.OrderNumber)">View order</a></li>
