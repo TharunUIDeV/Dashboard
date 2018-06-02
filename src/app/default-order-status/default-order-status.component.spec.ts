@@ -1,27 +1,26 @@
 import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import {OrderStatusComponent} from './order-status.component';
+import {DefaultOrderStatusComponent} from './default-order-status.component';
 import {TealiumUtagService} from '../service/utag.service';
-import {ConfigService} from "../service/config.service";
-import {BrowserService} from "../service/browser.service";
-import {CaremarkSdkService} from '../service/caremark-sdk.service';
+import {ConfigService} from '../service/config.service';
+import {BrowserService} from '../service/browser.service';
 
-describe('OrderStatusComponent', () => {
-  let component: OrderStatusComponent;
-  let fixture: ComponentFixture<OrderStatusComponent>;
+describe('DefaultOrderStatusComponent', () => {
+  let component: DefaultOrderStatusComponent;
+  let fixture: ComponentFixture<DefaultOrderStatusComponent>;
   let mockTealiumUtagService: TealiumUtagService;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [OrderStatusComponent],
-      providers: [TealiumUtagService, ConfigService, BrowserService, CaremarkSdkService,
+      declarations: [DefaultOrderStatusComponent],
+      providers: [TealiumUtagService, ConfigService, BrowserService,
         // {provide: ConfigService, useValue: {orderStatusUrl: '/wps/myportal/ORDER_STATUS'}},
         {provide: window.parent.location.href, useValue: '/'}
       ]
     })
       .compileComponents()
       .then(() => {
-        fixture = TestBed.createComponent(OrderStatusComponent);
+        fixture = TestBed.createComponent(DefaultOrderStatusComponent);
         component = fixture.componentInstance;
         mockTealiumUtagService = TestBed.get(TealiumUtagService);
         fixture.detectChanges();

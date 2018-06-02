@@ -1,15 +1,15 @@
 import { Injectable } from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
-import * as MockOrderStatus from './mock-order-status-data.json';
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpParams} from '@angular/common/http';
-import {catchError, map, switchMap} from 'rxjs/operators';
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {catchError} from 'rxjs/operators';
+import 'rxjs/add/observable/throw';
 import {Observable} from 'rxjs/Observable';
 import {ConfigService} from './config.service';
 import * as xml2js from 'xml2js';
 
 @Injectable()
 export class VordelPbmService implements CaremarkDataServiceInterface {
-  private baseUrl =  'https://sit1pbmservices.caremark.com/';
+  private baseUrl =  this.configService.apiBaseUrl;
   private QueryConstants = {
     'lineOfBusiness': 'PBM',
     'deviceID': 'device12345',
@@ -27,7 +27,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
 
   static createQueryString(data: any): string {
     const queryParam = [];
-    for (const key in data) {
+    for (const key of Object.keys(data)) {
       queryParam.push(key + '=' + data[key]);
     }
     return queryParam.join('&');
@@ -36,6 +36,75 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
   private handleError(res: HttpErrorResponse | any) {
     console.error(res.error || res.body.error);
     return Observable.throw(res.error || 'Server error');
+  }
+
+  private getPznByIdandResourceObserve(pznID, resourceTag, deliveryResourceTag): Observable<any> {
+
+    const queryParam: any = {
+      apiKey: this.configService.apiKey,
+      apiSecret: this.configService.apiSecret,
+      appName: this.QueryConstants.appName,
+      channelName: this.QueryConstants.channelName,
+      deviceType: this.QueryConstants.deviceType,
+      tokenID: this.configService.token,
+      deviceID: this.QueryConstants.deviceID,
+      deviceToken: this.QueryConstants.deviceToken,
+      lineOfBusiness: this.QueryConstants.lineOfBusiness,
+      serviceCORS: 'TRUE',
+      version: '1.0',
+      serviceName: 'personalization',
+      operation: 'getPZNByIDandResourcetag',
+    };
+
+    const url = this.baseUrl + 'PZN/getPZNByIDandResourcetag?' + VordelPbmService.createQueryString(queryParam);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type':  'application/xml'
+      }),
+      responseType: 'text' as 'text',
+    };
+
+    const body =  {
+      'personalizationServiceRequest' : {
+        'pznID': pznID,
+        'tag': [
+          { 'resourceTag': resourceTag },
+          { 'resourceTag': deliveryResourceTag }
+          ]
+      }
+    };
+
+    const body_xml = this.xml2jsXmlBuilder.buildObject(body);
+
+
+    return this.httpClient.post(url,  body_xml,   httpOptions)
+      .pipe(
+        catchError(this.handleError)
+      );
+  }
+
+  public getPznByIdAndResource(params: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const pznId = params.pznId;
+      const resourceTag = params.resourceTag;
+      const deliveryResourceTag =  params.deliveryResourceTag;
+      this.getPznByIdandResourceObserve(pznId, resourceTag, deliveryResourceTag).subscribe((result) => {
+        this.xml2jsParser.parseString(result, (error, jsonData) => {
+          if (error) {
+            console.log(error);
+            return reject(error);
+          }
+          const response = jsonData.response;
+          if (response.header.statusCode === '0000') {
+            // console.log(JSON.stringify(response.detail));
+            return resolve(response.detail);
+          }
+          console.error(JSON.stringify(response.header));
+          return reject(response.header);
+        } );
+
+      });
+    });
   }
 
   private getOrderStatusObserve(): Observable<any> {
@@ -62,10 +131,6 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       mailOrders: true,
       env: this.configService.env
     };
-
-
-    queryParam.env = 'SIT1';
-    queryParam.tokenID = '6CEBEB43827A307C947720DFD4A0035E';
 
     const url = this.baseUrl + '/refill/orderStatus?' + VordelPbmService.createQueryString(queryParam);
     const httpOptions = {
@@ -117,19 +182,20 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       apiKey: this.configService.apiKey,
       apiSecret: this.configService.apiSecret,
       appName: this.QueryConstants.appName,
-      channelName: this.QueryConstants.channelName,
-      deviceType: this.QueryConstants.deviceType,
+      // channelName: this.QueryConstants.channelName,
+      // deviceType: this.QueryConstants.deviceType,
       tokenID: this.configService.token,
       deviceID: this.QueryConstants.deviceID,
-      deviceToken: this.QueryConstants.deviceToken,
-      lineOfBusiness: this.QueryConstants.lineOfBusiness,
+      // deviceToken: this.QueryConstants.deviceToken,
+      // lineOfBusiness: this.QueryConstants.lineOfBusiness,
       serviceCORS: 'TRUE',
       version: '5.0',
+      xmlFormat: 'True',
       serviceName: 'getRefills',
       operationName: 'getRefillCounts',
       estimatedCost: '1',
       familyRefills: 'TRUE',
-      env: this.configService.env
+      // env: this.configService.env
     };
 
     const url = this.baseUrl + '/refill/getRefills?' + VordelPbmService.createQueryString(queryParam);
@@ -150,23 +216,24 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
   public getRefillsCount(): Promise<any> {
     return new Promise((resolve, reject) => {
       this.getRefillCountObserve().subscribe((result) => {
-        const parser = new xml2js.Parser({explicitArray : false});
         this.xml2jsParser.parseString(result, (error, jsonData) => {
           if (error) {
             console.error('failed in xml2js.parseString');
             return reject({error: 'failed to convert xml to json'});
           }
           const response = jsonData.response;
+          // console.log(JSON.stringify(response));
 
           if (response.header.statusCode === '0000') {
-            console.log(JSON.stringify(response.details));
-            return resolve(response.details);
+            // console.log(JSON.stringify(response.detail));
+            return resolve(response.detail);
           }
           console.error(JSON.stringify(response.header));
           return reject(response.header);
         } );
 
-      });
+      },
+        error => reject(error));
     });
   }
 

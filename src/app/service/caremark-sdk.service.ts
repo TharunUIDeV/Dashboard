@@ -1,14 +1,14 @@
-import {Inject, Injectable} from '@angular/core';
+import {Injectable} from '@angular/core';
 import {ConfigService} from './config.service';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
+import {VordelPbmService} from './vordel-pbm.service';
 
 @Injectable()
 export class CaremarkSdkService implements CaremarkDataServiceInterface {
 
   private sdkInstance: any;
 
-  private static getCareMarkSdk() {
-
+  private static getCareMarkWrapperSdk() {
     if (typeof window !== 'undefined' && typeof window['SDK'] !== 'undefined') {
       window['SDK'].setIdentity('browser');
       return window['SDK'];
@@ -16,8 +16,15 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
     return null;
   }
 
-  constructor(private configService: ConfigService) {
-    this.sdkInstance = CaremarkSdkService.getCareMarkSdk();
+  private static getCareMarkSdk() {
+    if (typeof window !== 'undefined' && typeof window['CoreSdk'] !== 'undefined') {
+      return  new window['CoreSdk'].Index('browser');
+    }
+    return null;
+  }
+
+  constructor(private configService: ConfigService, private vordelPbmService: VordelPbmService) {
+    this.sdkInstance = CaremarkSdkService.getCareMarkWrapperSdk();
   }
 
   private setAuthConfigParams(params): void {
@@ -44,6 +51,7 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
 
       this.sdkInstance.Member.getDetails(params, (result) => {
         if (result.Header.StatusCode === '0000') {
+          // console.log(JSON.stringify(result.Details));
           return resolve(result.Details);
         }
         console.error(JSON.stringify(result.Header));
@@ -64,12 +72,18 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
         return reject(error);
       }
       this.setAuthConfigParams(params);
-      params.historyCount = 30;
+      params.historyCount = '30';
       params.historyMetric = 'days';
-      console.log(JSON.stringify(params));
+      params.fastStartOrders = true;
+      params.mailOrders = true;
+      // console.log(JSON.stringify(params));
       this.sdkInstance.Order.getOrderStatus(params, (result) => {
+        // console.log(JSON.stringify(result));
         if (result.Header.StatusCode === '0000') {
           return resolve(result.Details);
+        }
+        if (result.Header.StatusCode === '5000' && result.Header.StatusDescription.toUpperCase() === 'No Orders found.'.toUpperCase()) {
+          return resolve({Results: []});
         }
         console.error(JSON.stringify(result.Header));
         return reject(result);
@@ -98,6 +112,19 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
         return reject(result.Header);
       });
     });
+  }
+
+  public getRefillsCount(): Promise<any> {
+    return this.vordelPbmService.getRefillsCount();
+/*
+    return new Promise((resolve, reject) => {
+      const params: any = {};
+     return this.vordelPbmService.getRefillsCount();
+    });*/
+  }
+
+  public getPznByIdAndResource(params: any): Promise<any> {
+    return this.vordelPbmService.getPznByIdAndResource(params);
   }
 
 }

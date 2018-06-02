@@ -1,0 +1,12 @@
+
+{
+  "header": {
+    "refId": "Id-aec1075b207dc55bdac2e965",
+    "operationName": "getRefillsCount",
+    "statusCode": "0000",
+    "statusDesc": "Success"
+  }, "detail": {
+  "refillsAvailable": "3",
+  "renewalsAvailable": "0"
+}
+}

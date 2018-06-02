@@ -14,35 +14,47 @@ interface RefillWidgetData {
   styleUrls: ['./refill.component.scss']
 })
 export class RefillComponent implements  OnInit {
-  public REFILL_URL_TEXT = 'Prescriptions ready for refill';
+  public REFILL_URL_TEXT = 'Prescription Ready For Refill';
+  public REFILLS_URL_TEXT = 'Prescriptions Ready For Refill';
   // public REFILL_URL_TEXT = 'View prescriptions';
   public webTrends: any;
-  public refillWidgetData: RefillWidgetData = { RefillPrescriptionCount: '0'};
+  public refillWidgetData: RefillWidgetData = { RefillPrescriptionCount: undefined};
+  public loading = true;
 
 
   constructor(private analytics: TealiumUtagService, private configSvc: ConfigService, private caremarkDataService: CaremarkDataService) { }
 
+  public getWidgetData2() {
+    this.caremarkDataService.getRefillsCount().then((refillsData: any) => {
+      // console.log(JSON.stringify(refillsData));
+      this.refillWidgetData.RefillPrescriptionCount = refillsData.refillsAvailable;
+    }).catch((error) => {
+      console.error('Failed to get WidgetData');
+      console.error(JSON.stringify(error));
+      this.refillWidgetData.RefillPrescriptionCount = undefined;
+    }).then (() => { this.loading = false; });
+  }
 
   public getWidgetData() {
     this.caremarkDataService.getRefills().then((refillsData: any) => {
-      let refill_count = 0;
+      let refill_count = '0';
       for (const member of refillsData) {
-        for (const rxRefill of member.RxFills) {
-          if (rxRefill.refillable && rxRefill.tooSoonToRefill === 'false') {
+        for (const rxRefill of member.rxRefills) {
+          if (rxRefill.canAutoRefill && rxRefill.tooSoonToRefill !== false) {
             refill_count = refill_count + 1;
           }
         }
       }
-      this.refillWidgetData.RefillPrescriptionCount = refill_count.toString();
+      this.refillWidgetData.RefillPrescriptionCount = refill_count;
     }).catch((error) => {
       console.error('Failed to get WidgetData');
       console.error(JSON.stringify(error));
-      this.refillWidgetData.RefillPrescriptionCount = '0';
-    });
+      this.refillWidgetData.RefillPrescriptionCount = undefined;
+    }).then (() => { this.loading = false; });
   }
 
   ngOnInit(): void {
-    this.getWidgetData();
+    this.getWidgetData2();
   }
 
   refillClickTag() {
@@ -51,5 +63,14 @@ export class RefillComponent implements  OnInit {
       link_name: 'Custom: New Dashboard view prescriptions clicked'
     });
     window.parent.location.href = this.configSvc.refillRxUrl;
+  }
+
+  getRefillUrlFormatted (refillsCount: string) {
+
+    if (refillsCount !== undefined) {
+       return parseInt(refillsCount, 10) === 1 ? this.REFILL_URL_TEXT : this.REFILLS_URL_TEXT;
+    }
+    return this.REFILLS_URL_TEXT;
+
   }
 }

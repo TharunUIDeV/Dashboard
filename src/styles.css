@@ -142,6 +142,7 @@ b {
   color: #CC0000;
   font-weight: bold;
 }
+
 @media only screen and (min-device-width : 768px) {
   .block-item {
     margin-bottom: 10px;
@@ -163,6 +164,7 @@ b {
 }
 .hold-order ul {
   overflow: auto;
+  padding: 5px 0;
 }
 .hold-order li {
   padding: 5px 0;
@@ -205,9 +207,14 @@ b {
 .block > ul li .status em {
   color: #CC0000;
 }
+
+.block > ul li .status.hold {
+  color: #CC0000;
+}
 @media only screen and (min-device-width : 768px) {
   .block > ul li a {
     width: 25%;
+    text-decoration: underline;
   }
   .block > ul li .placed {
     clear: none;

@@ -1,0 +1,269 @@
+{
+  "Header": {
+    "StatusDescription": "Success",
+    "StatusCode": "0000"
+  },
+  "Details": {
+    "Results": {
+      "memberInfo": {
+        "accountBalance": "0.0",
+        "accountID": "TDMACC",
+        "addresses": {
+          "city": "NORTHBROOK",
+          "country": "0",
+          "line1": "2211 SANDERS ROAD",
+          "line2": "",
+          "sequenceNumber": "0",
+          "state": "IL",
+          "zipCode": "60062"
+        },
+        "benefactorClientInternalID": "16527",
+        "cardholderInternalID": "849915923",
+        "carrierID": "1400",
+        "clientCode": "X1400",
+        "clientId": "16527",
+        "clientName": "UMWA (FUNDS)",
+        "clientPlanGroup": {
+          "billingReportingCode": "X1400",
+          "cpgGroupCode": "001",
+          "cpgGroupExtensionCode": "",
+          "cpgID": "997672817",
+          "cpgPlanCode": "TDMACC",
+          "cpgPlanExtensionCode": ""
+        },
+        "coverageEffectiveDate": "2014-01-01T00:00:00-06:00",
+        "coverageTerminationDate": "2020-12-31T00:00:00-06:00",
+        "dateOfBirth": "1961-01-01T00:00:00-06:00",
+        "eisName": "rxclaim",
+        "eligibility": {
+          "benefitPlanList": {
+            "benefitPlan": [
+              {
+                "active": "true",
+                "apcsMailBenefit": "false",
+                "brandCopay": "0.0",
+                "deliverySystem": "2",
+                "effective": "2014-01-01T00:00:00-06:00",
+                "expiration": "2020-12-31T00:00:00-06:00",
+                "formularyId": "0",
+                "mailOrderPharmacy": "SAT",
+                "mandatoryRetail90DaySupplyProgram": "false",
+                "planBenefitId": "155516",
+                "retail90DaySupplyProgram": "false",
+                "vaccineEligible": "false"
+              },
+              {
+                "active": "false",
+                "apcsMailBenefit": "false",
+                "brandCopay": "0.0",
+                "deliverySystem": "1",
+                "effective": "2014-01-01T00:00:00-06:00",
+                "expiration": "2020-12-31T00:00:00-06:00",
+                "formularyId": "0",
+                "mandatoryRetail90DaySupplyProgram": "false",
+                "planBenefitId": "0",
+                "retail90DaySupplyProgram": "false",
+                "vaccineEligible": "false"
+              },
+              {
+                "active": "true",
+                "apcsMailBenefit": "false",
+                "brandCopay": "0.0",
+                "deliverySystem": "3",
+                "effective": "2014-01-01T00:00:00-06:00",
+                "expiration": "2020-12-31T00:00:00-06:00",
+                "formularyId": "0",
+                "maintenanceChoiceIndicator": "false",
+                "mandatoryRetail90DaySupplyProgram": "false",
+                "planBenefitId": "-666",
+                "retail90DaySupplyProgram": "false",
+                "vaccineEligible": "false"
+              }
+            ]
+          },
+          "coverageType": "0",
+          "csAreaCode": "800",
+          "csPhoneNumber": "2944741",
+          "eligible": "true",
+          "enrolledAutoRefill": "0",
+          "enrolledAutoRenew": "0",
+          "prefPharmInd": "N",
+          "providerClientIdentifier": "0",
+          "proximityNetworkInd": "false",
+          "statusAutoRefill": "3",
+          "statusAutoRenew": "3"
+        },
+        "emailAddress": "Amit.Khanna@cvscaremark.com",
+        "externalID": "SR132690201",
+        "extranetUsr": "false",
+        "family": {
+          "cardholderId": "849915923",
+          "dependentList": {
+            "memberInfo": [
+              {
+                "accountBalance": "0.0",
+                "accountID": "TDMACC",
+                "addresses": {
+                  "city": "RICHARDSON",
+                  "country": "0",
+                  "line1": "911 E COLLINS BLVD",
+                  "line2": "",
+                  "sequenceNumber": "0",
+                  "state": "TX",
+                  "zipCode": "75081"
+                },
+                "benefactorClientInternalID": "16527",
+                "cardholderInternalID": "849915923",
+                "carrierID": "1400",
+                "clientCode": "X1400",
+                "clientId": "16527",
+                "clientName": "UMWA (FUNDS)",
+                "clientPlanGroup": {
+                  "billingReportingCode": "X1400",
+                  "cpgGroupCode": "001",
+                  "cpgGroupExtensionCode": "",
+                  "cpgID": "997672817",
+                  "cpgPlanCode": "TDMACC",
+                  "cpgPlanExtensionCode": ""
+                },
+                "coverageEffectiveDate": "2014-01-01T00:00:00-06:00",
+                "coverageTerminationDate": "2020-12-31T00:00:00-06:00",
+                "dateOfBirth": "1982-05-01T00:00:00-05:00",
+                "eisName": "rxclaim",
+                "eligibility": {
+                  "benefitPlanList": {
+                    "benefitPlan": [
+                      {
+                        "active": "true",
+                        "apcsMailBenefit": "false",
+                        "brandCopay": "0.0",
+                        "deliverySystem": "2",
+                        "effective": "2014-01-01T00:00:00-06:00",
+                        "expiration": "2020-12-31T00:00:00-06:00",
+                        "formularyId": "0",
+                        "mandatoryRetail90DaySupplyProgram": "false",
+                        "planBenefitId": "155516",
+                        "retail90DaySupplyProgram": "false",
+                        "vaccineEligible": "false"
+                      },
+                      {
+                        "active": "false",
+                        "apcsMailBenefit": "false",
+                        "brandCopay": "0.0",
+                        "deliverySystem": "1",
+                        "effective": "2014-01-01T00:00:00-06:00",
+                        "expiration": "2020-12-31T00:00:00-06:00",
+                        "formularyId": "0",
+                        "mandatoryRetail90DaySupplyProgram": "false",
+                        "planBenefitId": "0",
+                        "retail90DaySupplyProgram": "false",
+                        "vaccineEligible": "false"
+                      },
+                      {
+                        "active": "true",
+                        "apcsMailBenefit": "false",
+                        "brandCopay": "0.0",
+                        "deliverySystem": "3",
+                        "effective": "2014-01-01T00:00:00-06:00",
+                        "expiration": "2020-12-31T00:00:00-06:00",
+                        "formularyId": "0",
+                        "maintenanceChoiceIndicator": "false",
+                        "mandatoryRetail90DaySupplyProgram": "false",
+                        "planBenefitId": "-666",
+                        "retail90DaySupplyProgram": "false",
+                        "vaccineEligible": "false"
+                      }
+                    ]
+                  },
+                  "coverageType": "0",
+                  "csAreaCode": "",
+                  "csPhoneNumber": "",
+                  "eligible": "true",
+                  "enrolledAutoRefill": "0",
+                  "enrolledAutoRenew": "0",
+                  "prefPharmInd": "N",
+                  "providerClientIdentifier": "0",
+                  "proximityNetworkInd": "false",
+                  "statusAutoRefill": "3",
+                  "statusAutoRenew": "3"
+                },
+                "externalID": "SR132690202",
+                "firstName": "WARREN",
+                "gender": "1",
+                "groupID": "001",
+                "hideIneligibleDependent": "false",
+                "internalID": "849915924",
+                "lastName": "JOHNSON",
+                "linkedInternalID": "0",
+                "lockedOut": "false",
+                "medBEligible": "false",
+                "medicare": "false",
+                "middleName": "",
+                "nceCode": "0",
+                "personCode": "02",
+                "primary": "false",
+                "providerClientId": "0",
+                "qlMail": "true",
+                "registered": "false",
+                "relationShipCode": "2",
+                "securityOptions": {
+                  "linkedParticipantId": "849915923",
+                  "viewMyOrders": "false",
+                  "orderMyRefills": "false",
+                  "viewMyPrescriptionHistory": "false",
+                  "viewSensitiveMedicationsAllowed": "false",
+                  "fastStart": "false",
+                  "viewPriorAuthorizationStatus": "false",
+                  "requestMyCoverageException": "false",
+                  "viewMinorSensitiveMedicationsBlocked": "false"
+                },
+                "stCob": "false"
+              }]
+          },
+          "migrated": "false"
+        },
+        "firstName": "WILSON",
+        "isFuturePlan": "false",
+        "gender": "1",
+        "groupID": "001",
+        "guestRefillOptedOut": "false",
+        "hideIneligibleDependent": "false",
+        "internalID": "849915923",
+        "internalParams": {
+          "personalizationId": "13539"
+        },
+        "lastLoginTimestamp": "2018-05-24T09:24:18.946-05:00",
+        "lastName": "JOHNSON",
+        "linkedInternalID": "0",
+        "lockedOut": "false",
+        "medBEligible": "false",
+        "medicare": "false",
+        "middleName": "",
+        "nceCode": "0",
+        "personCode": "01",
+        "planEffectiveDate": "2014-01-01T00:00:00-06:00",
+        "preferredPharmacy": {
+          "address": "313 E TOWNLINE RD",
+          "city": "VERNON HILLS",
+          "pharmacyId": "1462655",
+          "pharmacyName": "CVS PHARMACY 16277",
+          "phoneNumber": "",
+          "prcsTypeCode": "PRIMARY",
+          "state": "IL",
+          "zipCode": "60061"
+        },
+        "primary": "true",
+        "providerClientId": "13627",
+        "qlMail": "true",
+        "registered": "true",
+        "registrationOptedOut": "false",
+        "relationShipCode": "1",
+        "stCob": "false",
+        "underAgeMinor": "false",
+        "userNotRegisteredStatusCode": "0000",
+        "userNotRegisteredStatusDescription": "Success",
+        "userRegistered": "01"
+      }
+    }
+  }
+}

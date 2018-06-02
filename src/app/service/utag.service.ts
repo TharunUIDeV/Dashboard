@@ -9,6 +9,9 @@ export class TealiumUtagService {
   private static environment;
   private static memberId;
   private static unEncyptedEmailAddress;
+  private static currentQueryParam;
+  private static faststyle;
+  private static clientID;
   script_src = '';
 
   // Typically set "noview" flag (no first page automatic view event) to true for Single Page Apps (SPAs)
@@ -22,6 +25,7 @@ export class TealiumUtagService {
     TealiumUtagService.environment = this.configSvc.env;
     TealiumUtagService.memberId = this.configSvc.memberId;
     TealiumUtagService.unEncyptedEmailAddress = this.configSvc.emailAddr;
+    TealiumUtagService.clientID = this.configSvc.clientID;
   }
 
   private static getEST(): string {
@@ -54,7 +58,8 @@ export class TealiumUtagService {
   }
 
   private static _getBasicTraffic(): any {
-    const pageCategory = 'Dashboard';
+    const pageCategory = 'caremark dashboard';
+    const pageName = 'new dashboard';
     const commonUrl = 'pbm';
     const pathName = '/wps/myportal/NEWDASHBOARD';
     const basicViewTags = {
@@ -65,7 +70,7 @@ export class TealiumUtagService {
       sub_section2: commonUrl + '|' + this.platform + '|' + pageCategory,
       sub_section3: commonUrl + '|' + this.platform + '|' + pageCategory,
       sub_section4: commonUrl + '|' + this.platform + '|' + pageCategory,
-      adobe_page_name: commonUrl + '|' + this.platform + '|' + pageCategory + ' Home',
+      adobe_page_name: commonUrl + '|' + this.platform + '|' + 'new dashboard',
       previous_adobe_page_name: this.getPreviousPageName(),
       page_url: window.location.host + pathName,
       previous_page_url: this.getPreviouspageURL(),
@@ -75,21 +80,38 @@ export class TealiumUtagService {
       environment: TealiumUtagService.environment,
       time_stamp: this.getEST(),
       document_title: document.title,
-      query_string: null,
-      state_city_ipaddress: null,
-      Error_Messages: null,
       member_id: TealiumUtagService.memberId,
       unencypted_email_id: TealiumUtagService.unEncyptedEmailAddress,
     };
     return basicViewTags;
   }
 
+  private static getParams(obj = window) {
+    const query = obj.location.search
+      || obj.location.hash && obj.location.hash.split('?').length > 1 && obj.location.hash.split('?')[1]
+      || '';
+    this.currentQueryParam = query;
+    return (/^[?#]/.test(query) ? query.slice(1) : query)
+      .split('&')
+      .reduce((params, param) => {
+        const [key, value] = param.split('=');
+        params[key] = value ? decodeURIComponent(value.replace(/\+/g, ' ')) : '';
+        return params;
+      }, {});
+  }
+
+  private static query() {
+    const params = this.getParams();
+    return params['faststyle'];
+  }
+
   private static _getUtagData(): any {
+    this.faststyle = this.query();
     const utagData = {
       environment: TealiumUtagService.environment,
-      site_name: 'caremark',
+      site_name: 'FASTINT',
       platform: this.platform,
-      // Client_Id: SHOULD COME FROM PORTAL,
+      clientId: TealiumUtagService.clientID,
       PBM_Client_Name: 'caremark'
     };
     return utagData;

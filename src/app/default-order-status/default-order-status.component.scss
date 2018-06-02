@@ -1,0 +1,107 @@
+/* HTML5 display-role reset for older browsers */
+article, aside, details, figcaption, figure,
+footer, header, hgroup, menu, nav, section, address, main {
+  display: block;
+}
+ol, ul {
+  list-style: none;
+}
+blockquote, q {
+  quotes: none;
+}
+table {
+  border-collapse: collapse;
+  border-spacing: 0;
+}
+/*----------------------------------- GENERAL -------------------------------------*/
+body {
+  font-family:'Helvetica', 'Arial', sans-serif;
+  font-size: 100%;
+  color: #000;
+}
+a {
+  color: #CC0000;
+  font-weight: bold;
+}
+b {
+  font-weight: bold;
+}
+/*----------------------------------- HEADER -------------------------------------*/
+header {
+  background-color: #f8f9fa;
+  overflow: auto;
+  padding: 28px 40px 24px;
+}
+header .logo {
+  float: left;
+}
+header .logo img {
+  max-width: 220px;
+}
+/*----------------------------------- BODY -------------------------------------*/
+.content-wrapper {
+  margin: 30px 20px 30px 18px;
+  max-width: 625px;
+}
+/*@media only screen and (min-device-width : 768px) {
+  .content-wrapper {
+    margin-left: 70px;
+  }
+}*/
+.content-wrapper h1 {
+  font-weight: bold;
+  font-size: 2.25em;
+  padding: 0 0 50px;
+}
+.content-wrapper > a {
+  font-size: .875em;
+}
+.block {
+  border-bottom: 1px solid #EEEEEE;
+  font-weight: bold;
+  margin-bottom: 25px;
+}
+.block-title {
+  overflow: auto;
+  padding: 0 0 20px;
+}
+@media only screen and (min-device-width : 768px) {
+  .block-title {
+    padding-bottom: 25px;
+  }
+}
+.block-title h2 {
+  font-size: 1.375em;
+  padding: 0 30px 0 0;
+}
+@media only screen and (min-device-width : 768px) {
+  .block-title h2 {
+    float: left;
+  }
+}
+.block-title a, .with-caret{
+  background:	url(../../assets/images/caret.png) right center no-repeat;
+  background-size: 11px 18px;
+  display: inline-block;
+  margin-top: 5px;
+  padding: 5px 20px 5px 0;
+  text-decoration: none;
+}
+.block-title a {
+  font-size: .875em;
+}
+@media only screen and (min-device-width : 768px) {
+  .block-title a, .with-caret {
+    margin-top: 0;
+  }
+}
+.block p {
+  padding: 0 0 15px;
+}
+.block ul {
+  list-style-type: disc;
+  list-style-position: inside;
+}
+.block li {
+  padding: 0 0 15px;
+}

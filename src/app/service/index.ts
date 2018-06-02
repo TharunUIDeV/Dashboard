@@ -9,20 +9,21 @@ import {CaremarkSdkService} from './caremark-sdk.service';
 import {MockCaremarkSdkService} from './mock-caremark-sdk.service';
 import {environment} from '../../environments/environment';
 import {APP_INITIALIZER} from '@angular/core';
+import {MemberService} from './member.service';
 
 
-const caremarkSdkServiceFactory = (configService: ConfigService)  => {
+const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService)  => {
   if (environment.production) {
-    return new CaremarkSdkService(configService);
+    return new CaremarkSdkService(configService, vordelPbmService);
   } else if (environment.mock) {
     return new MockCaremarkSdkService();
   } else {
-    return new CaremarkSdkService(configService);
+    return new CaremarkSdkService(configService, vordelPbmService);
   }
 };
 
 export const CareMarkSdkServiceProvider = { provide: CaremarkSdkService,
-  useFactory: caremarkSdkServiceFactory, deps: [ConfigService]};
+  useFactory: caremarkSdkServiceFactory, deps: [ConfigService, VordelPbmService]};
 
 
 
@@ -42,4 +43,5 @@ export const services: any[]  = [
   CaremarkDataService,
   IceSdkService,
   VordelPbmService,
+  MemberService,
 ];

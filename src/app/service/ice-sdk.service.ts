@@ -9,7 +9,7 @@ import {ConfigService} from './config.service';
 
 @Injectable()
 export class IceSdkService implements CaremarkDataServiceInterface {
-  private baseUrl = 'https://icet-sit3.caremark.com/';
+  private baseUrl =  this.configService.apiBaseUrl;
   private QueryConstants = {
     'lineOfBusiness': 'ICE',
     'deviceID': 'device12345',
@@ -26,7 +26,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
 
   static createQueryString(data: any): string {
     const queryParam = [];
-    for (const key in data) {
+    for (const key of Object.keys(data)) {
       queryParam.push(key + '=' + data[key]);
     }
     return queryParam.join('&');
@@ -104,6 +104,8 @@ export class IceSdkService implements CaremarkDataServiceInterface {
 
   getRefills(): Promise<any> {
     return new Promise((resolve, reject) => {
+      reject('Not implemented yet');
+      /*
       this.getRefillsObserve().subscribe((result) => {
         if (result.Header.StatusCode === '0000') {
           return resolve(result.detail.prescriptionHistoryDetails);
@@ -111,6 +113,19 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         console.error(JSON.stringify(result.Header));
         return reject(result.Header);
       });
+      */
+    });
+  }
+
+  getRefillsCount(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      reject('Not implemented yet');
+    });
+  }
+
+  public getPznByIdAndResource(params: any): Promise<any> {
+    return new Promise((resolve, reject) => {
+      reject('Not implemented yet');
     });
   }
 
