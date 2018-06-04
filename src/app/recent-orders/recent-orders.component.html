@@ -3,6 +3,7 @@
   <h2 class="block-title">{{recentOrders.OrdersCount}} {{RECENT_ORDERS_TEXT}}</h2>
   <app-spinner [loading]="loading"></app-spinner>
     <ul>
+      <li *ngIf="recentOrders.OrdersCount === 0">You don't have any recent orders.</li>
       <li *ngFor="let Order of recentOrders.Orders | slice:0:3">
         <a href="" (click)="orderNumberClick(Order.OrderNumber)">Order #{{getOrderNumberFormatted(Order)}}</a>
         <span class="status" [ngClass]="{'hold' : Order.OrderStatus === ORDER_STATUS_HOLD_TEXT}">{{Order.OrderStatus}}</span>
