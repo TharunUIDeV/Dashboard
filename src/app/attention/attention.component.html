@@ -12,8 +12,9 @@
         <li class="order">Order #{{getOrderNumberFormatted(order)}}</li>
         <li class="prescriber">Prescriber: Dr. {{order.DoctorFullName}}</li>
         <li class="date">Requested {{order.OrderDate | date:"MM/dd/yy" }} {{order.OrderedFor}}</li>
+        <li class="view-order"><a href="" style="color:#CC0000; text-decoration: none" class="with-caret" (click)="orderNumberClick(order.OrderNumber)">View order</a></li>
       </ul>
     </section>
   </section>
-  <a href="" class="with-caret all-orders" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a>
+  <!--a href="" class="with-caret all-orders" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a-->
 </section>
