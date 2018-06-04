@@ -1,6 +1,6 @@
-<section class="block" *ngIf="attentionData.Orders.length > 0">
+<section class="block tasks" *ngIf="attentionData.Orders.length > 0">
   <app-spinner [loading]="loading"></app-spinner>
-  <h2 class="block-title tasks">Your Tasks</h2>
+  <h2 class="block-title">Your Tasks</h2>
   <section class="block-item" >
     <em class="important">Ask your doctor to contact us</em>
     <p *ngIf="attentionData.Orders.length > 1"> Your orders are <em>on hold</em> because we need some additional information about the prescriptions listed</p>
@@ -13,9 +13,7 @@
         <li class="prescriber">Prescriber: Dr. {{order.DoctorFullName}}</li>
         <li class="date">Requested {{order.OrderDate | date:"MM/dd/yy" }} {{order.OrderedFor}}</li>
       </ul>
-      <ul>
-        <a href="" class="with-caret all-orders" style= "margin-left: 0px; float: left" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a>
-      </ul>
     </section>
   </section>
+  <a href="" class="with-caret all-orders" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a>
 </section>

@@ -77,6 +77,10 @@ b {
   margin-bottom: 15px;
   padding: 0 0 0 10px;
 }
+.block.tasks {
+  padding-bottom: 20px;
+}
+
 .block.recent {
   padding-bottom: 15px;
 }
@@ -90,6 +94,9 @@ b {
   .block {
     margin-bottom: 25px;
     padding: 0;
+  }
+  .block.tasks {
+    padding-bottom: 20px;
   }
   .block.recent {
     padding-bottom: 20px;
@@ -182,8 +189,13 @@ b {
   font-size: .875em;
 }
 @media only screen and (min-device-width : 768px) {
-  .block > ul, .all-orders {
+  .block > ul {
     margin-left: 20px;
+  }
+  .block .all-orders {
+    margin-left: 20px;
+    color: #CC0000;
+    text-decoration: none;
   }
 }
 .block > ul li {
