@@ -1,4 +1,17 @@
 <section class="block refill">
-    <h2 class="block-title"> <a href="#" (click)="refillClickTag()" class="with-caret">{{refillWidgetData.RefillPrescriptionCount}} {{getRefillUrlFormatted(refillWidgetData.RefillPrescriptionCount)}}</a></h2>
   <app-spinner [loading]="loading"></app-spinner>
+  <h2 class="block-title">Your Prescriptions</h2>
+  <section class="block-item">
+    <section *ngIf="refillWidgetData.RefillPrescriptionCount === '0'">
+      <p style="display:inline-block">You don't have any currenlty available prescripitons.</p>
+      <a href="#" (click)="rxHistoryClickTag()" class="with-caret">View past prescriptions</a>
+    </section>
+    <section *ngIf="refillWidgetData.RefillPrescriptionCount !== '0'">
+      <a href="#" (click)="refillClickTag()" class="with-caret">{{refillWidgetData.RefillPrescriptionCount}} {{getRefillUrlFormatted(refillWidgetData.RefillPrescriptionCount)}}</a>
+    </section>
+
+  </section>
+  <section class="block-item">
+    <button type="button" class="btn btn-primary btn-sm block-item-button" (click)="findNewMedication()">Find a new medication</button>
+  </section>
 </section>

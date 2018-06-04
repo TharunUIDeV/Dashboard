@@ -65,6 +65,14 @@ export class RefillComponent implements  OnInit {
     window.parent.location.href = this.configSvc.refillRxUrl;
   }
 
+  rxHistoryClickTag() {
+    window.parent.location.href = this.configSvc.rxHistoryUrl;
+  }
+
+  findNewMedication() {
+    window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
+  }
+
   getRefillUrlFormatted (refillsCount: string) {
 
     if (refillsCount !== undefined) {

@@ -245,3 +245,14 @@ b {
     width: 20%;
   }
 }
+
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-primary:focus {
+  background-color: #CC0000;
+  border-color: #CC0000;
+}
+
+@media only screen and (min-device-width : 768px) {
+  .block-item-button {
+    border-top: 1em;
+  }
+}

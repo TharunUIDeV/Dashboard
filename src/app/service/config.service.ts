@@ -23,6 +23,8 @@ export class ConfigService {
   public iceMemberToken: string;
   public clientID; string;
   public showLatestVersion: boolean;
+  public rxHistoryUrl: string;
+  public checkDrugCostFastUrl: string;
 
   ready = new BehaviorSubject(false);
 
@@ -67,6 +69,9 @@ export class ConfigService {
         this.pznId = data.appData.PersonalizationId;
         this.clientID = data.appData.clientId;
         this.showLatestVersion = data.appData.ShowNewDashboardV2;
+        this.rxHistoryUrl = '/wps/myportal/VIEW_RX_HISTORY';
+        this.checkDrugCostFastUrl = '/wps/myportal/CHECK_DRUG_COST_FAST';
+
       }
     } catch (e) {
       console.log('config service --> init() :' + e);
