@@ -10,7 +10,9 @@
         <span class="rx">{{getRxFillsFormatted(Order.RxFills)}}</span>
       </li>
     </ul>
-    <p *ngIf="recentOrders.OrdersCount === 0" style="display:inline-block">You don't have any recent orders.</p>
-    <a href="" class="with-caret all-orders" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a>
+  <section class="block-item">
+    <p *ngIf="recentOrders.OrdersCount === 0" style="display: inline-block">You don't have any recent orders.</p>
+    <a href="" class="with-caret" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a>
+  </section>
 </div>
 
