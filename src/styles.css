@@ -252,7 +252,7 @@ b {
 }
 
 @media only screen and (min-device-width : 768px) {
-  .block-item-button {
-    border-top: 1em;
+  .block p {
+    font-size: 1em;
   }
 }
