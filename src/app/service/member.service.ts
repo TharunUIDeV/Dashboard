@@ -1,8 +1,8 @@
 import {Injectable} from '@angular/core';
 import {CaremarkDataService} from './caremark-data.service';
 import {caremarksdk} from '../types/caremarksdk';
-import {PZN_CONSTANTS} from '../order-status/order-status.constants';
 import {ConfigService} from './config.service';
+import {PZN_CONSTANTS} from '../order-status/personalization.constants';
 
 @Injectable()
 export class MemberService {
@@ -36,27 +36,24 @@ export class MemberService {
       if (!this._underageLimit) {
         const params = {
           pznId: this.configService.pznId,
-          resourceTag: PZN_CONSTANTS.PZN_UNDER_AGE_TAG,
-          deliveryResourceTag: PZN_CONSTANTS.DELIVERY_DATE_RANGE_PZN,
+          resourceTags : [PZN_CONSTANTS.PZN_UNDER_AGE_TAG, ]
         };
         // Defaults
         let ageLimit = '17';
-        let deliveryDateRange = false;
 
         // console.log(JSON.stringify(params));
 
         this.caremarkDataService.getPznByIdAndResource(params).then((result) => {
-          if (result && result.detail
-            && result.detail.personalizationContent
-            && result.detail.personalizationContent.personalizationContents
-            && result.detail.personalizationContent.personalizationContents.length > 0) {
-            result.detail.personalizationContent.personalizationContents.forEach(pznContent => {
+          if (result && Array.isArray(result)) {
+            result.forEach(pznContent => {
               if (pznContent.resourceTagId === PZN_CONSTANTS.PZN_UNDER_AGE_TAG) {
                 ageLimit = pznContent.contentText;
-              } else if (pznContent.resourceTagId === PZN_CONSTANTS.DELIVERY_DATE_RANGE_PZN && pznContent.resourceVisibleIndicator === 1) {
-                deliveryDateRange = true;
               }
             });
+          } else if (result) {
+            ageLimit = result.contentText;
+          } else {
+            console.error('Wrong response');
           }
         }).catch((error) => {
           console.error('Failed to get PZN data');

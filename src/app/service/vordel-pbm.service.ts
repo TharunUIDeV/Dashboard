@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import {Injectable} from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {catchError} from 'rxjs/operators';
@@ -9,7 +9,7 @@ import * as xml2js from 'xml2js';
 
 @Injectable()
 export class VordelPbmService implements CaremarkDataServiceInterface {
-  private baseUrl =  this.configService.apiBaseUrl;
+  private baseUrl = this.configService.apiBaseUrl;
   private QueryConstants = {
     'lineOfBusiness': 'PBM',
     'deviceID': 'device12345',
@@ -18,11 +18,12 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
     'deviceType': 'DESKTOP',
     'appName': 'CMK_WEB'
   };
-  private  xml2jsParser = new xml2js.Parser({explicitArray : false});
+  private xml2jsParser = new xml2js.Parser({explicitArray: false});
   private xml2jsXmlBuilder = new xml2js.Builder();
 
 
-  constructor(private httpClient: HttpClient, private configService: ConfigService) { }
+  constructor(private httpClient: HttpClient, private configService: ConfigService) {
+  }
 
 
   static createQueryString(data: any): string {
@@ -38,113 +39,127 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
     return Observable.throw(res.error || 'Server error');
   }
 
-  private getPznByIdandResourceObserve(pznID, resourceTag, deliveryResourceTag): Observable<any> {
+  public getPznByIdAndResource(params: any) {
 
-    const queryParam: any = {
-      apiKey: this.configService.apiKey,
-      apiSecret: this.configService.apiSecret,
-      appName: this.QueryConstants.appName,
-      channelName: this.QueryConstants.channelName,
-      deviceType: this.QueryConstants.deviceType,
-      tokenID: this.configService.token,
-      deviceID: this.QueryConstants.deviceID,
-      deviceToken: this.QueryConstants.deviceToken,
-      lineOfBusiness: this.QueryConstants.lineOfBusiness,
-      serviceCORS: 'TRUE',
-      version: '1.0',
-      serviceName: 'personalization',
-      operation: 'getPZNByIDandResourcetag',
-    };
-
-    const url = this.baseUrl + 'PZN/getPZNByIDandResourcetag?' + VordelPbmService.createQueryString(queryParam);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/xml'
-      }),
-      responseType: 'text' as 'text',
-    };
-
-    const body =  {
-      'personalizationServiceRequest' : {
-        'pznID': pznID,
-        'tag': [
-          { 'resourceTag': resourceTag },
-          { 'resourceTag': deliveryResourceTag }
-          ]
-      }
-    };
-
-    const body_xml = this.xml2jsXmlBuilder.buildObject(body);
-
-
-    return this.httpClient.post(url,  body_xml,   httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  public getPznByIdAndResource(params: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      const pznId = params.pznId;
-      const resourceTag = params.resourceTag;
-      const deliveryResourceTag =  params.deliveryResourceTag;
-      this.getPznByIdandResourceObserve(pznId, resourceTag, deliveryResourceTag).subscribe((result) => {
-        this.xml2jsParser.parseString(result, (error, jsonData) => {
-          if (error) {
-            console.log(error);
-            return reject(error);
-          }
-          const response = jsonData.response;
-          if (response.header.statusCode === '0000') {
-            // console.log(JSON.stringify(response.detail));
-            return resolve(response.detail);
-          }
-          console.error(JSON.stringify(response.header));
-          return reject(response.header);
-        } );
 
-      });
+      const queryParam: any = {
+        apiKey: this.configService.apiKey,
+        apiSecret: this.configService.apiSecret,
+        appName: this.QueryConstants.appName,
+        channelName: this.QueryConstants.channelName,
+        deviceType: this.QueryConstants.deviceType,
+        tokenID: this.configService.token,
+        deviceID: this.QueryConstants.deviceID,
+        deviceToken: this.QueryConstants.deviceToken,
+        lineOfBusiness: this.QueryConstants.lineOfBusiness,
+        serviceCORS: 'TRUE',
+        version: '1.0',
+        serviceName: 'personalization',
+        operation: 'getPZNByIDandResourcetag',
+      };
+
+      const url = this.baseUrl + 'PZN/getPZNByIDandResourcetag?' + VordelPbmService.createQueryString(queryParam);
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/xml'
+        }),
+        responseType: 'text' as 'text',
+      };
+
+      const body: any = {};
+
+      if (params && params.pznId && params.resourceTags) {
+        body.personalizationServiceRequest = {'pznID': params.pznId, tag: []};
+        for (const resourceTag of params.resourceTags) {
+          body.personalizationServiceRequest.tag.push({'resourceTag': resourceTag});
+        }
+
+        const body_xml = this.xml2jsXmlBuilder.buildObject(body);
+
+
+        return this.httpClient.post(url, body_xml, httpOptions)
+          .pipe(
+            catchError(this.handleError)
+          ).subscribe((result) => {
+            this.xml2jsParser.parseString(result, (error, jsonData) => {
+              if (error) {
+                console.log(error);
+                return reject(error);
+              }
+              const response = jsonData.response;
+              if (response.header.statusCode === '0000') {
+                // console.log(JSON.stringify(response.detail));
+                if (response && response.detail && response.detail.detail
+                  && response.detail.detail.personalizationContent
+                  && response.detail.detail.personalizationContent.personalizationContents) {
+                  return resolve(response.detail.detail.personalizationContent.personalizationContents);
+                }
+                console.error(JSON.stringify(response.header));
+              }
+              return reject(response.header);
+            });
+          }, error => {
+            reject(error);
+          });
+      }
+      reject('getPznByIdandResource: Invalid Parameters');
     });
   }
 
-  private getOrderStatusObserve(): Observable<any> {
+  public getOrderStatus() {
+    return new Promise((resolve, reject) => {
 
-    const queryParam: any = {
-      apiKey: this.configService.apiKey,
-      apiSecret: this.configService.apiSecret,
-      appName: this.QueryConstants.appName,
-      channelName: this.QueryConstants.channelName,
-      deviceType: this.QueryConstants.deviceType,
-      tokenID: this.configService.token,
-      deviceID: this.QueryConstants.deviceID,
-      deviceToken: this.QueryConstants.deviceToken,
-      lineOfBusiness: this.QueryConstants.lineOfBusiness,
-      serviceCORS: 'TRUE',
-      version: '2.1',
-      serviceName: 'orderStatus',
-      transferOrders: false,
-      historyCount: 365,
-      historyMetric: 'days',
-      componentId: 'orderStatus-v-1.0',
-      fastStartOrders: false,
-      fastIndicator: 'YES',
-      mailOrders: true,
-      env: this.configService.env
-    };
+      const queryParam: any = {
+        apiKey: this.configService.apiKey,
+        apiSecret: this.configService.apiSecret,
+        appName: this.QueryConstants.appName,
+        channelName: this.QueryConstants.channelName,
+        deviceType: this.QueryConstants.deviceType,
+        tokenID: this.configService.token,
+        deviceID: this.QueryConstants.deviceID,
+        deviceToken: this.QueryConstants.deviceToken,
+        lineOfBusiness: this.QueryConstants.lineOfBusiness,
+        serviceCORS: 'TRUE',
+        version: '2.1',
+        serviceName: 'orderStatus',
+        transferOrders: false,
+        historyCount: 365,
+        historyMetric: 'days',
+        componentId: 'orderStatus-v-1.0',
+        fastStartOrders: false,
+        fastIndicator: 'YES',
+        mailOrders: true,
+        env: this.configService.env
+      };
 
-    const url = this.baseUrl + '/refill/orderStatus?' + VordelPbmService.createQueryString(queryParam);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/xml'
-      }),
-      responseType: 'text' as 'text',
-    };
+      const url = this.baseUrl + '/refill/orderStatus?' + VordelPbmService.createQueryString(queryParam);
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/xml'
+        }),
+        responseType: 'text' as 'text',
+      };
 
+      this.httpClient.post(url, undefined, httpOptions)
+        .pipe(
+          catchError(this.handleError)
+        ).subscribe((result) => {
+        this.xml2jsParser.parseString(result, (error, jsonData) => {
+          if (error) {
+            console.error('failed to do xml2json parsing in getOrderStatus');
+            return reject(error);
+          }
+          const response = jsonData.response;
 
-    return this.httpClient.post(url,  undefined,   httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
+          if (response.header.statusCode === '0000') {
+            return resolve(response.details);
+          }
+          console.error(JSON.stringify(response.header));
+          return reject(response.header);
+        });
+      }, error => reject(error));
+    });
   }
 
 
@@ -154,149 +169,121 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
     });
   }
 
-  public getOrderStatus(): Promise<any> {
+  public getRefillsCount() {
+
     return new Promise((resolve, reject) => {
-      this.getOrderStatusObserve().subscribe((result) => {
+
+      const queryParam: any = {
+        apiKey: this.configService.apiKey,
+        apiSecret: this.configService.apiSecret,
+        appName: this.QueryConstants.appName,
+        // channelName: this.QueryConstants.channelName,
+        // deviceType: this.QueryConstants.deviceType,
+        tokenID: this.configService.token,
+        deviceID: this.QueryConstants.deviceID,
+        // deviceToken: this.QueryConstants.deviceToken,
+        // lineOfBusiness: this.QueryConstants.lineOfBusiness,
+        serviceCORS: 'TRUE',
+        version: '5.0',
+        xmlFormat: 'True',
+        serviceName: 'getRefills',
+        operationName: 'getRefillCounts',
+        estimatedCost: '1',
+        familyRefills: 'TRUE',
+        // env: this.configService.env
+      };
+
+      const url = this.baseUrl + '/refill/getRefills?' + VordelPbmService.createQueryString(queryParam);
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/xml'
+        }),
+        responseType: 'text' as 'text',
+      };
+
+
+      this.httpClient.post(url, undefined, httpOptions)
+        .pipe(
+          catchError(this.handleError)
+        ).subscribe((result) => {
           this.xml2jsParser.parseString(result, (error, jsonData) => {
             if (error) {
-              console.error('failed to do xml2json parsing in getOrderStatus');
-              return reject(error);
+              console.error('failed in xml2js.parseString');
+              return reject({error: 'failed to convert xml to json'});
             }
             const response = jsonData.response;
+            // console.log(JSON.stringify(response));
 
-          if (response.header.statusCode === '0000') {
-            console.log(JSON.stringify(response.header.details));
-            return resolve(response.details);
-          }
-          console.error(JSON.stringify(response.header));
-          return reject(response.header);
-        } );
+            if (response.header.statusCode === '0000') {
+              // console.log(JSON.stringify(response.detail));
+              return resolve(response.detail);
+            }
+            console.error(JSON.stringify(response.header));
+            return reject(response.header);
+          });
 
-      });
-    });
-  }
-
-  private getRefillCountObserve(): Observable<any> {
-
-    const queryParam: any = {
-      apiKey: this.configService.apiKey,
-      apiSecret: this.configService.apiSecret,
-      appName: this.QueryConstants.appName,
-      // channelName: this.QueryConstants.channelName,
-      // deviceType: this.QueryConstants.deviceType,
-      tokenID: this.configService.token,
-      deviceID: this.QueryConstants.deviceID,
-      // deviceToken: this.QueryConstants.deviceToken,
-      // lineOfBusiness: this.QueryConstants.lineOfBusiness,
-      serviceCORS: 'TRUE',
-      version: '5.0',
-      xmlFormat: 'True',
-      serviceName: 'getRefills',
-      operationName: 'getRefillCounts',
-      estimatedCost: '1',
-      familyRefills: 'TRUE',
-      // env: this.configService.env
-    };
-
-    const url = this.baseUrl + '/refill/getRefills?' + VordelPbmService.createQueryString(queryParam);
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/xml'
-      }),
-      responseType: 'text' as 'text',
-    };
-
-
-    return this.httpClient.post(url,  undefined,   httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
-
-  public getRefillsCount(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.getRefillCountObserve().subscribe((result) => {
-        this.xml2jsParser.parseString(result, (error, jsonData) => {
-          if (error) {
-            console.error('failed in xml2js.parseString');
-            return reject({error: 'failed to convert xml to json'});
-          }
-          const response = jsonData.response;
-          // console.log(JSON.stringify(response));
-
-          if (response.header.statusCode === '0000') {
-            // console.log(JSON.stringify(response.detail));
-            return resolve(response.detail);
-          }
-          console.error(JSON.stringify(response.header));
-          return reject(response.header);
-        } );
-
-      },
+        },
         error => reject(error));
     });
   }
 
-  private getRefillsObserve(): Observable<any> {
-    const url = this.baseUrl + '/caremark/refill/getRefills/V2';
-    const httpOptions = {
-      headers: new HttpHeaders({
-        'Content-Type':  'application/xml'
-      }),
-      responseType: 'text' as 'text',
-    };
+  public getRefills() {
+    return new Promise((resolve, reject) => {
+      const url = this.baseUrl + '/caremark/refill/getRefills/V2';
+      const httpOptions = {
+        headers: new HttpHeaders({
+          'Content-Type': 'application/xml'
+        }),
+        responseType: 'text' as 'text',
+      };
 
-    const body =  {
-      'request': {
-        'header': {
-          'serviceContext': {
-            'lineOfBusiness': this.QueryConstants.lineOfBusiness,
+      const body = {
+        'request': {
+          'header': {
+            'serviceContext': {
+              'lineOfBusiness': this.QueryConstants.lineOfBusiness,
               'tokenID': this.configService.token,
               'appName': this.QueryConstants.appName,
               'channelName': this.QueryConstants.channelName,
               'deviceID': this.QueryConstants.deviceID,
               'deviceToken': this.QueryConstants.deviceToken,
               'deviceType': this.QueryConstants.deviceType
+            },
+            'securityContext': {
+              'apiKey': this.configService.apiKey
+            }
           },
-          'securityContext': {
-            'apiKey': this.configService.apiKey
-          }
-        },
-        'details': {
-          'wfc': 'RF',
+          'details': {
+            'wfc': 'RF',
             'xmlFormat': 'True',
             'estimatedCost': '2',
             'familyRefills': 'True'
+          }
         }
-      }
-    };
+      };
 
-    const body_xml = this.xml2jsXmlBuilder.buildObject(body);
+      const body_xml = this.xml2jsXmlBuilder.buildObject(body);
 
-    return this.httpClient.post(url,  body_xml,   httpOptions)
-      .pipe(
-        catchError(this.handleError)
-      );
-  }
+      return this.httpClient.post(url, body_xml, httpOptions)
+        .pipe(
+          catchError(this.handleError)
+        ).subscribe((result) => {
+            this.xml2jsParser.parseString(result, (error, jsonData) => {
+              if (error) {
+                console.log(error);
+                return reject(error);
+              }
+              const response = jsonData.response;
+              if (response.header.statusCode === '0000') {
+                console.log(JSON.stringify(response.details));
+                return resolve(response.details);
+              }
+              console.error(JSON.stringify(response.header));
+              return reject(response.header);
+            });
 
-  public getRefills(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      this.getRefillsObserve().subscribe((result) => {
-        this.xml2jsParser.parseString(result, (error, jsonData) => {
-          if (error) {
-            console.log(error);
-            return reject(error);
-          }
-          const response = jsonData.response;
-          if (response.header.statusCode === '0000') {
-            console.log(JSON.stringify(response.details));
-            return resolve(response.details);
-          }
-          console.error(JSON.stringify(response.header));
-          return reject(response.header);
-        } );
-
-      });
+          },
+          error => reject(error));
     });
   }
 
