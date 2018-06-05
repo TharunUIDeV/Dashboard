@@ -5,6 +5,7 @@ import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {catchError} from 'rxjs/operators';
 import {ConfigService} from './config.service';
+import {VordelPbmService} from './vordel-pbm.service';
 
 
 @Injectable()
@@ -21,7 +22,8 @@ export class IceSdkService implements CaremarkDataServiceInterface {
   };
 
   constructor(private http: HttpClient,
-              private configService: ConfigService) {
+              private configService: ConfigService,
+              private vordelPbmService: VordelPbmService) {
   }
 
   static createQueryString(data: any): string {
@@ -124,9 +126,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
   }
 
   public getPznByIdAndResource(params: any): Promise<any> {
-    return new Promise((resolve, reject) => {
-      reject('Not implemented yet');
-    });
+    return this.vordelPbmService.getPznByIdAndResource(params);
   }
 
 }
