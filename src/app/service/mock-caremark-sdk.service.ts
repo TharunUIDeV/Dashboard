@@ -41,7 +41,7 @@ export class MockCaremarkSdkService implements CaremarkDataServiceInterface {
 
   public getPznByIdAndResource(params: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      resolve((<any>MockGetPznByIdAndResource).response.detail);
+      resolve((<any>MockGetPznByIdAndResource).response.detail.detail.personalizationContent.personalizationContents);
     });
   }
 

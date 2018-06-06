@@ -1,15 +1,14 @@
 import {Injectable} from '@angular/core';
-import {CaremarkDataService} from '../service/caremark-data.service';
+import {CaremarkDataService, DATASOURCE_TYPES} from '../service/caremark-data.service';
 import {
   FASTSTART_ORDER_STATUS,
   FASTSTART_ORDER_STATUS_MAP, ORDER_STATUS_CODES_ATTENTION_ONHOLDS,
-  ORDER_STATUS_CODES_MAP, ORDER_STATUS_CODES_ON_HOLD,
+  ORDER_STATUS_CODES_MAP, ORDER_STATUS_CODES_ON_HOLD, ORDER_STATUS_TYPES,
 } from './order-status.constants';
-import {OrderStatus} from './order-status.interface';
+import {OrderStatus, RxInfo} from './order-status.interface';
 import {MemberService} from '../service/member.service';
 import * as moment from 'moment';
 import {caremarksdk} from '../types/caremarksdk';
-import MemberInfoResult = caremarksdk.MemberInfoResult;
 import * as _ from 'lodash';
 
 @Injectable()
@@ -38,8 +37,12 @@ export class OrderStatusService {
       this.memberSerivce.getMemberDetails().then((memberDetails: any) => {
         this.memberSerivce.getUnderAgeLimitPzn().then((underageLimit: string) => {
           resolve(this.processFamilyFilter(orders, memberDetails, underageLimit));
-        }).catch((error) => {resolve([]); });
-      }).catch((error) => {resolve([]); });
+        }).catch((error) => {
+          resolve([]);
+        });
+      }).catch((error) => {
+        resolve([]);
+      });
     });
   }
 
@@ -86,7 +89,69 @@ export class OrderStatusService {
     }
 
     return orders;
+  }
 
+  transformSDK(orders: caremarksdk.Order[]) {
+    const transformedOrders: OrderStatus[] = [];
+    for (const pbmOrder of orders) {
+      let orderStatus: any = {};
+      orderStatus.OrderDate = pbmOrder.OrderDate;
+      orderStatus.OrderNumber = pbmOrder.OrderNumber;
+      orderStatus.OrderType = pbmOrder.OrderType;
+      orderStatus.ParticipantID = pbmOrder.ParticipantID;
+      orderStatus.RxList = [];
+      if (pbmOrder.PrescriptionList) {
+        for (const rx of pbmOrder.PrescriptionList) {
+          let rxInfo: any = {};
+          rxInfo.DateOfBirth = rx.DateOfBirth;
+          rxInfo.DoctorFullName = rx.DoctorFullName;
+          rxInfo.DrugDosage = rx.DrugDosage;
+          rxInfo.DrugStrength = rx.DrugStrength;
+          rxInfo.DrugName = rx.DrugName;
+          rxInfo.ParticipantID = rx.ParticipantID;
+          rxInfo.Status = rx.StatusDescription;
+          rxInfo.StatusReasonCode = rx.StatusReasonCode;
+          rxInfo.PatientFirstName = rx.PatientFirstName;
+          rxInfo.PatientLastName = rx.PatientLastName;
+          // Map status codes
+          if (rx.StatusReasonCode && ORDER_STATUS_CODES_MAP[rx.StatusReasonCode]) {
+            rxInfo.Status = ORDER_STATUS_CODES_MAP[rx.StatusReasonCode].RxStatus;
+            rxInfo.StatusPriority = ORDER_STATUS_CODES_MAP[rx.StatusReasonCode].ReasonCodePriority;
+            rxInfo.StatusDescription = ORDER_STATUS_CODES_MAP[rx.StatusReasonCode].RxStatusDescription;
+          }
+          // FastOrder Status Code
+          if (orderStatus.OrderType && orderStatus.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER) {
+            rxInfo.Status = FASTSTART_ORDER_STATUS_MAP[rxInfo.Status];
+            if (!rxInfo.Status) {
+              rxInfo.Status = FASTSTART_ORDER_STATUS.FASTSTART_STATUS_DEFAULT;
+            }
+          }
+          orderStatus.RxList.push(rxInfo);
+        }
+      }
+      orderStatus.RxFills = orderStatus.RxList.length;
+      transformedOrders.push(orderStatus);
+    }
+    return transformedOrders;
+
+  }
+
+  transformICE(orders: any) {
+    const transformedOrders: OrderStatus[] = [];
+    return transformedOrders;
+
+  }
+
+  transform(orders: any, dataSource: DATASOURCE_TYPES): any {
+    let transformedOrders: OrderStatus[];
+    if (dataSource === DATASOURCE_TYPES.CAREMARK_SDK) {
+      transformedOrders = this.transformSDK(orders);
+
+    } else if (dataSource === DATASOURCE_TYPES.VORDEL_ICE) {
+      transformedOrders = this.transformICE(orders);
+
+    }
+    return transformedOrders;
   }
 
 
@@ -95,64 +160,35 @@ export class OrderStatusService {
       const recentOrders: OrderStatus[] = [];
 
       this.caremarkDataService.getOrderStatus().then((ordersResponse: any) => {
-        const orders = ordersResponse.Results;
+        const orders: OrderStatus[] = this.transform(ordersResponse.Results, this.caremarkDataService.dataSource);
 
+        // Set OrderStatus based Rx priority
         for (const order of orders) {
-          const orderStatusDetail: any = {};
-
-          orderStatusDetail.OrderDate = order.OrderDate;
-          orderStatusDetail.OrderNumber = order.OrderNumber;
-          orderStatusDetail.OrderType = order.OrderType;
-          orderStatusDetail.ParticipantID = order.ParticipantID;
-          // Order Status takes priority of prescription on hold otherwise first prescriotion status
-          if (order.PrescriptionList) {
-
-            orderStatusDetail.OrderStatusCode = order.PrescriptionList[0].StatusReasonCode;
-            orderStatusDetail.OrderStatus = order.PrescriptionList[0].Status;
-            orderStatusDetail.OrderStatusDescription = order.PrescriptionList[0].StatusDescription;
-            orderStatusDetail.OrderedFor = OrderStatusService.ORDER_STATUS_FOR_PREFIX + order.PrescriptionList[0].PatientFirstName + ' ' +
-                                            order.PrescriptionList[0].PatientLastName;
-            orderStatusDetail.RxFills = order.PrescriptionList.length;
-            orderStatusDetail.DoctorFullName = order.PrescriptionList[0].DoctorFullName;
-            orderStatusDetail.DrugName = order.PrescriptionList[0].DrugName;
-            orderStatusDetail.DrugDosage = order.PrescriptionList[0].DrugDosage;
-            orderStatusDetail.DrugStrength = order.PrescriptionList[0].DrugStrength;
-            for (const prescription of order.PrescriptionList) {
-              if (_.includes(ORDER_STATUS_CODES_ON_HOLD, prescription.StatusReasonCode)) {
-                orderStatusDetail.DoctorFullName = prescription.DoctorFullName;
-                orderStatusDetail.DrugName = prescription.DrugName;
-                orderStatusDetail.DrugDosage = prescription.DrugDosage;
-                orderStatusDetail.DrugStrength = prescription.DrugStrength;
-                orderStatusDetail.OrderStatus = prescription.Status;
-                orderStatusDetail.OrderStatusDescription = prescription.StatusDescription;
-                orderStatusDetail.OrderedFor = OrderStatusService.ORDER_STATUS_FOR_PREFIX + prescription.PatientFirstName + ' ' +
-                                        prescription.PatientLastName;
-                break;
-              }
-            }
-          }
-
-          if (orderStatusDetail.OrderStatusCode && ORDER_STATUS_CODES_MAP[orderStatusDetail.OrderStatusCode]) {
-            orderStatusDetail.OrderStatus = ORDER_STATUS_CODES_MAP[orderStatusDetail.OrderStatusCode].RxStatus;
-            orderStatusDetail.OrderStatusDescription = ORDER_STATUS_CODES_MAP[orderStatusDetail.OrderStatusCode].RxStatusDescription;
-            orderStatusDetail.OrderPriority = ORDER_STATUS_CODES_MAP[orderStatusDetail.OrderStatusCode].ReasonCodePriority;
-          }
-
-
-          if (order.OrderType && order.OrderType.toUpperCase() === 'FastStart'.toUpperCase()) {
-            if (order.PrescriptionList) {
-              orderStatusDetail.OrderStatus = FASTSTART_ORDER_STATUS_MAP[order.PrescriptionList[0].Status];
-            }
-            if (!orderStatusDetail.OrderStatus) {
-              orderStatusDetail.OrderStatus = FASTSTART_ORDER_STATUS.FASTSTART_STATUS_DEFAULT;
-            }
-          }
           // Skip Orders when No Rxs
-          if (!orderStatusDetail.RxFills) {
+          if (!order.RxList.length) {
             continue;
           }
-          // console.log(JSON.stringify(orderStatusDetail));
-          recentOrders.push(orderStatusDetail);
+
+          order.OrderStatus = order.RxList[0].Status;
+          order.OrderedFor = OrderStatusService.ORDER_STATUS_FOR_PREFIX + order.RxList[0].PatientFirstName + ' ' +
+            order.RxList[0].PatientLastName;
+          for (const rx of order.RxList) {
+            if (_.includes(ORDER_STATUS_CODES_ON_HOLD, rx.StatusReasonCode)) {
+              order.OrderStatus = rx.Status;
+              order.OrderedFor = OrderStatusService.ORDER_STATUS_FOR_PREFIX + rx.PatientFirstName + ' ' +
+                rx.PatientLastName;
+              break;
+            }
+          }
+
+          if (order.OrderType && order.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER) {
+            if (order.RxList) {
+              order.OrderStatus = order.RxList[0].Status;
+            }
+          }
+
+          // console.log(JSON.stringify(orderStatus));
+          recentOrders.push(order);
         }
         this.applyFamilyFilter(recentOrders).then((filteredOrders) => {
           // console.log(filteredOrders);
@@ -173,8 +209,15 @@ export class OrderStatusService {
 
       this.getRecentOrders().then((orders: OrderStatus[]) => {
         for (const order of orders) {
-          if (_.includes(ORDER_STATUS_CODES_ATTENTION_ONHOLDS, order.OrderStatusCode)) {
-            holdOrders.push(order);
+          for (const rx of order.RxList) {
+            if (_.includes(ORDER_STATUS_CODES_ATTENTION_ONHOLDS, rx.StatusReasonCode)) {
+              // don't include other Rx
+              order.RxList = [];
+              order.RxList.push(rx);
+              holdOrders.push(order);
+              // We only care about first Rx onhold per order
+              break;
+            }
           }
         }
         this.applyFamilyFilter(holdOrders).then((filteredOrders) => {

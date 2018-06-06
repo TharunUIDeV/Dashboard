@@ -3,15 +3,24 @@ export interface OrderStatus {
   OrderNumber: string;
   OrderType: string;
   OrderDate: string;
-  OrderedFor: string;
   OrderStatus: string;
-  OrderPriority: string;
-  OrderStatusCode: string;
-  OrderStatusDescription: string;
-  DoctorFullName: string;
-  DrugName: string;
-  DrugDosage: string;
-  DrugStrength: string;
-  RxFills: number;
   ParticipantID: string;
+  OrderedFor: string;
+  RxFills: number;
+  RxList: RxInfo[];
+}
+
+export interface RxInfo {
+  DoctorFullName: string;
+  DrugDosage: string;
+  DrugName: string;
+  DrugStrength: string;
+  ParticipantID: string;
+  PatientFirstName: string;
+  PatientLastName: string;
+  DateOfBirth: string;
+  Status: string;
+  StatusReasonCode: string;
+  StatusPriority: string;
+  StatusDescription: string;
 }

@@ -50,7 +50,7 @@ export class MemberService {
                 ageLimit = pznContent.contentText;
               }
             });
-          } else if (result) {
+          } else if (result && result.contentText) {
             ageLimit = result.contentText;
           } else {
             console.error('Wrong response');
