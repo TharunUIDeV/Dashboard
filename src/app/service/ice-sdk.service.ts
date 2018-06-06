@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
 
-import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
+import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
 
 import {Observable} from 'rxjs/Observable';
 import {catchError} from 'rxjs/operators';
@@ -9,10 +9,27 @@ import {ConfigService} from './config.service';
 import {VordelPbmService} from './vordel-pbm.service';
 import * as moment from 'moment';
 
+export const enum QUERY_CONSTANTS {
+  VERSION = '8.0',
+  LINE_OF_BUSINESS = 'ICE',
+  DEVICE_ID = 'device12345',
+  DEVICE_TOKEN = '7777',
+  CHANNEL_NAME = 'MOBILE',
+  DEVICE_TYPE = 'DESKTOP',
+  APP_NAME = 'ICE_WEB',
+  SOURCE = 'CMK_WEB',
+  PBM_SOURCE = 'pbm'
+}
+
+export const HTTP_OPTIONS = {
+  headers: new HttpHeaders({
+    'Content-Type': 'application/json'
+  })
+};
 
 @Injectable()
 export class IceSdkService implements CaremarkDataServiceInterface {
-  private baseUrl =  this.configService.apiBaseUrl;
+  private baseUrl = this.configService.apiBaseUrl;
   private QueryConstants = {
     'lineOfBusiness': 'ICE',
     'deviceID': 'device12345',
@@ -30,9 +47,9 @@ export class IceSdkService implements CaremarkDataServiceInterface {
 
   static createQueryString(data: any): string {
     const queryParam = [];
-    for (const key of Object.keys(data)) {
+    Object.keys(data).forEach((key) => {
       queryParam.push(key + '=' + data[key]);
-    }
+    });
     return queryParam.join('&');
   }
 
@@ -63,13 +80,6 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         apiKey: this.configService.apiKey,
         source: this.QueryConstants.source,
       };
-
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/json'
-        })
-      };
-
       const endDate = moment().format('YYYY-MM-DD');
       const startDate = moment(endDate).subtract(30, 'days').format('YYYY-MM-DD');
       const iceUrl = this.baseUrl + '/Services/icet/getRxStatusSummary?' + IceSdkService.createQueryString(queryParam);
@@ -94,17 +104,17 @@ export class IceSdkService implements CaremarkDataServiceInterface {
       console.log(iceUrl);
       console.log(body);
 
-      this.httpClient.post(iceUrl, JSON.stringify(body), httpOptions)
+      this.httpClient.post(iceUrl, JSON.stringify(body), HTTP_OPTIONS)
         .pipe(
           catchError(this.handleError)
         ).subscribe((result) => {
-          if (result.Header.StatusCode === '0000') {
-            console.log(result.detail);
-            return reject('Not implemented fully');
-          }
-          console.error(JSON.stringify(result.Header));
-          return reject(result.Header);
-        }, (error) => reject(error));
+        if (result.Header.StatusCode === '0000') {
+          console.log(result.detail);
+          return reject('Not implemented fully');
+        }
+        console.error(JSON.stringify(result.Header));
+        return reject(result.Header);
+      }, (error) => reject(error));
     });
   }
 
@@ -124,4 +134,46 @@ export class IceSdkService implements CaremarkDataServiceInterface {
     return this.vordelPbmService.getPznByIdAndResource(params);
   }
 
+  public getIceAuthenticationToken() {
+    let ICE_API_BASE_URL;
+    if (this.configService.env === 'dev3' || this.configService.env === 'sit3') {
+      ICE_API_BASE_URL = 'https://icet-sit3.caremark.com/Services/icet/authentication?';
+    } else if (this.configService.env === 'prod') {
+      // TODO: GET Prod Url ICE_API_BASE_URL = '';
+    }
+
+    const urlPathParams: any = {
+      version: QUERY_CONSTANTS.VERSION,
+      serviceName: 'authentication',
+      operationName: 'authenticateToken',
+      appName: QUERY_CONSTANTS.APP_NAME,
+      channelName: QUERY_CONSTANTS.CHANNEL_NAME,
+      deviceType: QUERY_CONSTANTS.DEVICE_TYPE,
+      deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
+      lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
+      xmlFormat: 'False',
+      apiKey: this.configService.apiKey,
+      source: QUERY_CONSTANTS.SOURCE,
+      apiSecret: this.configService.apiSecret,
+      CORS: 'TRUE',
+    };
+
+    const authUrl = ICE_API_BASE_URL + IceSdkService.createQueryString(urlPathParams);
+    const requestBody = {
+      'request': {
+        'source': QUERY_CONSTANTS.PBM_SOURCE,
+        'pbmTokenId': this.configService.token
+      }
+    };
+
+    this.httpClient.post(authUrl, JSON.stringify(requestBody), HTTP_OPTIONS)
+      .subscribe((response) => {
+          // authIceToken = response.detail.tokenID;
+          console.log(`Response from AUTHENTICATION Service: ${JSON.stringify(response)}`);
+        },
+        err => {
+          console.log(`In Error: ${JSON.stringify(err)}`);
+          return this.handleError(err);
+        });
+  }
 }
