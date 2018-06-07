@@ -101,15 +101,14 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         }
       };
       console.log(iceUrl);
-      console.log(body);
 
-      this.httpClient.post(iceUrl, JSON.stringify(body), HTTP_OPTIONS)
+      this.httpClient.post(iceUrl, body, HTTP_OPTIONS)
         .pipe(
           catchError(this.handleError)
         ).subscribe((result) => {
         if (result.Header.StatusCode === '0000') {
-          console.log(result.detail);
-          return reject('Not implemented fully');
+          console.log(result.response.detail);
+          return resolve(result.response.detail);
         }
         console.error(JSON.stringify(result.Header));
         return reject(result.Header);
