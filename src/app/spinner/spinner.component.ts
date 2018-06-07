@@ -11,6 +11,7 @@ export class SpinnerComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
+    setTimeout(() => this.loading = false, 7000);
   }
 
 }
