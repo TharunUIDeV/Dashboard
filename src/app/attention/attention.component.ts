@@ -60,7 +60,7 @@ export class AttentionComponent implements OnInit {
   }
 
   orderNumberClick(OrderNumber) {
-    window.parent.location.href = this.configSvc.orderStatusUrl + '?OrderNumber=' + OrderNumber;
+    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
   }
 
 }

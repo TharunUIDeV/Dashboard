@@ -4,7 +4,6 @@ import {ConfigService} from '../service/config.service';
 import {OrderStatusService} from '../order-status/order-status.service';
 import {OrderStatus} from '../order-status/order-status.interface';
 import {ORDER_STATUS_TYPES} from '../order-status/order-status.constants';
-import {IceSdkService} from '../service/ice-sdk.service';
 
 interface RecentOrdersWidgetData {
   OrdersCount: number;
@@ -27,8 +26,7 @@ export class RecentOrdersComponent implements OnInit {
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
-              private orderStatusService: OrderStatusService,
-              private iceSdkService: IceSdkService) {
+              private orderStatusService: OrderStatusService) {
   }
 
   public getRxFillsFormatted(RxFills: number) {
@@ -53,7 +51,6 @@ export class RecentOrdersComponent implements OnInit {
   }
 
   public getWidgetData() {
-    this.iceSdkService.getIceAuthenticationToken();
     this.orderStatusService.getRecentOrders().then((orders: OrderStatus[]) => {
       if (orders && (orders.length !== undefined) ) {
         // console.log(orders);
@@ -80,6 +77,6 @@ export class RecentOrdersComponent implements OnInit {
   }
 
   orderNumberClick(OrderNumber) {
-    window.parent.location.href = this.configSvc.orderStatusUrl + '?OrderNumber=' + OrderNumber;
+    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
   }
 }
