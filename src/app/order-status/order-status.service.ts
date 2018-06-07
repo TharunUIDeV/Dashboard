@@ -247,12 +247,10 @@ export class OrderStatusService {
           // console.log(JSON.stringify(orderStatus));
           recentOrders.push(order);
         }
-        return resolve(recentOrders);
-        /*
         this.applyFamilyFilter(recentOrders).then((filteredOrders) => {
           // console.log(filteredOrders);
           resolve(filteredOrders);
-        });*/
+        });
       }).catch((error) => {
         console.error('Failed to get WidgetData in OrderStatus');
         console.error(JSON.stringify(error));
