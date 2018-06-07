@@ -9,8 +9,7 @@ import {ConfigService} from './config.service';
 import {VordelPbmService} from './vordel-pbm.service';
 import * as moment from 'moment';
 
-export const enum QUERY_CONSTANTS {
-  VERSION = '8.0',
+const enum QUERY_CONSTANTS {
   LINE_OF_BUSINESS = 'ICE',
   DEVICE_ID = 'device12345',
   DEVICE_TOKEN = '7777',
@@ -71,14 +70,14 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         version: '7.0',
         serviceName: 'getRxStatusSummary',
         operationName: 'getRxStatusSummary',
-        appName: this.QueryConstants.appName,
-        channelName: this.QueryConstants.channelName,
-        deviceType: this.QueryConstants.deviceType,
-        deviceToken: this.QueryConstants.deviceToken,
-        lineOfBusiness: this.QueryConstants.lineOfBusiness,
+        appName: QUERY_CONSTANTS.APP_NAME,
+        channelName: QUERY_CONSTANTS.CHANNEL_NAME,
+        deviceType: QUERY_CONSTANTS.DEVICE_TYPE,
+        deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
+        lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
         xmlFormat: false,
         apiKey: this.configService.apiKey,
-        source: this.QueryConstants.source,
+        source: QUERY_CONSTANTS.SOURCE,
       };
       const endDate = moment().format('YYYY-MM-DD');
       const startDate = moment(endDate).subtract(30, 'days').format('YYYY-MM-DD');
@@ -143,7 +142,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
     }
 
     const urlPathParams: any = {
-      version: QUERY_CONSTANTS.VERSION,
+      version: '8.0',
       serviceName: 'authentication',
       operationName: 'authenticateToken',
       appName: QUERY_CONSTANTS.APP_NAME,
