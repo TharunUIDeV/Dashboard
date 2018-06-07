@@ -6,7 +6,6 @@ export interface OrderStatus {
   OrderStatus: string;
   ParticipantID: string;
   OrderedFor: string;
-  RxFills: number;
   RxList: RxInfo[];
 }
 

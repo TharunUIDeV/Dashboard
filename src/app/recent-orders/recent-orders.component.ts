@@ -29,7 +29,7 @@ export class RecentOrdersComponent implements OnInit {
               private orderStatusService: OrderStatusService) {
   }
 
-  public getRxFillsFormatted(RxFills: number) {
+  public getRxCountFormatted(RxFills: number) {
     if (RxFills !== undefined) {
        return  RxFills > 1  ? RxFills.toString() + ' ' + 'Rxs' : RxFills.toString() + ' ' + 'Rx';
     }
