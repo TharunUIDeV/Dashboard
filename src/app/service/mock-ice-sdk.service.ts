@@ -18,7 +18,7 @@ export class MockIceSdkService implements CaremarkDataServiceInterface {
   public getOrderStatus(): Promise<any> {
 
     return new Promise((resolve, reject) => {
-      resolve((<any>MockOrderStatusData).Details);
+      resolve((<any>MockOrderStatusData).response.detail);
     });
   }
 

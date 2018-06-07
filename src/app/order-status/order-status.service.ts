@@ -10,6 +10,7 @@ import {MemberService} from '../service/member.service';
 import * as moment from 'moment';
 import {caremarksdk} from '../types/caremarksdk';
 import * as _ from 'lodash';
+import {IceSdk} from '../types/ice';
 
 @Injectable()
 export class OrderStatusService {
@@ -26,7 +27,6 @@ export class OrderStatusService {
       const end = moment(dob);
       const duration = moment.duration(now.diff(end));
       const years = Math.ceil(duration.asYears());
-      console.log(years);
       return years;
     }
     return undefined;
@@ -94,7 +94,7 @@ export class OrderStatusService {
   transformSDK(orders: caremarksdk.Order[]) {
     const transformedOrders: OrderStatus[] = [];
     for (const pbmOrder of orders) {
-      let orderStatus: any = {};
+      const orderStatus: any = {};
       orderStatus.OrderDate = pbmOrder.OrderDate;
       orderStatus.OrderNumber = pbmOrder.OrderNumber;
       orderStatus.OrderType = pbmOrder.OrderType;
@@ -102,7 +102,7 @@ export class OrderStatusService {
       orderStatus.RxList = [];
       if (pbmOrder.PrescriptionList) {
         for (const rx of pbmOrder.PrescriptionList) {
-          let rxInfo: any = {};
+          const rxInfo: any = {};
           rxInfo.DateOfBirth = rx.DateOfBirth;
           rxInfo.DoctorFullName = rx.DoctorFullName;
           rxInfo.DrugDosage = rx.DrugDosage;
@@ -136,8 +136,67 @@ export class OrderStatusService {
 
   }
 
-  transformICE(orders: any) {
+  transformICE(orders: IceSdk.Detail) {
     const transformedOrders: OrderStatus[] = [];
+    if (orders && orders.prescriptionHistoryDetails.patients && orders.prescriptionHistoryDetails.patients.patient) {
+      for (const patient of orders.prescriptionHistoryDetails.patients.patient) {
+        let prescriptions = [];
+
+        if (Array.isArray(patient.prescriptionList.prescription)) {
+          prescriptions = patient.prescriptionList.prescription;
+        } else {
+          prescriptions.push(patient.prescriptionList.prescription);
+        }
+        if (prescriptions.length > 0) {
+          for (const prescription of prescriptions) {
+            const orderDetails: any = {};
+            orderDetails.RxList = [];
+            const rxInfo: any = {};
+            const fill = prescription.fillHistory.fill;
+            if (fill.order && fill.order.orderStatus.orderStatusReasonCode) {
+              (<RxInfo>rxInfo).StatusReasonCode = fill.order.orderStatus.orderStatusReasonCode.toString();
+              if (ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode]) {
+                rxInfo.Status = ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode].RxStatus;
+                rxInfo.StatusPriority = ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode].ReasonCodePriority;
+                rxInfo.StatusDescription = ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode].RxStatusDescription;
+              }
+              // FastOrder Status Code
+              if (fill.orderType.toString().toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER) {
+                rxInfo.Status = FASTSTART_ORDER_STATUS_MAP[rxInfo.Status];
+                if (!rxInfo.Status) {
+                  rxInfo.Status = FASTSTART_ORDER_STATUS.FASTSTART_STATUS_DEFAULT;
+                }
+              }
+            }
+            (<RxInfo>rxInfo).DrugName = prescription.drug.drugName;
+            (<RxInfo>rxInfo).DrugStrength = prescription.drug.drugStrengthQuantity;
+            (<RxInfo>rxInfo).DrugDosage = prescription.drug.drugForm;
+            (<RxInfo>rxInfo).DoctorFullName = prescription.prescriber.prescriberTitle + '.' +
+                  prescription.prescriber.prescriberFirstName + ' ' + prescription.prescriber.prescriberLastName;
+            (<RxInfo>rxInfo).PatientFirstName =  patient.patientInfo.patientFirstName;
+            (<RxInfo>rxInfo).PatientLastName =  patient.patientInfo.patientLastName;
+            (<RxInfo>rxInfo).DateOfBirth =  patient.patientInfo.dateOfBirth;
+            // Participant ID
+            orderDetails.RxList.push(rxInfo);
+            (<OrderStatus>orderDetails).OrderDate = fill.orderDate;
+            (<OrderStatus>orderDetails).OrderType = fill.orderType.toString();
+            (<OrderStatus>orderDetails).OrderNumber = fill.orderNumber;
+            (<OrderStatus>orderDetails).ParticipantID = prescription.cardHolderID;
+            transformedOrders.push(orderDetails);
+          }
+        }
+        // Merge Orders if they have same number
+        const order_dict = {};
+        for ( const order of transformedOrders) {
+          const foundOrder = order_dict[order.OrderNumber];
+          if ( foundOrder !== undefined ) {
+            foundOrder.RxList.push.apply(order.RxList);
+          }
+          order_dict[order.OrderNumber] = order;
+        }
+      }
+    }
+    console.log(transformedOrders);
     return transformedOrders;
 
   }
@@ -160,7 +219,7 @@ export class OrderStatusService {
       const recentOrders: OrderStatus[] = [];
 
       this.caremarkDataService.getOrderStatus().then((ordersResponse: any) => {
-        const orders: OrderStatus[] = this.transform(ordersResponse.Results, this.caremarkDataService.dataSource);
+        const orders: OrderStatus[] = this.transform(ordersResponse, this.caremarkDataService.dataSource);
 
         // Set OrderStatus based Rx priority
         for (const order of orders) {
@@ -182,18 +241,18 @@ export class OrderStatusService {
           }
 
           if (order.OrderType && order.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER) {
-            if (order.RxList) {
               order.OrderStatus = order.RxList[0].Status;
-            }
           }
 
           // console.log(JSON.stringify(orderStatus));
           recentOrders.push(order);
         }
+        return resolve(recentOrders);
+        /*
         this.applyFamilyFilter(recentOrders).then((filteredOrders) => {
           // console.log(filteredOrders);
           resolve(filteredOrders);
-        });
+        });*/
       }).catch((error) => {
         console.error('Failed to get WidgetData in OrderStatus');
         console.error(JSON.stringify(error));
