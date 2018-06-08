@@ -194,8 +194,9 @@ export class OrderStatusService {
           const foundOrder = order_dict[order.OrderNumber];
           if ( foundOrder !== undefined ) {
             foundOrder.RxList.push.apply(order.RxList);
+          } else {
+            order_dict[order.OrderNumber] = order;
           }
-          order_dict[order.OrderNumber] = order;
         }
       }
     }
