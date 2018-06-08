@@ -1,8 +1,6 @@
 import {Injectable} from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
-
-import {HttpClient, HttpErrorResponse, HttpHeaders, HttpResponse} from '@angular/common/http';
-
+import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
 import {Observable} from 'rxjs/Observable';
 import {catchError} from 'rxjs/operators';
 import {ConfigService} from './config.service';
@@ -30,15 +28,6 @@ export const HTTP_OPTIONS = {
 @Injectable()
 export class IceSdkService implements CaremarkDataServiceInterface {
   private baseUrl = this.configService.apiBaseUrl;
-  private QueryConstants = {
-    'lineOfBusiness': 'ICE',
-    'deviceID': 'device12345',
-    'deviceToken': '7777',
-    'channelName': 'MOBILE',
-    'deviceType': 'DESKTOP',
-    'appName': 'ICE_WEB',
-    'source': 'CMK_WEB',
-  };
 
   constructor(private httpClient: HttpClient,
               private configService: ConfigService,
@@ -53,12 +42,6 @@ export class IceSdkService implements CaremarkDataServiceInterface {
     return queryParam.join('&');
   }
 
-
-  private handleError(res: HttpErrorResponse | any) {
-    console.error(res.error || res.body.error);
-    return Observable.throw(res.error || 'Server error');
-  }
-
   getMemberDetails(): Promise<any> {
     return new Promise((resolve, reject) => {
       reject('Not implemented yet');
@@ -67,24 +50,12 @@ export class IceSdkService implements CaremarkDataServiceInterface {
 
   getOrderStatus(): Promise<any> {
     return new Promise((resolve, reject) => {
-      const queryParam: any = {
-        version: '7.0',
-        serviceName: 'getRxStatusSummary',
-        operationName: 'getRxStatusSummary',
-        appName: this.QueryConstants.appName,
-        channelName: this.QueryConstants.channelName,
-        deviceType: this.QueryConstants.deviceType,
-        deviceToken: this.QueryConstants.deviceToken,
-        lineOfBusiness: this.QueryConstants.lineOfBusiness,
-        xmlFormat: false,
-        apiKey: this.configService.apiKey,
-        source: this.QueryConstants.source,
-      };
+
       const endDate = moment().format('YYYY-MM-DD');
       const startDate = moment(endDate).subtract(30, 'days').format('YYYY-MM-DD');
-      const iceUrl = this.baseUrl + '/Services/icet/getRxStatusSummary?' + IceSdkService.createQueryString(queryParam);
+      const iceUrl = this.baseUrl + '/Services/icet/getRxStatusSummary?' +
+        IceSdkService.createQueryString(this.generateQueryParams('getRxStatusSummary'));
       const body = {
-
         'request': {
           'tokenID': this.configService.iceMemberToken,
           'prescriptionHistoryInfo': {
@@ -124,56 +95,131 @@ export class IceSdkService implements CaremarkDataServiceInterface {
     });
   }
 
-  getRefillsCount(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      reject('Not implemented yet');
-    });
-  }
 
   public getPznByIdAndResource(params: any): Promise<any> {
     return this.vordelPbmService.getPznByIdAndResource(params);
   }
 
-  public getIceAuthenticationToken() {
-    let ICE_API_BASE_URL;
-    if (this.configService.env === 'dev3' || this.configService.env === 'sit3') {
-      ICE_API_BASE_URL = 'https://icet-sit3.caremark.com/Services/icet/authentication?';
-    } else if (this.configService.env === 'prod') {
-      // TODO: GET Prod Url ICE_API_BASE_URL = '';
+  async getRefillsCount(): Promise<any> {
+    let iceTokenId;
+    // Use iceToken coming from Portal else invoke the IceAuthentication Method call.
+    if (this.configService.iceMemberToken) {
+      iceTokenId = this.configService.iceMemberToken;
+    } else {
+      iceTokenId = await this.getIceAuthenticationToken();
     }
+    return new Promise((resolve, reject) => {
+      const endDate = moment().format('YYYY-MM-DD');
+      const startDate = moment(endDate).subtract(720, 'days').format('YYYY-MM-DD');
 
-    const urlPathParams: any = {
-      version: QUERY_CONSTANTS.VERSION,
-      serviceName: 'authentication',
-      operationName: 'authenticateToken',
-      appName: QUERY_CONSTANTS.APP_NAME,
-      channelName: QUERY_CONSTANTS.CHANNEL_NAME,
-      deviceType: QUERY_CONSTANTS.DEVICE_TYPE,
-      deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
-      lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
-      xmlFormat: 'False',
-      apiKey: this.configService.apiKey,
-      source: QUERY_CONSTANTS.SOURCE,
-      apiSecret: this.configService.apiSecret,
-      CORS: 'TRUE',
-    };
+      const requestBody = {
+        'request': {
+          'tokenID': iceTokenId,
+          'prescriptionHistoryInfo': {
+            'consumerKey': this.configService.apiKey,
+            'endDate': endDate,
+            'estimateDrugCost': 'Y',
+            'financialSummary': 'N',
+            'includeCompetitorRx': 'Y',
+            'includeFillHistory': 'Y',
+            'scriptSyncEligIndicator': 'Y',
+            'startDate': startDate,
+            'statusSummary': 'Y',
+            'systemIdentifier': 'ICE',
+          }
+        }
+      };
+      let refillCount = 0;
+      let iceStatusSummaryResponse = null;
+      const iceUrl = this.buildIceServiceUrl('getRxStatusSummary?') +
+        IceSdkService.createQueryString(this.generateQueryParams('getRxStatusSummary'));
 
-    const authUrl = ICE_API_BASE_URL + IceSdkService.createQueryString(urlPathParams);
-    const requestBody = {
-      'request': {
-        'source': QUERY_CONSTANTS.PBM_SOURCE,
-        'pbmTokenId': this.configService.token
-      }
-    };
-
-    this.httpClient.post(authUrl, JSON.stringify(requestBody), HTTP_OPTIONS)
-      .subscribe((response) => {
-          // authIceToken = response.detail.tokenID;
-          console.log(`Response from AUTHENTICATION Service: ${JSON.stringify(response)}`);
-        },
-        err => {
-          console.log(`In Error: ${JSON.stringify(err)}`);
-          return this.handleError(err);
+      this.httpClient.post(iceUrl, requestBody, HTTP_OPTIONS)
+        .subscribe((summaryResp) => {
+          iceStatusSummaryResponse = summaryResp;
+          if (iceStatusSummaryResponse &&
+            iceStatusSummaryResponse.response.header &&
+            iceStatusSummaryResponse.response.header.statusCode === '0000') {
+            refillCount = iceStatusSummaryResponse.response.detail.prescriptionHistoryDetails.statusSummary.rxReadyToFillCount;
+            return resolve({refillsAvailable: refillCount});
+          } else {
+            return reject(iceStatusSummaryResponse.Header);
+          }
         });
+    });
+  }
+
+  public getIceAuthenticationToken() {
+    return new Promise((resolve) => {
+      let authTokenResponse: any;
+      let authIceToken = '';
+      const authUrl = this.buildIceServiceUrl('authentication?') +
+        IceSdkService.createQueryString(this.generateQueryParams('authentication'));
+      const requestBody = {
+        'request': {
+          'source': QUERY_CONSTANTS.PBM_SOURCE,
+          'pbmTokenId': this.configService.token
+        }
+      };
+
+      this.httpClient.post(authUrl, JSON.stringify(requestBody), HTTP_OPTIONS)
+        .subscribe((resp) => {
+            authTokenResponse = resp;
+            if (authTokenResponse && authTokenResponse.response.detail) {
+              authIceToken = authTokenResponse.response.detail.tokenID;
+              resolve(authIceToken);
+            }
+          },
+          err => {
+            console.log(`In Error: ${JSON.stringify(err)}`);
+            return this.handleError(err);
+          });
+    });
+  }
+
+  /*
+    Helper Methods
+   */
+  public buildIceServiceUrl(serviceType): string {
+    return this.configService.apiBaseUrl + serviceType;
+  }
+
+  generateQueryParams(serviceType: string): any {
+    let urlPathParams: any;
+    if (serviceType === 'getRxStatusSummary') {
+      urlPathParams = {
+        version: '7.0',
+        serviceName: 'getRxStatusSummary',
+        operationName: 'getRxStatusSummary',
+        appName: QUERY_CONSTANTS.APP_NAME,
+        channelName: QUERY_CONSTANTS.CHANNEL_NAME,
+        deviceType: QUERY_CONSTANTS.DEVICE_TYPE,
+        deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
+        lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
+        xmlFormat: 'False',
+        apiKey: this.configService.apiKey
+      };
+    } else if (serviceType === 'authentication') {
+      urlPathParams = {
+        version: QUERY_CONSTANTS.VERSION,
+        serviceName: 'authentication',
+        operationName: 'authenticateToken',
+        appName: QUERY_CONSTANTS.APP_NAME,
+        channelName: QUERY_CONSTANTS.CHANNEL_NAME,
+        deviceType: QUERY_CONSTANTS.DEVICE_TYPE,
+        deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
+        lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
+        xmlFormat: 'False',
+        apiKey: this.configService.apiKey,
+        source: QUERY_CONSTANTS.SOURCE,
+        apiSecret: this.configService.apiSecret
+      };
+    }
+    return urlPathParams;
+  }
+
+  private handleError(res: HttpErrorResponse | any) {
+    console.error(res.error || res.body.error);
+    return Observable.throw(res.error || 'Server error');
   }
 }

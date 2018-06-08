@@ -32,7 +32,11 @@ export class ConfigService {
     if (isNullOrUndefined(this.env)) {
       this.env = 'prod';
     }
-    if (this.env) {
+    this.init();
+  }
+
+  private getBaseServiceUrlByType() {
+    if (this.env && this.userProfile === 'PBM') {
       if (_.includes (this.env, 'sit')) {
         this.apiBaseUrl = `https://${this.env}pbmservices.caremark.com/`;
       } else if (_.includes (this.env, 'dev')) {
@@ -42,8 +46,16 @@ export class ConfigService {
       } else if (_.includes (this.env, 'prod')) {
         this.apiBaseUrl = `https://pbmservices.caremark.com/`;
       }
+    } else if (this.env && this.userProfile === 'ICE') {
+      console.log(`SHOULD BE HERE??`);
+      if (_.includes (this.env, 'sit')) {
+        this.apiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
+      } else if (_.includes (this.env, 'dev')) {
+        this.apiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
+      } else if (_.includes (this.env, 'prod')) {
+        // TODO: Figureout Prod URL this.apiBaseUrl = //
+      }
     }
-    this.init();
   }
 
   init: Function = () => {
@@ -71,8 +83,8 @@ export class ConfigService {
         this.showLatestVersion = data.appData.ShowNewDashboardV2;
         this.rxHistoryUrl = '/wps/myportal/VIEW_RX_HISTORY';
         this.checkDrugCostFastUrl = '/wps/myportal/CHECK_DRUG_COST_FAST';
-
       }
+      this.getBaseServiceUrlByType();
     } catch (e) {
       console.log('config service --> init() :' + e);
     } finally {
@@ -89,7 +101,8 @@ export class ConfigService {
     User_Profile_Preference => ${this.userProfile}\n
     PZN_ID => ${this.pznId}`);
     return !(isNullOrUndefined(this.env) || isNullOrUndefined(this.apiKey)
-      || isNullOrUndefined(this.apiBaseUrl) || isNullOrUndefined(this.token)) || (!isNullOrUndefined(this.env) && this.env.includes('demo'));
+      || isNullOrUndefined(this.apiBaseUrl) || isNullOrUndefined(this.token)) ||
+      (!isNullOrUndefined(this.env) && this.env.includes('demo'));
   }
 
 }
