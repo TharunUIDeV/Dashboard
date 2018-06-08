@@ -118,6 +118,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
     } else {
       iceTokenId = await this.getIceAuthenticationToken();
     }
+    console.log(`Ice Token Received.. Moving to invoke RxStatusSummary`);
     return new Promise((resolve, reject) => {
       const endDate = moment().format('YYYY-MM-DD');
       const startDate = moment(endDate).subtract(720, 'days').format('YYYY-MM-DD');
@@ -150,6 +151,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
             iceStatusSummaryResponse.response.header &&
             iceStatusSummaryResponse.response.header.statusCode === '0000') {
             refillCount = iceStatusSummaryResponse.response.detail.prescriptionHistoryDetails.statusSummary.rxReadyToFillCount;
+            console.log(`Rx Count Received from the service. Final Step`);
             return resolve({refillsAvailable: refillCount});
           } else {
             return reject(iceStatusSummaryResponse.Header);
@@ -176,6 +178,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
             authTokenResponse = resp;
             if (authTokenResponse && authTokenResponse.response.detail) {
               authIceToken = authTokenResponse.response.detail.tokenID;
+              console.log(`Authentication Service for Token Invoked.`);
               resolve(authIceToken);
             }
           },
