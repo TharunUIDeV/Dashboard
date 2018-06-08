@@ -3,6 +3,7 @@ import {TealiumUtagService} from '../service/utag.service';
 
 import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
+import {PZN_CONSTANTS} from '../order-status/personalization.constants';
 
 interface RefillWidgetData {
   RefillAvailableCount: string;
@@ -25,7 +26,8 @@ export class RefillComponent implements  OnInit {
 
   constructor(private analytics: TealiumUtagService, private configSvc: ConfigService, private caremarkDataService: CaremarkDataService) { }
 
-  public getWidgetData2() {
+
+  public getRefillCount() {
     this.caremarkDataService.getRefillsCount().then((refillsData: any) => {
       // console.log(JSON.stringify(refillsData));
       this.refillWidgetData.RefillAvailableCount = refillsData.refillsAvailable;
@@ -37,26 +39,41 @@ export class RefillComponent implements  OnInit {
     }).then (() => { this.loading = false; });
   }
 
-  public getWidgetData() {
-    this.caremarkDataService.getRefills().then((refillsData: any) => {
-      let refill_count = '0';
-      for (const member of refillsData) {
-        for (const rxRefill of member.rxRefills) {
-          if (rxRefill.canAutoRefill && rxRefill.tooSoonToRefill !== false) {
-            refill_count = refill_count + 1;
+  getCDCVersion() {
+
+    const params = {
+      pznId: this.configSvc.pznId,
+      resourceTags: [PZN_CONSTANTS.PZN_CDC_FAST_VERSION_RESOURCE_TAG]
+    };
+
+    this.caremarkDataService.getPznByIdAndResource(params).then((result) => {
+      if (result && Array.isArray(result)) {
+        result.forEach(pznContent => {
+          if ( (pznContent.resourceTagId === PZN_CONSTANTS.PZN_CDC_FAST_VERSION_RESOURCE_TAG)  &&
+          (pznContent.resourceContentId === PZN_CONSTANTS.PZN_CDC_FAST_VERSION_CONTENT_ID) ) {
+            this.refillWidgetData.ShowCDC = parseInt(pznContent.resourceVisibleIndicator, 10)  === 1;
           }
-        }
+        });
+      } else if (result && result.resourceTagId === PZN_CONSTANTS.PZN_CDC_FAST_VERSION_RESOURCE_TAG  &&
+                result.resourceContentId === PZN_CONSTANTS.PZN_CDC_FAST_VERSION_CONTENT_ID ) {
+        // console.log(JSON.stringify(result));
+        this.refillWidgetData.ShowCDC = parseInt(result.resourceVisibleIndicator, 10) === 1;
+
+      } else {
+        console.error('Wrong response');
       }
-      this.refillWidgetData.RefillAvailableCount = refill_count;
     }).catch((error) => {
-      console.error('Failed to get WidgetData');
-      console.error(JSON.stringify(error));
-      this.refillWidgetData.RefillAvailableCount = undefined;
-    }).then (() => { this.loading = false; });
+      console.error('Failed to get PZN data');
+    });
+}
+
+  public getWidgetData() {
+    this.getRefillCount();
+    this.getCDCVersion();
   }
 
   ngOnInit(): void {
-    this.getWidgetData2();
+    this.getWidgetData();
   }
 
   refillClickTag() {
