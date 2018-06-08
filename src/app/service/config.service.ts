@@ -21,7 +21,7 @@ export class ConfigService {
   public userProfile: string;
   public pznId: string;
   public iceMemberToken: string;
-  public clientID; string;
+  public clientID: string;
   public showLatestVersion: boolean;
   public rxHistoryUrl: string;
   public checkDrugCostFastUrl: string;
@@ -37,24 +37,34 @@ export class ConfigService {
 
   private getBaseServiceUrlByType() {
     if (this.env && this.userProfile === 'PBM') {
-      if (_.includes (this.env, 'sit')) {
+      if (_.includes(this.env, 'sit')) {
         this.apiBaseUrl = `https://${this.env}pbmservices.caremark.com/`;
-      } else if (_.includes (this.env, 'dev')) {
+      } else if (_.includes(this.env, 'dev')) {
         this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
-      } else if (_.includes (this.env, 'stp')) {
+      } else if (_.includes(this.env, 'stp')) {
         this.apiBaseUrl = `https://stpservices.caremark.com:11101/`;
-      } else if (_.includes (this.env, 'prod')) {
+      } else if (_.includes(this.env, 'prod')) {
         this.apiBaseUrl = `https://pbmservices.caremark.com/`;
       }
     } else if (this.env && this.userProfile === 'ICE') {
-      if (_.includes (this.env, 'sit')) {
+      if (_.includes(this.env, 'sit')) {
         this.apiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
-      } else if (_.includes (this.env, 'dev')) {
+      } else if (_.includes(this.env, 'dev')) {
         this.apiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
-      } else if (_.includes (this.env, 'prod')) {
-        // TODO: Figureout Prod URL this.apiBaseUrl = //
+      } else if (_.includes(this.env, 'prod')) {
+        this.apiBaseUrl = `https://t.caremark.com/Services/icet/`;
       }
     }
+  }
+
+  private getApiKeyByType() {
+    let iceApiKey;
+    if (this.env === 'dev3' || this.env === 'sit3') {
+      iceApiKey = 'c69e906f-5c23-4be8-be73-d43527cece5b';
+    } else if (this.env === 'prod') {
+      iceApiKey = '8dcc0289-81ef-42c6-8d1f-a6e56abcd2d2';
+    }
+    return iceApiKey;
   }
 
   init: Function = () => {
@@ -81,6 +91,7 @@ export class ConfigService {
         this.showLatestVersion = data.appData.ShowNewDashboardV2;
         this.checkDrugCostFastUrl = '/wps/myportal/CHECK_DRUG_COST_FAST';
         if (this.userProfile === 'ICE') {
+          this.apiKey = this.getApiKeyByType();
           this.rxHistoryUrl = '/wps/myportal/ICE_FINANCIAL_SUMMARY';
           this.orderStatusUrl = '/wps/myportal/ICE_RECENT_ORDER';
           this.refillRxUrl = '/wps/myportal/ICE_VIEW_RX';
@@ -97,7 +108,6 @@ export class ConfigService {
       this.ready.next(this.validate());
     }
   }
-
 
   private validate(): boolean {
     console.log(`Env => ${this.env}\n
