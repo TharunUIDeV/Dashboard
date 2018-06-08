@@ -13,7 +13,7 @@ export class SpinnerComponent implements OnInit {
 
   ngOnInit() {
     let timeout = 7000; // 7 sec
-    if ( this.configService.env === 'demo') {
+    if ( this.configService.env !== 'prod') {
       timeout = 14000;
     }
     setTimeout(() => this.loading = false, timeout);
