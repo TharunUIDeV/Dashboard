@@ -5,7 +5,8 @@ import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
 
 interface RefillWidgetData {
-  RefillPrescriptionCount: string;
+  RefillAvailableCount: string;
+  ShowCDC: boolean;
 }
 
 @Component({
@@ -18,7 +19,7 @@ export class RefillComponent implements  OnInit {
   public REFILLS_URL_TEXT = 'Prescriptions Ready For Refill';
   // public REFILL_URL_TEXT = 'View prescriptions';
   public webTrends: any;
-  public refillWidgetData: RefillWidgetData = { RefillPrescriptionCount: undefined};
+  public refillWidgetData: RefillWidgetData = { RefillAvailableCount: undefined, ShowCDC: false};
   public loading = true;
 
 
@@ -27,11 +28,12 @@ export class RefillComponent implements  OnInit {
   public getWidgetData2() {
     this.caremarkDataService.getRefillsCount().then((refillsData: any) => {
       // console.log(JSON.stringify(refillsData));
-      this.refillWidgetData.RefillPrescriptionCount = refillsData.refillsAvailable;
+      this.refillWidgetData.RefillAvailableCount = refillsData.refillsAvailable;
     }).catch((error) => {
       console.error('Failed to get WidgetData');
       console.error(JSON.stringify(error));
-      this.refillWidgetData.RefillPrescriptionCount = undefined;
+      this.refillWidgetData.RefillAvailableCount = undefined;
+      this.refillWidgetData.ShowCDC = false;
     }).then (() => { this.loading = false; });
   }
 
@@ -45,11 +47,11 @@ export class RefillComponent implements  OnInit {
           }
         }
       }
-      this.refillWidgetData.RefillPrescriptionCount = refill_count;
+      this.refillWidgetData.RefillAvailableCount = refill_count;
     }).catch((error) => {
       console.error('Failed to get WidgetData');
       console.error(JSON.stringify(error));
-      this.refillWidgetData.RefillPrescriptionCount = undefined;
+      this.refillWidgetData.RefillAvailableCount = undefined;
     }).then (() => { this.loading = false; });
   }
 
