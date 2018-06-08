@@ -246,10 +246,32 @@ b {
   }
 }
 
+.block-item-button {
+  background-color: #CC0000;
+  border: none;
+  color:white;
+  padding: 12px 0;
+  font-size: 16px;
+  border-bottom: 2px #A50000;
+  width: 290px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0;
+}
+
+@media only screen and (min-device-width : 768px) {
+  .block-item-button {
+    width: 215px
+  }
+}
+
+
+/*
 .btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-primary:focus {
   background-color: #CC0000;
   border-color: #CC0000;
 }
+*/
 
 @media only screen and (min-device-width : 768px) {
   .block p {

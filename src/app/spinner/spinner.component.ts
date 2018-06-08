@@ -1,4 +1,5 @@
 import {Component, Input, OnInit} from '@angular/core';
+import {ConfigService} from '../service/config.service';
 
 @Component({
   selector: 'app-spinner',
@@ -8,10 +9,14 @@ import {Component, Input, OnInit} from '@angular/core';
 export class SpinnerComponent implements OnInit {
   @Input() loading = false;
 
-  constructor() { }
+  constructor(private configService: ConfigService) { }
 
   ngOnInit() {
-    setTimeout(() => this.loading = false, 7000);
+    let timeout = 7000; // 7 sec
+    if ( this.configService.env !== 'prod') {
+      timeout = 14000;
+    }
+    setTimeout(() => this.loading = false, timeout);
   }
 
 }

@@ -5,6 +5,7 @@ import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {BrowserService} from '../service/browser.service';
 import {CaremarkSdkService} from '../service/caremark-sdk.service';
+import {SpinnerComponent} from '../spinner/spinner.component';
 
 describe('DefaultRefillComponent', () => {
   let component: RefillComponent;
@@ -13,7 +14,10 @@ describe('DefaultRefillComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RefillComponent],
+      declarations: [
+        RefillComponent,
+        SpinnerComponent,
+      ],
       providers: [
         TealiumUtagService, BrowserService,
         {provide: ConfigService, useValue: {refillRxUrl: '/wps/myportal/REFILL_RX'}},

@@ -87,6 +87,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
                 console.log(error);
                 return reject(error);
               }
+              // console.log(JSON.stringify(jsonData));
               const response = jsonData.response;
               if (response.header.statusCode === '0000') {
                 // console.log(JSON.stringify(response.detail));

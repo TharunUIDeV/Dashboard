@@ -2,9 +2,9 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
 import {RecentOrdersComponent} from './recent-orders.component';
 import {TealiumUtagService} from '../service/utag.service';
-import {ConfigService} from '../service/config.service';
-import {BrowserService} from '../service/browser.service';
-import {CaremarkSdkService} from '../service/caremark-sdk.service';
+import {SpinnerComponent} from '../spinner/spinner.component';
+import * as fromServices from '../service';
+import {OrderStatusService} from '../order-status/order-status.service';
 
 describe('RecentOrdersComponent', () => {
   let component: RecentOrdersComponent;
@@ -13,9 +13,13 @@ describe('RecentOrdersComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [RecentOrdersComponent],
-      providers: [TealiumUtagService, ConfigService, BrowserService, CaremarkSdkService,
-        // {provide: ConfigService, useValue: {orderStatusUrl: '/wps/myportal/ORDER_STATUS'}},
+      declarations: [
+        RecentOrdersComponent,
+        SpinnerComponent,
+      ],
+      providers: [
+        [...fromServices.services,
+          OrderStatusService],
         {provide: window.parent.location.href, useValue: '/'}
       ]
     })
