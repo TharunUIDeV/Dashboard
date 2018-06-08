@@ -7,8 +7,7 @@ import {ConfigService} from './config.service';
 import {VordelPbmService} from './vordel-pbm.service';
 import * as moment from 'moment';
 
-export const enum QUERY_CONSTANTS {
-  VERSION = '8.0',
+const enum QUERY_CONSTANTS {
   LINE_OF_BUSINESS = 'ICE',
   DEVICE_ID = 'device12345',
   DEVICE_TOKEN = '7777',
@@ -50,7 +49,19 @@ export class IceSdkService implements CaremarkDataServiceInterface {
 
   getOrderStatus(): Promise<any> {
     return new Promise((resolve, reject) => {
-
+      const queryParam: any = {
+        version: '7.0',
+        serviceName: 'getRxStatusSummary',
+        operationName: 'getRxStatusSummary',
+        appName: QUERY_CONSTANTS.APP_NAME,
+        channelName: QUERY_CONSTANTS.CHANNEL_NAME,
+        deviceType: QUERY_CONSTANTS.DEVICE_TYPE,
+        deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
+        lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
+        xmlFormat: false,
+        apiKey: this.configService.apiKey,
+        source: QUERY_CONSTANTS.SOURCE,
+      };
       const endDate = moment().format('YYYY-MM-DD');
       const startDate = moment(endDate).subtract(30, 'days').format('YYYY-MM-DD');
       const iceUrl = this.baseUrl + '/Services/icet/getRxStatusSummary?' +
@@ -73,15 +84,14 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         }
       };
       console.log(iceUrl);
-      console.log(body);
 
-      this.httpClient.post(iceUrl, JSON.stringify(body), HTTP_OPTIONS)
+      this.httpClient.post(iceUrl, body, HTTP_OPTIONS)
         .pipe(
           catchError(this.handleError)
         ).subscribe((result) => {
         if (result.Header.StatusCode === '0000') {
-          console.log(result.detail);
-          return reject('Not implemented fully');
+          console.log(result.response.detail);
+          return resolve(result.response.detail);
         }
         console.error(JSON.stringify(result.Header));
         return reject(result.Header);
@@ -111,7 +121,6 @@ export class IceSdkService implements CaremarkDataServiceInterface {
     return new Promise((resolve, reject) => {
       const endDate = moment().format('YYYY-MM-DD');
       const startDate = moment(endDate).subtract(720, 'days').format('YYYY-MM-DD');
-
       const requestBody = {
         'request': {
           'tokenID': iceTokenId,
@@ -201,7 +210,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
       };
     } else if (serviceType === 'authentication') {
       urlPathParams = {
-        version: QUERY_CONSTANTS.VERSION,
+        version: '8.0',
         serviceName: 'authentication',
         operationName: 'authenticateToken',
         appName: QUERY_CONSTANTS.APP_NAME,

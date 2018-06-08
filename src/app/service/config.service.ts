@@ -1,4 +1,4 @@
-import {Injectable, APP_INITIALIZER} from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {isNullOrUndefined} from 'util';
@@ -47,7 +47,6 @@ export class ConfigService {
         this.apiBaseUrl = `https://pbmservices.caremark.com/`;
       }
     } else if (this.env && this.userProfile === 'ICE') {
-      console.log(`SHOULD BE HERE??`);
       if (_.includes (this.env, 'sit')) {
         this.apiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
       } else if (_.includes (this.env, 'dev')) {
@@ -73,7 +72,6 @@ export class ConfigService {
           this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
         }
         this.participantFirstName = data.appData.ParticipantFirstName;
-        this.orderStatusUrl = data.appData.OrderStatusUrl;
         this.refillRxUrl = data.appData.RefillRXUrl;
         this.homePageUrl = data.appData.HomePageUrl;
         this.memberId = data.appData.ParticipantExternalId;
@@ -81,8 +79,16 @@ export class ConfigService {
         this.pznId = data.appData.PersonalizationId;
         this.clientID = data.appData.clientId;
         this.showLatestVersion = data.appData.ShowNewDashboardV2;
-        this.rxHistoryUrl = '/wps/myportal/VIEW_RX_HISTORY';
         this.checkDrugCostFastUrl = '/wps/myportal/CHECK_DRUG_COST_FAST';
+        if (this.userProfile === 'ICE') {
+          this.rxHistoryUrl = '/wps/myportal/ICE_FINANCIAL_SUMMARY';
+          this.orderStatusUrl = '/wps/myportal/ICE_RECENT_ORDER';
+          this.refillRxUrl = '/wps/myportal/ICE_VIEW_RX';
+        } else {
+          this.rxHistoryUrl = '/wps/myportal/VIEW_RX_HISTORY';
+          this.orderStatusUrl = '/wps/myportal/CHECK_ORDER_STATUS';
+          this.refillRxUrl = '/wps/myportal/REFILL_RX';
+        }
       }
       this.getBaseServiceUrlByType();
     } catch (e) {
@@ -91,6 +97,7 @@ export class ConfigService {
       this.ready.next(this.validate());
     }
   }
+
 
   private validate(): boolean {
     console.log(`Env => ${this.env}\n

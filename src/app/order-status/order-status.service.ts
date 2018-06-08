@@ -34,6 +34,9 @@ export class OrderStatusService {
 
   private applyFamilyFilter(orders: OrderStatus[]) {
     return new Promise((resolve, reject) => {
+      if (this.caremarkDataService.dataSource === DATASOURCE_TYPES.VORDEL_ICE) {
+        return resolve(orders);
+      }
       this.memberSerivce.getMemberDetails().then((memberDetails: any) => {
         this.memberSerivce.getUnderAgeLimitPzn().then((underageLimit: string) => {
           resolve(this.processFamilyFilter(orders, memberDetails, underageLimit));
@@ -247,6 +250,7 @@ export class OrderStatusService {
           // console.log(JSON.stringify(orderStatus));
           recentOrders.push(order);
         }
+
         this.applyFamilyFilter(recentOrders).then((filteredOrders) => {
           // console.log(filteredOrders);
           resolve(filteredOrders);
