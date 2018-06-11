@@ -113,12 +113,8 @@ export class IceSdkService implements CaremarkDataServiceInterface {
   async getRefillsCount(): Promise<any> {
     let iceTokenId;
     // Use iceToken coming from Portal else invoke the IceAuthentication Method call.
-    if (this.configService.iceMemberToken) {
-      iceTokenId = this.configService.iceMemberToken;
-    } else {
-      iceTokenId = await this.getIceAuthenticationToken();
-    }
-    console.log(`Ice Token Received.. Moving to invoke RxStatusSummary`);
+    iceTokenId = await this.getIceAuthenticationToken();
+    console.log(`Ice Token Received.. Moving to invoke RxStatusSummary : ${JSON.stringify(iceTokenId)}`);
     return new Promise((resolve, reject) => {
       const endDate = moment().format('YYYY-MM-DD');
       const startDate = moment(endDate).subtract(720, 'days').format('YYYY-MM-DD');
@@ -178,7 +174,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
             authTokenResponse = resp;
             if (authTokenResponse && authTokenResponse.response.detail) {
               authIceToken = authTokenResponse.response.detail.tokenID;
-              console.log(`Authentication Service for Token Invoked.`);
+              console.log(`Authentication Service for Token Invoked. : ${JSON.stringify(authIceToken)}`);
               resolve(authIceToken);
             }
           },
