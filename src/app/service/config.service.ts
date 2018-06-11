@@ -63,8 +63,22 @@ export class ConfigService {
       iceApiKey = 'c69e906f-5c23-4be8-be73-d43527cece5b';
     } else if (this.env === 'prod') {
       iceApiKey = '8dcc0289-81ef-42c6-8d1f-a6e56abcd2d2';
+    } else {
+      console.error(`Not a valid environment: ${JSON.stringify(this.env)}`);
     }
     return iceApiKey;
+  }
+
+  private getApiSecretByType() {
+    let iceApiSecret;
+    if (this.env === 'dev3' || this.env === 'sit3') {
+      iceApiSecret = '040fcd53-a4be-4638-8720-e15c26290cbb';
+    } else if (this.env === 'prod') {
+      iceApiSecret = '6a88b8e0-a504-461b-a03d-f0be5b892884';
+    } else {
+      console.error(`Not a valid environment: ${JSON.stringify(this.env)}`);
+    }
+    return iceApiSecret;
   }
 
   init: Function = () => {
@@ -92,6 +106,7 @@ export class ConfigService {
         this.checkDrugCostFastUrl = '/wps/myportal/CHECK_DRUG_COST_FAST';
         if (this.userProfile === 'ICE') {
           this.apiKey = this.getApiKeyByType();
+          this.apiSecret = this.getApiSecretByType();
           this.rxHistoryUrl = '/wps/myportal/ICE_FINANCIAL_SUMMARY';
           this.orderStatusUrl = '/wps/myportal/ICE_RECENT_ORDER';
           this.refillRxUrl = '/wps/myportal/ICE_VIEW_RX';
