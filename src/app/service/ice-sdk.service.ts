@@ -27,6 +27,8 @@ export const HTTP_OPTIONS = {
 @Injectable()
 export class IceSdkService implements CaremarkDataServiceInterface {
   private baseUrl = this.configService.iceApiBaseUrl;
+  private apiKey = this.configService.iceApiKey;
+  private apiSecret = this.configService.iceApiSecret;
   private iceToken;
 
   constructor(private httpClient: HttpClient,
@@ -59,7 +61,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         'request': {
           'tokenID': '',
           'prescriptionHistoryInfo': {
-            'consumerKey': this.configService.iceApiKey,
+            'consumerKey': this.apiKey,
             'endDate': endDate,
             'estimateDrugCost': 'N',
             'financialSummary': 'N',
@@ -112,7 +114,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         'request': {
           'tokenID': iceTokenId,
           'prescriptionHistoryInfo': {
-            'consumerKey': this.configService.iceApiKey,
+            'consumerKey': this.apiKey,
             'endDate': endDate,
             'estimateDrugCost': 'Y',
             'financialSummary': 'N',
@@ -181,7 +183,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
     Helper Methods
    */
   public buildIceServiceUrl(serviceType): string {
-    return this.configService.apiBaseUrl + serviceType;
+    return this.baseUrl + serviceType;
   }
 
   generateQueryParams(serviceType: string): any {
@@ -197,7 +199,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
         lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
         xmlFormat: 'False',
-        apiKey: this.configService.iceApiKey
+        apiKey: this.apiKey
       };
     } else if (serviceType === 'authentication') {
       urlPathParams = {
@@ -210,9 +212,9 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
         lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
         xmlFormat: 'False',
-        apiKey: this.configService.iceApiKey,
+        apiKey: this.apiKey,
         source: QUERY_CONSTANTS.SOURCE,
-        apiSecret: this.configService.iceApiSecret
+        apiSecret: this.apiSecret
       };
     }
     return urlPathParams;
