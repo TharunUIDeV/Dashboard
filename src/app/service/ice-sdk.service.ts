@@ -74,9 +74,8 @@ export class IceSdkService implements CaremarkDataServiceInterface {
           }
         }
       };
-      this.getIceAuthenticationToken().then((iceToken) => {
-        this.iceToken = iceToken;
-        body.request.tokenID = this.iceToken;
+      this.getIceAuthenticationToken().then((iceTokenResult: string) => {
+        body.request.tokenID = iceTokenResult;
         this.httpClient.post(iceUrl, body, HTTP_OPTIONS)
           .pipe(
             catchError(this.handleError)
@@ -87,7 +86,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
           console.error(JSON.stringify(result.Header));
           return reject(result.Header);
         }, (error) => reject(error));
-      });
+      }, error => reject(error));
     });
   }
 
@@ -166,6 +165,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
               authTokenResponse = resp;
               if (authTokenResponse && authTokenResponse.response.detail) {
                 authIceToken = authTokenResponse.response.detail.tokenID;
+                this.iceToken = authIceToken;
                 console.log(`Authentication Service for Token Invoked. : ${JSON.stringify(authIceToken)}`);
                 return resolve(authIceToken);
               }
