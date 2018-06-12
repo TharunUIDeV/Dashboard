@@ -27,10 +27,12 @@ export const HTTP_OPTIONS = {
 @Injectable()
 export class IceSdkService implements CaremarkDataServiceInterface {
   private baseUrl = this.configService.apiBaseUrl;
+  private iceToken;
 
   constructor(private httpClient: HttpClient,
               private configService: ConfigService,
               private vordelPbmService: VordelPbmService) {
+    this.getIceAuthenticationToken().then((iceToken) => { this.iceToken = iceToken; });
   }
 
   static createQueryString(data: any): string {
@@ -49,26 +51,13 @@ export class IceSdkService implements CaremarkDataServiceInterface {
 
   getOrderStatus(): Promise<any> {
     return new Promise((resolve, reject) => {
-      const queryParam: any = {
-        version: '7.0',
-        serviceName: 'getRxStatusSummary',
-        operationName: 'getRxStatusSummary',
-        appName: QUERY_CONSTANTS.APP_NAME,
-        channelName: QUERY_CONSTANTS.CHANNEL_NAME,
-        deviceType: QUERY_CONSTANTS.DEVICE_TYPE,
-        deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
-        lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
-        xmlFormat: false,
-        apiKey: this.configService.apiKey,
-        source: QUERY_CONSTANTS.SOURCE,
-      };
       const endDate = moment().format('YYYY-MM-DD');
       const startDate = moment(endDate).subtract(30, 'days').format('YYYY-MM-DD');
       const iceUrl = this.baseUrl + '/Services/icet/getRxStatusSummary?' +
         IceSdkService.createQueryString(this.generateQueryParams('getRxStatusSummary'));
       const body = {
         'request': {
-          'tokenID': this.configService.iceMemberToken,
+          'tokenID': '',
           'prescriptionHistoryInfo': {
             'consumerKey': this.configService.apiSecret,
             'endDate': endDate,
@@ -83,19 +72,20 @@ export class IceSdkService implements CaremarkDataServiceInterface {
           }
         }
       };
-      console.log(iceUrl);
-
-      this.httpClient.post(iceUrl, body, HTTP_OPTIONS)
-        .pipe(
-          catchError(this.handleError)
-        ).subscribe((result) => {
-        if (result.Header.StatusCode === '0000') {
-          console.log(result.response.detail);
-          return resolve(result.response.detail);
-        }
-        console.error(JSON.stringify(result.Header));
-        return reject(result.Header);
-      }, (error) => reject(error));
+      this.getIceAuthenticationToken().then((iceToken) => {
+        this.iceToken = iceToken;
+        body.request.tokenID = this.iceToken;
+        this.httpClient.post(iceUrl, body, HTTP_OPTIONS)
+          .pipe(
+            catchError(this.handleError)
+          ).subscribe((result) => {
+          if (result.Header.StatusCode === '0000') {
+            return resolve(result.response.detail);
+          }
+          console.error(JSON.stringify(result.Header));
+          return reject(result.Header);
+        }, (error) => reject(error));
+      });
     });
   }
 
@@ -168,20 +158,22 @@ export class IceSdkService implements CaremarkDataServiceInterface {
           'pbmTokenId': this.configService.token
         }
       };
-
-      this.httpClient.post(authUrl, JSON.stringify(requestBody), HTTP_OPTIONS)
-        .subscribe((resp) => {
-            authTokenResponse = resp;
-            if (authTokenResponse && authTokenResponse.response.detail) {
-              authIceToken = authTokenResponse.response.detail.tokenID;
-              console.log(`Authentication Service for Token Invoked. : ${JSON.stringify(authIceToken)}`);
-              resolve(authIceToken);
-            }
-          },
-          err => {
-            console.log(`In Error: ${JSON.stringify(err)}`);
-            return this.handleError(err);
-          });
+      if (!this.iceToken) {
+        this.httpClient.post(authUrl, JSON.stringify(requestBody), HTTP_OPTIONS)
+          .subscribe((resp) => {
+              authTokenResponse = resp;
+              if (authTokenResponse && authTokenResponse.response.detail) {
+                authIceToken = authTokenResponse.response.detail.tokenID;
+                console.log(`Authentication Service for Token Invoked. : ${JSON.stringify(authIceToken)}`);
+                return resolve(authIceToken);
+              }
+            },
+            err => {
+              console.log(`In Error: ${JSON.stringify(err)}`);
+              return this.handleError(err);
+            });
+      }
+      return resolve(this.iceToken);
     });
   }
 
