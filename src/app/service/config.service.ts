@@ -10,8 +10,11 @@ export class ConfigService {
   public env: string;
   public apiKey: string;
   public apiSecret: string;
+  public iceApiKey: string;
+  public iceApiSecret: string;
   public token: string;
   public apiBaseUrl: string;
+  public iceApiBaseUrl: string;
   public participantFirstName: string;
   public orderStatusUrl: string;
   public refillRxUrl: string;
@@ -48,16 +51,16 @@ export class ConfigService {
       }
     } else if (this.env && this.userProfile === 'ICE') {
       if (_.includes(this.env, 'sit')) {
-        this.apiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
+        this.iceApiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
       } else if (_.includes(this.env, 'dev')) {
-        this.apiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
+        this.iceApiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
       } else if (_.includes(this.env, 'prod')) {
-        this.apiBaseUrl = `https://t.caremark.com/Services/icet/`;
+        this.iceApiBaseUrl = `https://t.caremark.com/Services/icet/`;
       }
     }
   }
 
-  private getApiKeyByType() {
+  private getIceApiKey() {
     let iceApiKey;
     if (this.env === 'dev3' || this.env === 'sit3') {
       iceApiKey = 'c69e906f-5c23-4be8-be73-d43527cece5b';
@@ -69,7 +72,7 @@ export class ConfigService {
     return iceApiKey;
   }
 
-  private getApiSecretByType() {
+  private getIceApiSecret() {
     let iceApiSecret;
     if (this.env === 'dev3' || this.env === 'sit3') {
       iceApiSecret = '040fcd53-a4be-4638-8720-e15c26290cbb';
@@ -105,8 +108,8 @@ export class ConfigService {
         this.showLatestVersion = data.appData.ShowNewDashboardV2;
         this.checkDrugCostFastUrl = '/wps/myportal/CHECK_DRUG_COST_FAST';
         if (this.userProfile === 'ICE') {
-          this.apiKey = this.getApiKeyByType();
-          this.apiSecret = this.getApiSecretByType();
+          this.iceApiKey = this.getIceApiKey();
+          this.iceApiSecret = this.getIceApiSecret();
           this.rxHistoryUrl = '/wps/myportal/ICE_FINANCIAL_SUMMARY';
           this.orderStatusUrl = '/wps/myportal/ICE_RECENT_ORDER';
           this.refillRxUrl = '/wps/myportal/ICE_VIEW_RX';

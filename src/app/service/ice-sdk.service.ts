@@ -26,7 +26,7 @@ export const HTTP_OPTIONS = {
 
 @Injectable()
 export class IceSdkService implements CaremarkDataServiceInterface {
-  private baseUrl = this.configService.apiBaseUrl;
+  private baseUrl = this.configService.iceApiBaseUrl;
   private iceToken;
 
   constructor(private httpClient: HttpClient,
@@ -53,13 +53,13 @@ export class IceSdkService implements CaremarkDataServiceInterface {
     return new Promise((resolve, reject) => {
       const endDate = moment().format('YYYY-MM-DD');
       const startDate = moment(endDate).subtract(30, 'days').format('YYYY-MM-DD');
-      const iceUrl = this.baseUrl + '/Services/icet/getRxStatusSummary?' +
+      const iceUrl = this.buildIceServiceUrl('getRxStatusSummary?') +
         IceSdkService.createQueryString(this.generateQueryParams('getRxStatusSummary'));
       const body = {
         'request': {
           'tokenID': '',
           'prescriptionHistoryInfo': {
-            'consumerKey': this.configService.apiSecret,
+            'consumerKey': this.configService.iceApiKey,
             'endDate': endDate,
             'estimateDrugCost': 'N',
             'financialSummary': 'N',
@@ -112,7 +112,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         'request': {
           'tokenID': iceTokenId,
           'prescriptionHistoryInfo': {
-            'consumerKey': this.configService.apiKey,
+            'consumerKey': this.configService.iceApiKey,
             'endDate': endDate,
             'estimateDrugCost': 'Y',
             'financialSummary': 'N',
@@ -197,7 +197,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
         lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
         xmlFormat: 'False',
-        apiKey: this.configService.apiKey
+        apiKey: this.configService.iceApiKey
       };
     } else if (serviceType === 'authentication') {
       urlPathParams = {
@@ -210,9 +210,9 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         deviceToken: QUERY_CONSTANTS.DEVICE_TOKEN,
         lineOfBusiness: QUERY_CONSTANTS.LINE_OF_BUSINESS,
         xmlFormat: 'False',
-        apiKey: this.configService.apiKey,
+        apiKey: this.configService.iceApiKey,
         source: QUERY_CONSTANTS.SOURCE,
-        apiSecret: this.configService.apiSecret
+        apiSecret: this.configService.iceApiSecret
       };
     }
     return urlPathParams;
