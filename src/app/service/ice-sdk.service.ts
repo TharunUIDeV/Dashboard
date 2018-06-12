@@ -80,7 +80,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
           .pipe(
             catchError(this.handleError)
           ).subscribe((result) => {
-          if (result.Header.StatusCode === '0000') {
+          if (result && result.Header && result.Header.StatusCode === '0000') {
             return resolve(result.response.detail);
           }
           console.error(JSON.stringify(result.Header));
