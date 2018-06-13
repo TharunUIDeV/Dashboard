@@ -32,6 +32,29 @@ export class OrderStatusService {
     return undefined;
   }
 
+  private sortByDate(orderList: OrderStatus[]) {
+    // Sort Orders by OrderDate
+    if (orderList) {
+      orderList.sort((left, right) => {
+        return moment.utc(left.OrderDate).diff(moment.utc(right.OrderDate));
+      }).reverse();
+    }
+  }
+
+  private filterByDays(orderList: OrderStatus[], historyDays: number) {
+    return _.filter(orderList, (order: OrderStatus) => {
+      // Only include orders within requested range
+      const now = moment(new Date());
+      const end = moment(order.OrderDate);
+      const duration = moment.duration(now.diff(end));
+      const days = Math.ceil(duration.asDays());
+      if (days > historyDays) {
+        return false;
+      }
+      return true;
+    });
+  }
+
   private applyFamilyFilter(orders: OrderStatus[]) {
     return new Promise((resolve, reject) => {
       if (this.caremarkDataService.dataSource === DATASOURCE_TYPES.VORDEL_ICE) {
@@ -140,7 +163,7 @@ export class OrderStatusService {
   }
 
   transformICE(orders: IceSdk.Detail) {
-    const transformedOrders: OrderStatus[] = [];
+    let transformedOrders: OrderStatus[] = [];
     if (orders && orders.prescriptionHistoryDetails.patients && orders.prescriptionHistoryDetails.patients.patient) {
       for (const patient of orders.prescriptionHistoryDetails.patients.patient) {
         let prescriptions = [];
@@ -203,6 +226,8 @@ export class OrderStatusService {
         }
       }
     }
+    this.sortByDate(transformedOrders);
+    transformedOrders = this.filterByDays(transformedOrders, 30);
     console.log(transformedOrders);
     return transformedOrders;
 
