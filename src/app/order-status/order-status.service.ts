@@ -156,7 +156,7 @@ export class OrderStatusService {
             orderDetails.RxList = [];
             const rxInfo: any = {};
             const fill = prescription.fillHistory.fill;
-            if (fill.order && fill.order.orderStatus.orderStatusReasonCode) {
+            if (fill && fill.order && fill.order.orderStatus.orderStatusReasonCode) {
               (<RxInfo>rxInfo).StatusReasonCode = fill.order.orderStatus.orderStatusReasonCode.toString();
               if (ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode]) {
                 rxInfo.Status = ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode].RxStatus;
@@ -164,11 +164,9 @@ export class OrderStatusService {
                 rxInfo.StatusDescription = ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode].RxStatusDescription;
               }
               // FastOrder Status Code
-              if (fill.orderType.toString().toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER) {
-                rxInfo.Status = FASTSTART_ORDER_STATUS_MAP[rxInfo.Status];
-                if (!rxInfo.Status) {
-                  rxInfo.Status = FASTSTART_ORDER_STATUS.FASTSTART_STATUS_DEFAULT;
-                }
+              if (fill.orderType && fill.orderType.toString() === '2') {
+                // Skip FastStart for ICE
+                continue;
               }
             }
             (<RxInfo>rxInfo).DrugName = prescription.drug.drugName;

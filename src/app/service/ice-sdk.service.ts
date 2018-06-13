@@ -76,6 +76,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
       };
       this.getIceAuthenticationToken().then((iceTokenResult: string) => {
         body.request.tokenID = iceTokenResult;
+        // console.log(body.request.tokenID);
         this.httpClient.post(iceUrl, body, HTTP_OPTIONS)
           .pipe(
             catchError(this.handleError)
@@ -148,7 +149,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
   }
 
   public getIceAuthenticationToken() {
-    return new Promise((resolve) => {
+    return new Promise((resolve, reject) => {
       let authTokenResponse: any;
       let authIceToken = '';
       const authUrl = this.buildIceServiceUrl('authentication?') +
@@ -160,15 +161,16 @@ export class IceSdkService implements CaremarkDataServiceInterface {
         }
       };
       if (!this.iceToken) {
-        this.httpClient.post(authUrl, JSON.stringify(requestBody), HTTP_OPTIONS)
+        this.httpClient.post(authUrl, requestBody, HTTP_OPTIONS)
           .subscribe((resp) => {
               authTokenResponse = resp;
-              if (authTokenResponse && authTokenResponse.response.detail) {
+              if (authTokenResponse && authTokenResponse.response && authTokenResponse.response.detail) {
                 authIceToken = authTokenResponse.response.detail.tokenID;
                 this.iceToken = authIceToken;
                 console.log(`Authentication Service for Token Invoked. : ${JSON.stringify(authIceToken)}`);
                 return resolve(authIceToken);
               }
+              reject(authTokenResponse.header);
             },
             err => {
               console.log(`In Error: ${JSON.stringify(err)}`);

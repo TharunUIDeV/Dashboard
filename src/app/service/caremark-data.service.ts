@@ -4,6 +4,7 @@ import {ConfigService} from './config.service';
 import {CaremarkSdkService} from './caremark-sdk.service';
 import {IceSdkService} from './ice-sdk.service';
 import {VordelPbmService} from './vordel-pbm.service';
+import {takeWhile} from 'rxjs/operators';
 
 export enum DATASOURCE_TYPES {
   CAREMARK_SDK = 'caremark-sdk',
@@ -24,9 +25,13 @@ export class CaremarkDataService implements CaremarkDataServiceInterface {
               private vordelPbmService: VordelPbmService) {
     // Set Defaults
     this.dataSource = DATASOURCE_TYPES.CAREMARK_SDK;
-    if (configService.userProfile === 'ICE') {
-      this.dataSource = DATASOURCE_TYPES.VORDEL_ICE;
-    }
+    this.configService.initDone().pipe(takeWhile( (it) => it === true)).subscribe( (init) => {
+      console.log(init);
+      if (this.configService.userProfile === 'ICE') {
+        this.dataSource = DATASOURCE_TYPES.VORDEL_ICE;
+      }
+    });
+
   }
 
   set dataSource(value: DATASOURCE_TYPES) {
