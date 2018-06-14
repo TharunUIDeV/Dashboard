@@ -165,7 +165,13 @@ export class OrderStatusService {
   transformICE(orders: IceSdk.Detail) {
     let transformedOrders: OrderStatus[] = [];
     if (orders && orders.prescriptionHistoryDetails.patients && orders.prescriptionHistoryDetails.patients.patient) {
-      for (const patient of orders.prescriptionHistoryDetails.patients.patient) {
+      let patients = [];
+      if (Array.isArray(orders.prescriptionHistoryDetails.patients.patient)) {
+        patients = orders.prescriptionHistoryDetails.patients.patient;
+      } else {
+        patients.push(orders.prescriptionHistoryDetails.patients.patient);
+      }
+      for (const patient of patients) {
         let prescriptions = [];
 
         if (Array.isArray(patient.prescriptionList.prescription)) {
@@ -175,6 +181,7 @@ export class OrderStatusService {
         }
         if (prescriptions.length > 0) {
           for (const prescription of prescriptions) {
+            // console.log(prescription);
             const orderDetails: any = {};
             orderDetails.RxList = [];
             const rxInfo: any = {};
@@ -228,7 +235,7 @@ export class OrderStatusService {
     }
     this.sortByDate(transformedOrders);
     transformedOrders = this.filterByDays(transformedOrders, 30);
-    console.log(transformedOrders);
+    // console.log(transformedOrders);
     return transformedOrders;
 
   }

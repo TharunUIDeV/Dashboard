@@ -45,7 +45,7 @@ export namespace IceSdk {
   }
 
   interface Patients {
-    patient: Patient[];
+    patient: Patient | Patient[];
   }
 
   interface Patient {

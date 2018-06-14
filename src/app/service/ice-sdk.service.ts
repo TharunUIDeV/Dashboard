@@ -63,9 +63,9 @@ export class IceSdkService implements CaremarkDataServiceInterface {
           'prescriptionHistoryInfo': {
             'consumerKey': this.apiKey,
             'endDate': endDate,
-            'estimateDrugCost': 'N',
-            'financialSummary': 'N',
-            'includeCompetitorRx': 'N',
+            'estimateDrugCost': 'Y',
+            'financialSummary': 'Y',
+            'includeCompetitorRx': 'Y',
             'includeFillHistory': 'Y',
             'scriptSyncEligIndicator': 'Y',
             'startDate': startDate,
@@ -81,12 +81,12 @@ export class IceSdkService implements CaremarkDataServiceInterface {
           .pipe(
             catchError(this.handleError)
           ).subscribe((result) => {
-          if (result && result.Header && result.Header.StatusCode === '0000') {
-            return resolve(result.response.detail);
-          }
-          console.error(JSON.stringify(result.Header));
-          return reject(result.Header);
-        }, (error) => reject(error));
+            if (result && result.response && result.response.header && result.response.header.statusCode === '0000') {
+              return resolve(result.response.detail);
+            }
+            console.error(JSON.stringify(result.response.header));
+            return reject(result.response.header);
+          }, (error) => reject(error));
       }, error => reject(error));
     });
   }
@@ -106,7 +106,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
     let iceTokenId;
     // Use iceToken coming from Portal else invoke the IceAuthentication Method call.
     iceTokenId = await this.getIceAuthenticationToken();
-    console.log(`Ice Token Received.. Moving to invoke RxStatusSummary : ${JSON.stringify(iceTokenId)}`);
+    // console.log(`Ice Token Received.. Moving to invoke RxStatusSummary : ${JSON.stringify(iceTokenId)}`);
     return new Promise((resolve, reject) => {
       const endDate = moment().format('YYYY-MM-DD');
       const startDate = moment(endDate).subtract(720, 'days').format('YYYY-MM-DD');
@@ -167,7 +167,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
               if (authTokenResponse && authTokenResponse.response && authTokenResponse.response.detail) {
                 authIceToken = authTokenResponse.response.detail.tokenID;
                 this.iceToken = authIceToken;
-                console.log(`Authentication Service for Token Invoked. : ${JSON.stringify(authIceToken)}`);
+                // console.log(`Authentication Service for Token Invoked. : ${JSON.stringify(authIceToken)}`);
                 return resolve(authIceToken);
               }
               reject(authTokenResponse.header);
@@ -176,8 +176,9 @@ export class IceSdkService implements CaremarkDataServiceInterface {
               console.log(`In Error: ${JSON.stringify(err)}`);
               return this.handleError(err);
             });
+      } else {
+        return resolve(this.iceToken);
       }
-      return resolve(this.iceToken);
     });
   }
 
