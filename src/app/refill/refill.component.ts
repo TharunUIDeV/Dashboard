@@ -85,6 +85,10 @@ export class RefillComponent implements  OnInit {
   }
 
   rxHistoryClickTag() {
+    this.analytics.link({
+      key_activity: 'new dashboard view past prescriptions',
+      link_name: 'Custom: New Dashboard view past prescriptions clicked'
+    });
     window.parent.location.href = this.configSvc.rxHistoryUrl;
   }
 

@@ -75,14 +75,13 @@ export class RecentOrdersComponent implements OnInit {
       link_name: 'Custom: New Dashboard view orders clicked'
     });
     window.parent.location.href = this.configSvc.orderStatusUrl;
-
   }
 
   orderNumberClick(OrderNumber) {
-    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
     this.analytics.link({
       key_activity: 'new dashboard individual order',
       link_name: 'Custom: New Dashboard individual order clicked'
     });
+    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
   }
 }

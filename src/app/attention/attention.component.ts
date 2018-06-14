@@ -61,11 +61,11 @@ export class AttentionComponent implements OnInit {
   }
 
   orderNumberClick(OrderNumber) {
-    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
     this.analytics.link({
       key_activity: 'new dashboard your tasks view order',
       link_name: 'Custom: New Dashboard your task view order clicked'
     });
+    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
   }
 
 }
