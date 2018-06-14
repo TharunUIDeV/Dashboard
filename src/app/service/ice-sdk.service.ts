@@ -34,7 +34,6 @@ export class IceSdkService implements CaremarkDataServiceInterface {
   constructor(private httpClient: HttpClient,
               private configService: ConfigService,
               private vordelPbmService: VordelPbmService) {
-    this.getIceAuthenticationToken().then((iceToken) => { this.iceToken = iceToken; });
   }
 
   static createQueryString(data: any): string {

@@ -26,7 +26,6 @@ export class CaremarkDataService implements CaremarkDataServiceInterface {
     // Set Defaults
     this.dataSource = DATASOURCE_TYPES.CAREMARK_SDK;
     this.configService.initDone().pipe(takeWhile( (it) => it === true)).subscribe( (init) => {
-      console.log(init);
       if (this.configService.userProfile === 'ICE') {
         this.dataSource = DATASOURCE_TYPES.VORDEL_ICE;
       }
