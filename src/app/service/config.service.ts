@@ -63,9 +63,9 @@ export class ConfigService {
       }
     } else if (this.env && this.userProfile === 'ICE') {
       if (_.includes(this.env, 'sit')) {
-        this.iceApiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
+        this.iceApiBaseUrl = `https://${this.env}www.caremark.com/Services/icet/`;
       } else if (_.includes(this.env, 'dev')) {
-        this.iceApiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
+        this.iceApiBaseUrl = `https://${this.env}www.caremark.com/Services/icet/`;
       } else if (_.includes(this.env, 'prod')) {
         this.iceApiBaseUrl = `https://t.caremark.com/Services/icet/`;
       }
