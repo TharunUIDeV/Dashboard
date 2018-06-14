@@ -1,7 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
-import {CaremarkDataService} from '../service/caremark-data.service';
 import {OrderStatusService} from '../order-status/order-status.service';
 import {OrderStatus} from '../order-status/order-status.interface';
 import {ORDER_STATUS_TYPES} from '../order-status/order-status.constants';
@@ -16,14 +15,15 @@ interface AttentionWidgetData {
   styleUrls: ['./attention.component.css']
 })
 export class AttentionComponent implements OnInit {
-  public attentionData: AttentionWidgetData = { Orders: []};
+  public attentionData: AttentionWidgetData = {Orders: []};
 
   public loading = true;
   public ORDER_STATUS_HREF_TEXT = 'View all orders';
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
-              private orderStatusService: OrderStatusService) { }
+              private orderStatusService: OrderStatusService) {
+  }
 
   public getWidgetData() {
     this.orderStatusService.getRecentOrdersOnHold().then((orders: OrderStatus[]) => {
@@ -33,18 +33,20 @@ export class AttentionComponent implements OnInit {
     }).catch((error) => {
       console.error('Failed to get WidgetData in attention');
       console.error(JSON.stringify(error));
-    }).then (() => { this.loading = false; });
+    }).then(() => {
+      this.loading = false;
+    });
   }
 
   public getOrderNumberFormatted(order: OrderStatus) {
     if (this.isFastStartOrder(order)) {
-      return  'not assigned';
+      return 'not assigned';
     }
     return order.OrderNumber;
   }
 
   public isFastStartOrder(order) {
-    if (order && order.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER ) {
+    if (order && order.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER) {
       return true;
     }
     return false;
@@ -56,11 +58,14 @@ export class AttentionComponent implements OnInit {
 
   orderClickTag() {
     window.parent.location.href = this.configSvc.orderStatusUrl;
-
   }
 
   orderNumberClick(OrderNumber) {
-    window.parent.location.href = this.configSvc.orderStatusUrl + '?OrderNumber=' + OrderNumber;
+    this.analytics.link({
+      key_activity: 'new dashboard your tasks view order',
+      link_name: 'Custom: New Dashboard your task view order clicked'
+    });
+    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
   }
 
 }

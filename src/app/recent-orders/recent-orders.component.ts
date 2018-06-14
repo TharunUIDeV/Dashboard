@@ -29,22 +29,22 @@ export class RecentOrdersComponent implements OnInit {
               private orderStatusService: OrderStatusService) {
   }
 
-  public getRxFillsFormatted(RxFills: number) {
+  public getRxCountFormatted(RxFills: number) {
     if (RxFills !== undefined) {
-       return  RxFills > 1  ? RxFills.toString() + ' ' + 'Rxs' : RxFills.toString() + ' ' + 'Rx';
+      return RxFills > 1 ? RxFills.toString() + ' ' + 'Rxs' : RxFills.toString() + ' ' + 'Rx';
     }
     return RxFills;
   }
 
   public getOrderNumberFormatted(order: OrderStatus) {
     if (this.isFastStartOrder(order)) {
-      return  'not assigned';
+      return 'not assigned';
     }
     return order.OrderNumber;
   }
 
   public isFastStartOrder(order) {
-    if (order && order.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER ) {
+    if (order && order.OrderType.toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER) {
       return true;
     }
     return false;
@@ -52,7 +52,7 @@ export class RecentOrdersComponent implements OnInit {
 
   public getWidgetData() {
     this.orderStatusService.getRecentOrders().then((orders: OrderStatus[]) => {
-      if (orders && (orders.length !== undefined) ) {
+      if (orders && (orders.length !== undefined)) {
         // console.log(orders);
         this.recentOrders.OrdersCount = orders.length;
         this.recentOrders.Orders = orders;
@@ -60,7 +60,9 @@ export class RecentOrdersComponent implements OnInit {
     }).catch((error) => {
       console.error('Failed to get WidgetData in attention');
       console.error(JSON.stringify(error));
-    }).then (() => { this.loading = false; });
+    }).then(() => {
+      this.loading = false;
+    });
   }
 
   ngOnInit(): void {
@@ -73,10 +75,13 @@ export class RecentOrdersComponent implements OnInit {
       link_name: 'Custom: New Dashboard view orders clicked'
     });
     window.parent.location.href = this.configSvc.orderStatusUrl;
-
   }
 
   orderNumberClick(OrderNumber) {
-    window.parent.location.href = this.configSvc.orderStatusUrl + '?OrderNumber=' + OrderNumber;
+    this.analytics.link({
+      key_activity: 'new dashboard individual order',
+      link_name: 'Custom: New Dashboard individual order clicked'
+    });
+    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
   }
 }

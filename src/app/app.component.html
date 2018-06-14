@@ -7,8 +7,8 @@
       {{getTitle()}}
     </h1>
     <app-attention></app-attention>
-    <app-order-status></app-order-status>
     <app-refill></app-refill>
+    <app-order-status></app-order-status>
   </div>
 </main>
 <main *ngIf="!showLatestVersion">
@@ -18,10 +18,10 @@
       {{getTitle()}}
     </h1>
     <section class="block">
-      <app-default-order-status></app-default-order-status>
+      <app-default-refill></app-default-refill>
     </section>
     <section class="block">
-      <app-default-refill></app-default-refill>
+      <app-default-order-status></app-default-order-status>
     </section>
     <a href="#" (click)="gotoDashboard()" class="with-caret">Go to full site</a>
   </div>

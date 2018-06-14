@@ -1,47 +1,44 @@
 import {Injectable} from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
-import * as MockOrderStatusData from '../../assets/mock-data/mock-order-status-data.json';
-import * as MockGetRefillsData from '../../assets/mock-data/mock-get-refills-data.json';
-import * as MockMemberInfo from '../../assets/mock-data/mock-get-memberinfo.json';
-import * as MockGetRefillsCountData from '../../assets/mock-data/mock-getRefillsCount-data.json';
+import * as MockOrderStatusData from '../../assets/mock-data/mock-ice-order-status.json';
 import * as MockGetPznByIdAndResource from '../../assets/mock-data/mock-getPznByIdAndResource-data.json';
 
 @Injectable()
-export class MockCaremarkSdkService implements CaremarkDataServiceInterface {
+export class MockIceSdkService implements CaremarkDataServiceInterface {
 
   constructor() {}
 
   public getMemberDetails(): Promise<any> {
 
     return new Promise((resolve, reject) => {
-      resolve((<any>MockMemberInfo).Details);
+      reject('Not Implemented yet');
     });
   }
 
   public getOrderStatus(): Promise<any> {
 
     return new Promise((resolve, reject) => {
-      resolve((<any>MockOrderStatusData).Details.Results);
+      resolve((<any>MockOrderStatusData).response.detail);
     });
   }
 
   public getRefills(): Promise<any> {
 
     return new Promise((resolve, reject) => {
-      resolve((<any>MockGetRefillsData).Details);
+      reject('Not Implemented yet');
     });
   }
 
   public getRefillsCount(): Promise<any> {
 
     return new Promise((resolve, reject) => {
-      resolve((<any>MockGetRefillsCountData).detail);
+      reject('Not Implemented yet');
     });
   }
 
   public getPznByIdAndResource(params: any): Promise<any> {
     return new Promise((resolve, reject) => {
-      resolve((<any>MockGetPznByIdAndResource).response.detail.detail.personalizationContent.personalizationContents);
+      resolve((<any>MockGetPznByIdAndResource).response.detail);
     });
   }
 
