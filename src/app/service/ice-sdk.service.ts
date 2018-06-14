@@ -64,7 +64,7 @@ export class IceSdkService implements CaremarkDataServiceInterface {
             'consumerKey': this.apiKey,
             'endDate': endDate,
             'estimateDrugCost': 'Y',
-            'financialSummary': 'Y',
+            'financialSummary': 'N',
             'includeCompetitorRx': 'Y',
             'includeFillHistory': 'Y',
             'scriptSyncEligIndicator': 'Y',
