@@ -164,7 +164,8 @@ export class OrderStatusService {
 
   transformICE(orders: IceSdk.Detail) {
     let transformedOrders: OrderStatus[] = [];
-    if (orders && orders.prescriptionHistoryDetails.patients && orders.prescriptionHistoryDetails.patients.patient) {
+    if (orders && orders.prescriptionHistoryDetails && orders.prescriptionHistoryDetails.patients &&
+            orders.prescriptionHistoryDetails.patients.patient) {
       let patients = [];
       if (Array.isArray(orders.prescriptionHistoryDetails.patients.patient)) {
         patients = orders.prescriptionHistoryDetails.patients.patient;
