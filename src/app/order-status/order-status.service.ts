@@ -32,6 +32,29 @@ export class OrderStatusService {
     return undefined;
   }
 
+  private sortByDate(orderList: OrderStatus[]) {
+    // Sort Orders by OrderDate
+    if (orderList) {
+      orderList.sort((left, right) => {
+        return moment.utc(left.OrderDate).diff(moment.utc(right.OrderDate));
+      }).reverse();
+    }
+  }
+
+  private filterByDays(orderList: OrderStatus[], historyDays: number) {
+    return _.filter(orderList, (order: OrderStatus) => {
+      // Only include orders within requested range
+      const now = moment(new Date());
+      const end = moment(order.OrderDate);
+      const duration = moment.duration(now.diff(end));
+      const days = Math.ceil(duration.asDays());
+      if (days > historyDays) {
+        return false;
+      }
+      return true;
+    });
+  }
+
   private applyFamilyFilter(orders: OrderStatus[]) {
     return new Promise((resolve, reject) => {
       if (this.caremarkDataService.dataSource === DATASOURCE_TYPES.VORDEL_ICE) {
@@ -140,9 +163,16 @@ export class OrderStatusService {
   }
 
   transformICE(orders: IceSdk.Detail) {
-    const transformedOrders: OrderStatus[] = [];
-    if (orders && orders.prescriptionHistoryDetails.patients && orders.prescriptionHistoryDetails.patients.patient) {
-      for (const patient of orders.prescriptionHistoryDetails.patients.patient) {
+    let transformedOrders: OrderStatus[] = [];
+    if (orders && orders.prescriptionHistoryDetails && orders.prescriptionHistoryDetails.patients &&
+            orders.prescriptionHistoryDetails.patients.patient) {
+      let patients = [];
+      if (Array.isArray(orders.prescriptionHistoryDetails.patients.patient)) {
+        patients = orders.prescriptionHistoryDetails.patients.patient;
+      } else {
+        patients.push(orders.prescriptionHistoryDetails.patients.patient);
+      }
+      for (const patient of patients) {
         let prescriptions = [];
 
         if (Array.isArray(patient.prescriptionList.prescription)) {
@@ -152,24 +182,28 @@ export class OrderStatusService {
         }
         if (prescriptions.length > 0) {
           for (const prescription of prescriptions) {
+            // console.log(prescription);
             const orderDetails: any = {};
             orderDetails.RxList = [];
             const rxInfo: any = {};
             const fill = prescription.fillHistory.fill;
-            if (fill.order && fill.order.orderStatus.orderStatusReasonCode) {
+            if (!fill) {
+              continue;
+            }
+            if (fill.order && fill.order.orderStatus && fill.order.orderStatus.orderStatusReasonCode) {
               (<RxInfo>rxInfo).StatusReasonCode = fill.order.orderStatus.orderStatusReasonCode.toString();
               if (ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode]) {
                 rxInfo.Status = ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode].RxStatus;
                 rxInfo.StatusPriority = ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode].ReasonCodePriority;
                 rxInfo.StatusDescription = ORDER_STATUS_CODES_MAP[rxInfo.StatusReasonCode].RxStatusDescription;
               }
-              // FastOrder Status Code
-              if (fill.orderType.toString().toUpperCase() === ORDER_STATUS_TYPES.FAST_ORDER) {
-                rxInfo.Status = FASTSTART_ORDER_STATUS_MAP[rxInfo.Status];
-                if (!rxInfo.Status) {
-                  rxInfo.Status = FASTSTART_ORDER_STATUS.FASTSTART_STATUS_DEFAULT;
-                }
-              }
+            } else {
+              (<RxInfo>rxInfo).Status = fill.iceOrderStatus;
+            }
+            // FastOrder Status Code
+            if (fill.orderType && fill.orderType.toString() === '2') {
+              // Skip FastStart for ICE
+              continue;
             }
             (<RxInfo>rxInfo).DrugName = prescription.drug.drugName;
             (<RxInfo>rxInfo).DrugStrength = prescription.drug.drugStrengthQuantity;
@@ -200,7 +234,9 @@ export class OrderStatusService {
         }
       }
     }
-    console.log(transformedOrders);
+    this.sortByDate(transformedOrders);
+    transformedOrders = this.filterByDays(transformedOrders, 30);
+    // console.log(transformedOrders);
     return transformedOrders;
 
   }

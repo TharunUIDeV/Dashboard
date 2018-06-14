@@ -2,6 +2,7 @@ import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {isNullOrUndefined} from 'util';
+import {Observable} from 'rxjs/Observable';
 
 declare const window: any;
 
@@ -30,6 +31,17 @@ export class ConfigService {
   public checkDrugCostFastUrl: string;
 
   ready = new BehaviorSubject(false);
+
+  public initDone(): Observable<boolean> {
+    return new Observable((observer) => {
+      if (this.ready.getValue() === true) {
+        observer.next(true);
+        // observer.complete();
+      } else {
+        observer.next(undefined);
+      }
+    });
+  }
 
   constructor() {
     if (isNullOrUndefined(this.env)) {
