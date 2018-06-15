@@ -1,7 +1,8 @@
-import {Injectable, APP_INITIALIZER} from '@angular/core';
+import {Injectable} from '@angular/core';
 import * as _ from 'lodash';
 import {BehaviorSubject} from 'rxjs/BehaviorSubject';
 import {isNullOrUndefined} from 'util';
+import {Observable} from 'rxjs/Observable';
 
 declare const window: any;
 
@@ -10,8 +11,11 @@ export class ConfigService {
   public env: string;
   public apiKey: string;
   public apiSecret: string;
+  public iceApiKey: string;
+  public iceApiSecret: string;
   public token: string;
   public apiBaseUrl: string;
+  public iceApiBaseUrl: string;
   public participantFirstName: string;
   public orderStatusUrl: string;
   public refillRxUrl: string;
@@ -21,27 +25,75 @@ export class ConfigService {
   public userProfile: string;
   public pznId: string;
   public iceMemberToken: string;
-  public clientID; string;
+  public clientID: string;
   public showLatestVersion: boolean;
+  public rxHistoryUrl: string;
+  public checkDrugCostFastUrl: string;
 
   ready = new BehaviorSubject(false);
+
+  public initDone(): Observable<boolean> {
+    return new Observable((observer) => {
+      if (this.ready.getValue() === true) {
+        observer.next(true);
+        // observer.complete();
+      } else {
+        observer.next(undefined);
+      }
+    });
+  }
 
   constructor() {
     if (isNullOrUndefined(this.env)) {
       this.env = 'prod';
     }
-    if (this.env) {
-      if (_.includes (this.env, 'sit')) {
+    this.init();
+  }
+
+  private getBaseServiceUrlByType() {
+    if (this.env && this.userProfile === 'PBM') {
+      if (_.includes(this.env, 'sit')) {
         this.apiBaseUrl = `https://${this.env}pbmservices.caremark.com/`;
-      } else if (_.includes (this.env, 'dev')) {
+      } else if (_.includes(this.env, 'dev')) {
         this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
-      } else if (_.includes (this.env, 'stp')) {
+      } else if (_.includes(this.env, 'stp')) {
         this.apiBaseUrl = `https://stpservices.caremark.com:11101/`;
-      } else if (_.includes (this.env, 'prod')) {
+      } else if (_.includes(this.env, 'prod')) {
         this.apiBaseUrl = `https://pbmservices.caremark.com/`;
       }
+    } else if (this.env && this.userProfile === 'ICE') {
+      if (_.includes(this.env, 'sit')) {
+        this.iceApiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
+      } else if (_.includes(this.env, 'dev')) {
+        this.iceApiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
+      } else if (_.includes(this.env, 'prod')) {
+        this.iceApiBaseUrl = `https://t.caremark.com/Services/icet/`;
+      }
     }
-    this.init();
+  }
+
+  private getIceApiKey() {
+    let iceApiKey;
+    if (this.env === 'dev3' || this.env === 'sit3') {
+      iceApiKey = 'c69e906f-5c23-4be8-be73-d43527cece5b';
+    } else if (this.env === 'prod') {
+      iceApiKey = '8dcc0289-81ef-42c6-8d1f-a6e56abcd2d2';
+    } else {
+      console.error(`Not a valid environment: ${JSON.stringify(this.env)}`);
+    }
+    return iceApiKey;
+  }
+
+  private getIceApiSecret() {
+    let iceApiSecret;
+    if (this.env === 'dev3' || this.env === 'sit3') {
+      iceApiSecret = '040fcd53-a4be-4638-8720-e15c26290cbb';
+    } else if (this.env === 'prod') {
+      iceApiSecret = '6a88b8e0-a504-461b-a03d-f0be5b892884';
+    } else {
+      console.error(`Not a valid environment: ${JSON.stringify(this.env)}`);
+    }
+    return iceApiSecret;
   }
 
   init: Function = () => {
@@ -59,7 +111,6 @@ export class ConfigService {
           this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
         }
         this.participantFirstName = data.appData.ParticipantFirstName;
-        this.orderStatusUrl = data.appData.OrderStatusUrl;
         this.refillRxUrl = data.appData.RefillRXUrl;
         this.homePageUrl = data.appData.HomePageUrl;
         this.memberId = data.appData.ParticipantExternalId;
@@ -67,7 +118,20 @@ export class ConfigService {
         this.pznId = data.appData.PersonalizationId;
         this.clientID = data.appData.clientId;
         this.showLatestVersion = data.appData.ShowNewDashboardV2;
+        this.checkDrugCostFastUrl = '/wps/myportal/CHECK_DRUG_COST_FAST';
+        if (this.userProfile === 'ICE') {
+          this.iceApiKey = this.getIceApiKey();
+          this.iceApiSecret = this.getIceApiSecret();
+          this.rxHistoryUrl = '/wps/myportal/ICE_FINANCIAL_SUMMARY';
+          this.orderStatusUrl = '/wps/myportal/ICE_RECENT_ORDER';
+          this.refillRxUrl = '/wps/myportal/ICE_VIEW_RX';
+        } else {
+          this.rxHistoryUrl = '/wps/myportal/VIEW_RX_HISTORY';
+          this.orderStatusUrl = '/wps/myportal/CHECK_ORDER_STATUS';
+          this.refillRxUrl = '/wps/myportal/REFILL_RX';
+        }
       }
+      this.getBaseServiceUrlByType();
     } catch (e) {
       console.log('config service --> init() :' + e);
     } finally {
@@ -84,7 +148,8 @@ export class ConfigService {
     User_Profile_Preference => ${this.userProfile}\n
     PZN_ID => ${this.pznId}`);
     return !(isNullOrUndefined(this.env) || isNullOrUndefined(this.apiKey)
-      || isNullOrUndefined(this.apiBaseUrl) || isNullOrUndefined(this.token)) || (!isNullOrUndefined(this.env) && this.env.includes('demo'));
+      || isNullOrUndefined(this.apiBaseUrl) || isNullOrUndefined(this.token)) ||
+      (!isNullOrUndefined(this.env) && this.env.includes('demo'));
   }
 
 }

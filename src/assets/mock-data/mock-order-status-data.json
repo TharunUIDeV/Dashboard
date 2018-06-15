@@ -515,8 +515,8 @@
               }
             ],
             "Status": "Prescription Entry",
-            "StatusDescription": "In Process",
-            "StatusReasonCode": "3",
+            "StatusDescription": "On Hold",
+            "StatusReasonCode": "12",
             "StatusReasonDescription": "We are processing your prescription."
           }
         ],
@@ -576,8 +576,8 @@
               }
             ],
             "Status": "Processing",
-            "StatusDescription": "In Process",
-            "StatusReasonCode": "3",
+            "StatusDescription": "On Hold",
+            "StatusReasonCode": "12",
             "StatusReasonDescription": "We are processing your prescription."
           }
         ],

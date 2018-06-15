@@ -77,6 +77,10 @@ b {
   margin-bottom: 15px;
   padding: 0 0 0 10px;
 }
+.block.tasks {
+  padding-bottom: 20px;
+}
+
 .block.recent {
   padding-bottom: 15px;
 }
@@ -90,6 +94,9 @@ b {
   .block {
     margin-bottom: 25px;
     padding: 0;
+  }
+  .block.tasks {
+    padding-bottom: 20px;
   }
   .block.recent {
     padding-bottom: 20px;
@@ -136,7 +143,7 @@ b {
   font-size: .875em;
 }
 .hold-order {
-  padding-bottom: 10px;
+  padding-bottom: 0px;
 }
 .block-item p em {
   color: #CC0000;
@@ -159,7 +166,7 @@ b {
 }
 @media only screen and (min-device-width : 768px) {
   .hold-order > a {
-    float: right;
+    float: left;
   }
 }
 .hold-order ul {
@@ -169,21 +176,31 @@ b {
 .hold-order li {
   padding: 5px 0;
 }
-.hold-order li.viewall {
-  padding-bottom: 0;
+.hold-order li.view-order {
+  padding-bottom: 0px;
 }
 @media only screen and (min-device-width : 768px) {
   .hold-order li {
     float: left;
     width: 50%;
   }
+  .hold-order li.view-order {
+    margin-left: 0.5px;
+    color: #CC0000;
+    text-decoration: none;
+  }
 }
 .block > ul {
   font-size: .875em;
 }
 @media only screen and (min-device-width : 768px) {
-  .block > ul, .all-orders {
+  .block > ul {
     margin-left: 20px;
+  }
+  .block .all-orders {
+    margin-left: 20px;
+    color: #CC0000;
+    text-decoration: none;
   }
 }
 .block > ul li {
@@ -226,5 +243,38 @@ b {
   .block > ul li .status {
     text-align: right;
     width: 20%;
+  }
+}
+
+.block-item-button {
+  background-color: #CC0000;
+  border: none;
+  color:white;
+  padding: 12px 0;
+  font-size: 16px;
+  border-bottom: 2px solid #a50000;
+  width: 290px;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0;
+}
+
+@media only screen and (min-device-width : 768px) {
+  .block-item-button {
+    width: 215px
+  }
+}
+
+
+/*
+.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-primary:focus {
+  background-color: #CC0000;
+  border-color: #CC0000;
+}
+*/
+
+@media only screen and (min-device-width : 768px) {
+  .block p {
+    font-size: 1em;
   }
 }

@@ -1,0 +1,24 @@
+{
+  "response": {
+    "header": {
+      "statusCode": "0000",
+      "statusDescription": "SUCCESS",
+      "refId": "Id-04e91a5b257ba7cf07335d0f",
+      "tokenID": "38C2D934F58337C48CA156FA945408F1"
+    },
+    "detail": {
+      "detail": {
+        "personalizationContent": {
+          "personalizationContents": {
+            "contentText": "18",
+            "id": "13539",
+            "personalizationId": "13539",
+            "resourceContentId": "2725",
+            "resourceTagId": "2725",
+            "resourceVisibleIndicator": "1"
+          }
+        }
+      }
+    }
+  }
+}

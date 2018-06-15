@@ -10,6 +10,8 @@ import {MockCaremarkSdkService} from './mock-caremark-sdk.service';
 import {environment} from '../../environments/environment';
 import {APP_INITIALIZER} from '@angular/core';
 import {MemberService} from './member.service';
+import {HttpClient} from '@angular/common/http';
+import {MockIceSdkService} from './mock-ice-sdk.service';
 
 
 const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService)  => {
@@ -22,8 +24,23 @@ const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmServic
   }
 };
 
+
+const iceSdkServiceFactory = (httpClient: HttpClient, configService: ConfigService, vordelPbmService: VordelPbmService)  => {
+  if (environment.production) {
+    return new IceSdkService(httpClient, configService, vordelPbmService);
+  } else if (environment.mock) {
+    return new MockIceSdkService();
+  } else {
+    return new IceSdkService(httpClient, configService, vordelPbmService);
+  }
+};
+
 export const CareMarkSdkServiceProvider = { provide: CaremarkSdkService,
   useFactory: caremarkSdkServiceFactory, deps: [ConfigService, VordelPbmService]};
+
+
+export const IceSdkServiceProvider = { provide: IceSdkService,
+  useFactory: iceSdkServiceFactory, deps: [HttpClient, ConfigService, VordelPbmService]};
 
 
 
@@ -41,7 +58,7 @@ export const services: any[]  = [
   TealiumUtagService,
   CareMarkSdkServiceProvider,
   CaremarkDataService,
-  IceSdkService,
+  IceSdkServiceProvider,
   VordelPbmService,
   MemberService,
 ];

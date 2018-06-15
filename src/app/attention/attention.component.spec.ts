@@ -1,6 +1,18 @@
-import { async, ComponentFixture, TestBed } from '@angular/core/testing';
+import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 
-import { AttentionComponent } from './attention.component';
+import {AttentionComponent} from './attention.component';
+import {FormsModule} from '@angular/forms';
+import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
+import {TealiumUtagService} from '../service/utag.service';
+import {BrowserService} from '../service/browser.service';
+import {ConfigService} from '../service/config.service';
+import {OrderStatusService} from '../order-status/order-status.service';
+import {CaremarkDataService} from '../service/caremark-data.service';
+import {CaremarkSdkService} from '../service/caremark-sdk.service';
+import {VordelPbmService} from '../service/vordel-pbm.service';
+import {HttpClient, HttpHandler} from '@angular/common/http';
+import {IceSdkService} from '../service/ice-sdk.service';
+import {MemberService} from '../service/member.service';
 
 describe('AttentionComponent', () => {
   let component: AttentionComponent;
@@ -8,18 +20,32 @@ describe('AttentionComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ AttentionComponent ]
+      declarations: [AttentionComponent],
+      providers: [TealiumUtagService,
+        BrowserService,
+        ConfigService,
+        OrderStatusService,
+        CaremarkDataService,
+        CaremarkSdkService,
+        VordelPbmService,
+        HttpClient,
+        HttpHandler,
+        IceSdkService,
+        MemberService],
+      imports: [FormsModule],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(AttentionComponent);
     component = fixture.componentInstance;
+    component.loading = true;
     fixture.detectChanges();
   });
 
-  xit('should create', () => {
+  it('should create', () => {
     expect(component).toBeTruthy();
   });
 });
