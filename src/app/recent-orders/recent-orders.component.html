@@ -1,4 +1,4 @@
-<div class="block recent-orders">
+<div class="block recent-orders" *ngFor="let recentOrders of recentOrders$ | async">
 
   <h2 class="block-title">{{recentOrders.OrdersCount}} {{RECENT_ORDERS_TEXT}}</h2>
   <app-spinner [loading]="loading"></app-spinner>

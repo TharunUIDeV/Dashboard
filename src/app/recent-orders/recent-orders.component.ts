@@ -4,6 +4,11 @@ import {ConfigService} from '../service/config.service';
 import {OrderStatusService} from '../order-status/order-status.service';
 import {OrderStatus} from '../order-status/order-status.interface';
 import {ORDER_STATUS_TYPES} from '../order-status/order-status.constants';
+import {Observable} from 'rxjs/Observable';
+import {RecentOrdersState} from '../store/recent-orders/recent-orders.reducer';
+import {Store} from '@ngrx/store';
+import {getRecentOrders} from '../store/app.reducer';
+import {RecentOrdersFetch} from '../store/recent-orders/recent-orders.actions';
 
 interface RecentOrdersWidgetData {
   OrdersCount: number;
@@ -26,13 +31,16 @@ export class RecentOrdersComponent implements OnInit {
   public RECENT_ORDERS_TEXT = 'Recent Orders';
   public ORDER_STATUS_HREF_TEXT = 'View all orders';
   public orderStatusWT: any;
-  public recentOrders: RecentOrdersWidgetData = {OrdersCount: undefined, Orders: []};
+  // public recentOrders: RecentOrdersWidgetData = {OrdersCount: undefined, Orders: []};
   public ORDER_STATUS_HOLD_TEXT = 'On Hold';
   public loading = true;
+  public recentOrders$: Observable<RecentOrdersState>;
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
-              private orderStatusService: OrderStatusService) {
+              private orderStatusService: OrderStatusService,
+              private store: Store<RecentOrdersState>) {
+    this.recentOrders$ = store.select(getRecentOrders);
   }
 
   public getRxCountFormatted(RxFills: number) {
@@ -55,7 +63,7 @@ export class RecentOrdersComponent implements OnInit {
     }
     return false;
   }
-
+/*
   public getWidgetData() {
     this.orderStatusService.getRecentOrders().then((orders: OrderStatus[]) => {
       if (orders && (orders.length !== undefined)) {
@@ -70,9 +78,11 @@ export class RecentOrdersComponent implements OnInit {
       this.loading = false;
     });
   }
+  */
 
   ngOnInit(): void {
-    this.getWidgetData();
+    this.store.dispatch(new RecentOrdersFetch());
+    // this.getWidgetData();
   }
 
   orderClickTag() {
