@@ -170,7 +170,13 @@ b {
 }
 .hold-order ul {
   overflow: auto;
-  padding: 5px 0;
+  border: 2px solid #DEDBDB;
+  margin-bottom: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 15px;
+  padding-top: 15px;
+
 }
 .hold-order li {
   padding: 5px 0;
@@ -179,6 +185,12 @@ b {
   padding-bottom: 0px;
 }
 @media only screen and (min-device-width : 768px) {
+  .hold-order ul {
+    padding-left: 10px;
+    padding-right: 10px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
   .hold-order li {
     float: left;
     width: 50%;
