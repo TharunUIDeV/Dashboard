@@ -4,6 +4,7 @@ import {ConfigService} from '../service/config.service';
 import {OrderStatusService} from '../order-status/order-status.service';
 import {OrderStatus} from '../order-status/order-status.interface';
 import {ORDER_STATUS_TYPES} from '../order-status/order-status.constants';
+import {EccrService} from '../service/eccr.service';
 
 interface AttentionWidgetData {
   Orders: OrderStatus[];
@@ -22,10 +23,17 @@ export class AttentionComponent implements OnInit {
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
-              private orderStatusService: OrderStatusService) {
+              private orderStatusService: OrderStatusService,
+              private eccrService: EccrService) {
   }
 
   public getWidgetData() {
+    const additionalData = [
+      { key: 'ORDER_NUM', value: 'TEST' },
+      { key: 'FAST_STYLE', value: 'FASTINT' },
+      { key: 'FAST_INDICATOR', value: 'CAREMARK' }
+    ];
+    this.eccrService.log('3225', 'Completed', this.configSvc.token, additionalData);
     this.orderStatusService.getRecentOrdersOnHold().then((orders: OrderStatus[]) => {
       if (orders && orders.length) {
         this.attentionData.Orders = orders;

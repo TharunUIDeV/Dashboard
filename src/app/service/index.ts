@@ -12,6 +12,7 @@ import {APP_INITIALIZER} from '@angular/core';
 import {MemberService} from './member.service';
 import {HttpClient} from '@angular/common/http';
 import {MockIceSdkService} from './mock-ice-sdk.service';
+import {EccrService} from './eccr.service';
 
 
 const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService)  => {
@@ -61,4 +62,6 @@ export const services: any[]  = [
   IceSdkServiceProvider,
   VordelPbmService,
   MemberService,
+  EccrService
 ];
+
