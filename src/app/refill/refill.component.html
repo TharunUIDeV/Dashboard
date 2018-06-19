@@ -4,11 +4,11 @@
   <section class="block-item">
     <section *ngIf="refillWidgetData.RefillAvailableCount === '0'">
       <p>You don't have any currenlty available prescripitons.
-        <a href="#" (click)="rxHistoryClickTag()" class="with-caret">View past prescriptions</a>
+        <a href="#" (click)="rxHistoryClickTag()" class="link-red with-caret">View past prescriptions</a>
       </p>
     </section>
     <section *ngIf="refillWidgetData.RefillAvailableCount !== '0'">
-      <a href="#" (click)="refillClickTag()" class="with-caret">{{refillWidgetData.RefillAvailableCount}}
+      <a href="#" (click)="refillClickTag()" class="link-red with-caret">{{refillWidgetData.RefillAvailableCount}}
         {{getRefillUrlFormatted(refillWidgetData.RefillAvailableCount)}}</a>
     </section>
 
