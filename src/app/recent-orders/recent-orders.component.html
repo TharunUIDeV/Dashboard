@@ -1,7 +1,8 @@
-<div class="block recent">
+<div class="block recent-orders">
 
   <h2 class="block-title">{{recentOrders.OrdersCount}} {{RECENT_ORDERS_TEXT}}</h2>
   <app-spinner [loading]="loading"></app-spinner>
+  <section class="block-item recent-order">
     <ul>
       <li *ngFor="let Order of recentOrders.Orders | slice:0:3">
         <a href="" (click)="orderNumberClick(Order.OrderNumber)">Order #{{getOrderNumberFormatted(Order)}}</a>
@@ -10,6 +11,7 @@
         <span class="rx">{{getRxCountFormatted(Order.RxList.length)}}</span>
       </li>
     </ul>
+  </section>
   <section class="block-item">
     <p *ngIf="recentOrders.OrdersCount === 0" style="display: inline-block">You don't have any recent orders.</p>
     <a href="" class="link-red with-caret" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a>
