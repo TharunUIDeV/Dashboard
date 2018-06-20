@@ -16,6 +16,5 @@ export class RecentOrdersEffects {
   recentOrdersFetch$: Observable<Action> = this.actions$
     .ofType(RecentOrdersActionTypes.RecentOrdersFetch)
     .switchMap(action => this.orderStatusService.getRecentOrders)
-    .map((orders: any) => this.RecentOrdersActions.rece
-    ;
+    .map((orders: any) => { console.log(orders); });
 }
