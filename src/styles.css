@@ -214,20 +214,16 @@ b {
 }
 
 
-.recent-order .all-orders {
-  color: #CC0000;
-  text-decoration: none;
-}
-
 .recent-order > ul {
   overflow: auto;
 }
 .recent-order > ul li {
-  margin-bottom: 10px;
+  margin-bottom: 15px;
   overflow: auto;
 }
 .recent-order > ul li span, .recent-order > ul li a {
-  padding: 4px 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
 }
 .recent-order > ul li a, .recent-order > ul li .placed {
   color: #000;
@@ -277,6 +273,12 @@ b {
     width: 20%;
   }
 }
+
+.recent-order .all-orders {
+  color: #CC0000;
+  text-decoration: none;
+}
+
 
 .block-item-button {
   background-color: #CC0000;
