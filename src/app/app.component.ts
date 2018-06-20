@@ -38,7 +38,7 @@ export class AppComponent implements OnInit {
   }
 
   getUserProfilePreference() {
-    if (this.configSvc.showLatestVersion === false || this.configSvc.userProfile === 'ICE') {
+    if (this.configSvc.showLatestVersion === false ) {
       this.showLatestVersion = false;
     }
   }
