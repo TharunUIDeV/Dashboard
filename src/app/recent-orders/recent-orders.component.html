@@ -11,9 +11,10 @@
         <span class="rx">{{getRxCountFormatted(Order.RxList.length)}}</span>
       </li>
     </ul>
+  </section>
+  <section class="block-item">
     <p *ngIf="recentOrders.OrdersCount === 0" style="display: inline-block">You don't have any recent orders.</p>
     <a href="" class="link-red with-caret" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a>
   </section>
-
 </div>
 
