@@ -98,6 +98,12 @@ b {
   color: #a50000;
 }
 
+@media only screen and (min-device-width : 768px) {
+  .block p {
+    font-size: 1em;
+  }
+}
+
 .with-caret{
   background:	url(./assets/images/caret.png) right center no-repeat;
   background-size: 11px 18px;
@@ -149,18 +155,11 @@ b {
   }
 }
 
-.block-item p {
+.alert-text p {
   color: #333;
-  line-height: 1.325em;
-  padding-bottom: 10px;
-}
-@media only screen and (min-device-width : 768px) {
-  .block-item p {
-    padding-bottom: 15px;
-  }
 }
 
-.block-item p em {
+.alert-text p em {
   color: #CC0000;
   font-weight: bold;
 }
@@ -175,6 +174,7 @@ b {
   padding-right: 25px;
   padding-left: 25px;
   padding-bottom: 5px;
+  font-size: 16px;
 }
 @media only screen and (min-device-width : 768px) {
   .hold-order > a {
@@ -187,20 +187,22 @@ b {
   margin-bottom: 15px;
   padding-left: 10px;
   padding-right: 10px;
-  padding-bottom: 15px;
-  padding-top: 15px;
+  padding-bottom: 10px;
+  padding-top: 10px;
 
 }
 .hold-order li {
-  padding: 5px 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 100%;
 }
 .hold-order li.view-order {
   padding-bottom: 0px;
 }
 @media only screen and (min-device-width : 768px) {
   .hold-order ul {
-    padding-left: 10px;
-    padding-right: 10px;
+    padding-left: 15px;
+    padding-right: 15px;
     padding-bottom: 10px;
     padding-top: 10px;
   }
@@ -309,9 +311,4 @@ b {
   }
 }
 
-@media only screen and (min-device-width : 768px) {
-  .block p {
-    font-size: 1em;
-  }
-}
 
