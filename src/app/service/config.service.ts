@@ -29,6 +29,8 @@ export class ConfigService {
   public showLatestVersion: boolean;
   public rxHistoryUrl: string;
   public checkDrugCostFastUrl: string;
+  public portalSessionId: string;
+  public clientChannelId: string;
 
   ready = new BehaviorSubject(false);
 
@@ -118,6 +120,8 @@ export class ConfigService {
         this.pznId = data.appData.PersonalizationId;
         this.clientID = data.appData.clientId;
         this.showLatestVersion = data.appData.ShowNewDashboardV2;
+        this.portalSessionId = data.appData.sessionID;
+        this.clientChannelId = data.appData.clientChannelId;
         this.checkDrugCostFastUrl = '/wps/myportal/CHECK_DRUG_COST_FAST';
         if (this.userProfile === 'ICE') {
           this.iceApiKey = this.getIceApiKey();

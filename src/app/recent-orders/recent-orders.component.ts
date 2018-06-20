@@ -10,6 +10,12 @@ interface RecentOrdersWidgetData {
   Orders: OrderStatus[];
 }
 
+export enum RECENT_ORDER_INTERACTION {
+  TYPE = 3226,
+  NAME = 'Hold View Order',
+  RESULT_COMPLETED = 'Completed',
+  RESULT_FAIL = 'Fail'
+}
 
 @Component({
   selector: 'app-order-status',

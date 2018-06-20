@@ -3,13 +3,6 @@ import {HttpClient, HttpParams} from '@angular/common/http';
 import {BrowserService} from './browser.service';
 import {ConfigService} from './config.service';
 
-export enum HOLD_ORDER_INTERACTION {
-  TYPE = 3225,
-  NAME = 'Hold View Order',
-  RESULT_COMPLETED = 'Completed',
-  RESULT_FAIL = 'Fail'
-}
-
 @Injectable()
 export class EccrService {
 
@@ -19,10 +12,10 @@ export class EccrService {
     'apiSecret': this.configService.apiSecret,
     'serviceName': 'logInteractionEvent',
     'version': '2.0',
-    'sessionID': '',
+    'sessionID': this.configService.portalSessionId,
     'channelType': this.channelType,
     'systemID': this.getSystemId,
-    'clientChannelID': '127.0.0.1',
+    'clientChannelID': this.configService.clientChannelId,
     'corporateChannelID': 'NEWDASHBOARD',
     'sessionStartTime': '',
     'sessionEndTime': '',
@@ -35,7 +28,7 @@ export class EccrService {
     'memberPartySourceID': 'QL',
     'sessionInitStatus': 'Auth',
     'serviceID': '',
-    'interactionType': HOLD_ORDER_INTERACTION.TYPE,
+    'interactionType': '',
     'interactionStartTimestamp': '',
     'interactionEndTimestamp': '',
     'interactionResult': '',
@@ -49,13 +42,6 @@ export class EccrService {
     'memberInteraction': '',
     'interactionData': ''
   };
-
-  private readonly additionalData = [
-    {
-      key: 'ORDER_NUM',
-      value: '1234'
-    }
-  ];
 
   private get channelType() {
     const deviceType = this.browserService.deviceType;
@@ -198,19 +184,19 @@ export class EccrService {
            'trans_seq_no': '1',
            'ref_source_key_id': 'QL',
            'ref_key_id': 'RX_NUM',
-           'ref_key': 'LIPITOR',
+           'ref_key': 'LIPITOR', // TODO: Abhishek to discuss with Jit
            TRNXS_DTL: {
              '@transactionSeq' : '1',
              TRNX_ITEM: [
                {
                  '@sequence': '0',
                  '@name': 'RX_NAME',
-                 '@value': 'LIPTOR',
+                 '@value': 'LIPTOR', // TODO: Abhishek to discuss with Jit
                },
                {
                  '@sequence': '1',
                  '@name': 'HOLD_REASON',
-                 '@value': 'Doctor On Hold',
+                 '@value': 'Doctor On Hold', // Hardcoded until dashboard cares other order statuses
                }
              ]
            },
@@ -235,10 +221,6 @@ export class EccrService {
 
   log(type, status, sessionId, additionalData = []) {
     const eccrUrl = `https://sit3pbmservices.caremark.com/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}`;
-    const interactionData = this.additionalData;
-    additionalData.map(data => {
-      interactionData.push(data);
-    });
     const requestBody = {
       interaction: {
         ...this.interaction,
@@ -248,7 +230,7 @@ export class EccrService {
         sessionID: sessionId,
         sourceInteractionId: EccrService.guid,
         interactionData: {
-          additional_data: interactionData
+          additional_data: additionalData
         }
       }
     };

@@ -10,6 +10,13 @@ interface AttentionWidgetData {
   Orders: OrderStatus[];
 }
 
+export enum HOLD_ORDER_INTERACTION {
+  TYPE = 3225,
+  NAME = 'Hold View Order',
+  RESULT_COMPLETED = 'Completed',
+  RESULT_FAIL = 'Fail'
+}
+
 @Component({
   selector: 'app-attention',
   templateUrl: './attention.component.html',
@@ -28,12 +35,6 @@ export class AttentionComponent implements OnInit {
   }
 
   public getWidgetData() {
-    const additionalData = [
-      { key: 'ORDER_NUM', value: 'TEST' },
-      { key: 'FAST_STYLE', value: 'FASTINT' },
-      { key: 'FAST_INDICATOR', value: 'CAREMARK' }
-    ];
-    this.eccrService.log('3225', 'Completed', this.configSvc.token, additionalData);
     this.orderStatusService.getRecentOrdersOnHold().then((orders: OrderStatus[]) => {
       if (orders && orders.length) {
         this.attentionData.Orders = orders;
@@ -73,7 +74,18 @@ export class AttentionComponent implements OnInit {
       key_activity: 'new dashboard your tasks view order',
       link_name: 'Custom: New Dashboard your task view order clicked'
     });
+    this.eccrService.log(HOLD_ORDER_INTERACTION.TYPE, HOLD_ORDER_INTERACTION.RESULT_COMPLETED, this.configSvc.token, this.generateAdditionalDataforEccr());
     window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
+  }
+
+  generateAdditionalDataforEccr() {
+    const additionalData = [
+      {key: 'ORDER_NUM', value: 'TEST'},
+      {key: 'FAST_STYLE', value: 'FASTINT'},
+      {key: 'FAST_INDICATOR', value: 'CAREMARK'}
+    ];
+    return additionalData;
+
   }
 
 }
