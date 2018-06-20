@@ -131,6 +131,7 @@ b {
 
 .block-title {
   font-weight: bold;
+  font-size: 1.25em;
   padding-top: 0;
   padding-right: 0;
   padding-left: 0;
@@ -139,7 +140,7 @@ b {
 
 @media only screen and (min-device-width : 768px) {
   .block-title {
-    font-size: 1.125em;
+    font-size: 1.25em;
   }
 }
 
@@ -274,11 +275,6 @@ b {
     text-align: right;
     width: 20%;
   }
-}
-
-.recent-order .all-orders {
-  color: #CC0000;
-  text-decoration: none;
 }
 
 
