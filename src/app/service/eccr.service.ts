@@ -22,7 +22,7 @@ export class EccrService {
     'sessionID': '',
     'channelType': this.channelType,
     'systemID': this.getSystemId,
-    'clientChannelID': '',
+    'clientChannelID': '127.0.0.1',
     'corporateChannelID': 'NEWDASHBOARD',
     'sessionStartTime': '',
     'sessionEndTime': '',
@@ -52,32 +52,8 @@ export class EccrService {
 
   private readonly additionalData = [
     {
-      key: 'FAIL_CODE',
-      value: ''
-    },
-    {
-      key: 'FAIL_REASON',
-      value: ''
-    },
-    {
       key: 'ORDER_NUM',
-      value: ''
-    },
-    {
-      key: 'FAST_STYLE',
-      value: ''
-    },
-    {
-      key: 'HOST_ID',
-      value: ''
-    },
-    {
-      key: 'COMPONENT_ID',
-      value: ''
-    },
-    {
-      key: 'FAST_INDICATOR',
-      value: ''
+      value: '1234'
     }
   ];
 
@@ -219,12 +195,27 @@ export class EccrService {
       trans_interaction: {
        trans: [
          {
-           trans_seq_no: {
-             _prefix: 'lid',
-             _text: '1'
-           }
+           'trans_seq_no': '1',
+           'ref_source_key_id': 'QL',
+           'ref_key_id': 'RX_NUM',
+           'ref_key': 'LIPITOR',
+           TRNXS_DTL: {
+             '@transactionSeq' : '1',
+             TRNX_ITEM: [
+               {
+                 '@sequence': '0',
+                 '@name': 'RX_NAME',
+                 '@value': 'LIPTOR',
+               },
+               {
+                 '@sequence': '1',
+                 '@name': 'HOLD_REASON',
+                 '@value': 'Doctor On Hold',
+               }
+             ]
+           },
          }
-       ]
+       ],
       }
     };
     return transactionData;
@@ -261,7 +252,7 @@ export class EccrService {
         }
       }
     };
-
+    console.log(`ECCR Request: ${JSON.stringify(requestBody)}`);
     let httpParams = new HttpParams();
     httpParams = httpParams.append('contentType', 'json');
     return this.httpClient.post(eccrUrl, requestBody, {params: httpParams}).subscribe((data) => {
