@@ -13,6 +13,7 @@ import {VordelPbmService} from '../service/vordel-pbm.service';
 import {HttpClient, HttpHandler} from '@angular/common/http';
 import {IceSdkService} from '../service/ice-sdk.service';
 import {MemberService} from '../service/member.service';
+import {EccrService} from '../service/eccr.service';
 
 describe('AttentionComponent', () => {
   let component: AttentionComponent;
@@ -31,7 +32,8 @@ describe('AttentionComponent', () => {
         HttpClient,
         HttpHandler,
         IceSdkService,
-        MemberService],
+        MemberService,
+        EccrService],
       imports: [FormsModule],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
