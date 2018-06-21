@@ -14,11 +14,11 @@ import {RecentOrdersReducer, RecentOrdersState} from './recent-orders/recent-ord
 import {storeFreeze} from 'ngrx-store-freeze';
 
 export interface AppState {
-  recetnOrdersState: RecentOrdersState;
+  recentOrdersState: RecentOrdersState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
-  recetnOrdersState: RecentOrdersReducer,
+  recentOrdersState: RecentOrdersReducer,
 
 };
 

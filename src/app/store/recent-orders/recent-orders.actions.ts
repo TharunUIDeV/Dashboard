@@ -21,8 +21,9 @@ export class RecentOrdersFetchComplete implements Action {
 
 export class RecentOrdersFetchError implements Action {
   readonly type = RecentOrdersActionTypes.RecentOrdersFetchError;
+  constructor(public payload: string) {
+  }
 }
-
 
 export class RecentOrdersPost implements Action {
   readonly type = RecentOrdersActionTypes.RecentOrdersPost;

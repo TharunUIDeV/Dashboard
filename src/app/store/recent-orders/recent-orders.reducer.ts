@@ -3,25 +3,32 @@ import {RecentOrdersActions, RecentOrdersActionTypes} from './recent-orders.acti
 import {OrderStatus} from '../../order-status/order-status.interface';
 
 export interface RecentOrdersState {
+  loading: boolean;
+  error: string;
   OrdersCount: number;
   Orders: OrderStatus[];
 }
 
-const initialState: RecentOrdersState = {OrdersCount: undefined, Orders: []};
+export const initialRecentOrderState: RecentOrdersState = {
+  loading: true,
+  error: '',
+  OrdersCount: undefined,
+  Orders: []};
 
-export function RecentOrdersReducer(state = initialState, action: RecentOrdersActions): RecentOrdersState {
+export function RecentOrdersReducer(state = initialRecentOrderState, action: RecentOrdersActions): RecentOrdersState {
   switch (action.type) {
 
     case RecentOrdersActionTypes.RecentOrdersFetch:
       return state;
 
     case RecentOrdersActionTypes.RecentOrdersFetchComplete:
-      return {OrdersCount: action.payload.length, Orders: action.payload};
+      return {loading: false, error: '', OrdersCount: action.payload.length, Orders: action.payload};
 
-    case RecentOrdersActionTypes.RecentOrdersPost:
-      return state;
+    case RecentOrdersActionTypes.RecentOrdersFetchError:
+      return  {loading: false, error: action.payload, OrdersCount: undefined, Orders: []};
 
     default:
       return state;
   }
 }
+

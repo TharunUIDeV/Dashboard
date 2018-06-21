@@ -31,7 +31,7 @@ export class RecentOrdersEffects {
           return new RecentOrdersFetchComplete(response);
         }),
         catchError((err) => {
-          return of(new RecentOrdersFetchError());
+          return of(new RecentOrdersFetchError(err));
         }));
     }));
 }

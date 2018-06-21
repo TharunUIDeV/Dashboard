@@ -1,5 +1,5 @@
-<section class="block tasks" *ngIf="attentionData.Orders.length > 0">
-  <app-spinner [loading]="loading"></app-spinner>
+<app-spinner [loading]="loading"></app-spinner>
+<section class="block tasks" *ngIf="!loading && attentionData.Orders && attentionData.Orders.length > 0">
   <h2 class="block-title">Your Tasks</h2>
   <section class="block-item alert-text">
     <em class="important">Ask your doctor to contact us</em>
@@ -18,5 +18,4 @@
         order</a></li>
     </ul>
   </section>
-  <!--a href="" class="with-caret all-orders" (click)="orderClickTag()">{{ORDER_STATUS_HREF_TEXT}}</a-->
 </section>

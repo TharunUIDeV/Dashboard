@@ -5,7 +5,7 @@ import {OrderStatusService} from '../order-status/order-status.service';
 import {OrderStatus} from '../order-status/order-status.interface';
 import {ORDER_STATUS_TYPES} from '../order-status/order-status.constants';
 import {Observable} from 'rxjs/Observable';
-import {RecentOrdersState} from '../store/recent-orders/recent-orders.reducer';
+import {initialRecentOrderState, RecentOrdersState} from '../store/recent-orders/recent-orders.reducer';
 import {Store} from '@ngrx/store';
 import {RecentOrdersFetch} from '../store/recent-orders/recent-orders.actions';
 
@@ -29,13 +29,13 @@ export class RecentOrdersComponent implements OnInit {
   public ORDER_STATUS_HOLD_TEXT = 'On Hold';
   public loading = true;
   public recentOrders$: Observable<RecentOrdersState>;
-  public recentOrders: RecentOrdersState;
+  public recentOrders: RecentOrdersState = {...initialRecentOrderState};
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
               private orderStatusService: OrderStatusService,
               private store: Store<any>) {
-    this.recentOrders$ = this.store.select('recetnOrdersState');
+    this.recentOrders$ = this.store.select('recentOrdersState');
   }
 
   public getRxCountFormatted(RxFills: number) {
@@ -60,11 +60,13 @@ export class RecentOrdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.recentOrders$.subscribe((r) => {
-      this.recentOrders = r;
-      this.loading = false;
-    });
     this.store.dispatch(new RecentOrdersFetch());
+    this.recentOrders$.subscribe((r) => {
+      console.log('Sridhar: in fetch subscribe')
+      console.log(r);
+      this.recentOrders = r;
+      this.loading = r.loading;
+    });
   }
 
   orderClickTag() {

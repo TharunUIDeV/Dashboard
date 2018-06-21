@@ -1,5 +1,5 @@
-<section class="block refill">
-  <app-spinner [loading]="loading"></app-spinner>
+<app-spinner [loading]="loading"></app-spinner>
+<section class="block refill" *ngIf="!loading">
   <h2 class="block-title">Your Prescriptions</h2>
   <section class="block-item">
     <section *ngIf="refillWidgetData.RefillAvailableCount === '0'">

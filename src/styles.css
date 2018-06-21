@@ -266,10 +266,10 @@ b {
   }
   .recent-order > ul li .placed {
     clear: none;
-    width: 43%;
+    width: 45%;
   }
   .recent-order > ul li .rx {
-    width: 10%;
+    width: 8%;
   }
   .recent-order > ul li .status {
     text-align: right;
