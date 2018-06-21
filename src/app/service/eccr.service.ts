@@ -16,11 +16,11 @@ export class EccrService {
     'channelType': this.channelType,
     'systemID': this.getSystemId,
     'clientChannelID': this.configService.clientChannelId,
-    'corporateChannelID': 'NEWDASHBOARD',
+    'corporateChannelID': <any>window.location.href.trim(),
     'sessionStartTime': '',
     'sessionEndTime': '',
     'sessionInitiatior': 'Consumer',
-    'memberPartyIdLevel_01': '', // TODO: Member Info Service - Internal Id
+    'memberPartyIdLevel_01': '',
     'memberPartyIdLevel_02': '',
     'memberPartyIdLevel_03': '',
     'memberPartyIdLevel_04': '',

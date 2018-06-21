@@ -11,8 +11,6 @@ import {Store} from '@ngrx/store';
 import {RecentOrdersFetch} from '../store/recent-orders/recent-orders.actions';
 import {HOLD_ORDER_INTERACTION} from '../attention/attention.component';
 
-
-
 export enum RECENT_ORDER_INTERACTION {
   TYPE = 3226,
   NAME = 'Hold View Order',
@@ -33,6 +31,7 @@ export class RecentOrdersComponent implements OnInit {
   public loading = true;
   public recentOrders$: Observable<RecentOrdersState>;
   public recentOrders: RecentOrdersState = initialRecentOrderState;
+  private rxCountForEccr;
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
@@ -43,6 +42,7 @@ export class RecentOrdersComponent implements OnInit {
   }
 
   public getRxCountFormatted(RxFills: number) {
+    this.rxCountForEccr = RxFills;
     if (RxFills !== undefined) {
       return RxFills > 1 ? RxFills.toString() + ' ' + 'Rxs' : RxFills.toString() + ' ' + 'Rx';
     }
@@ -69,12 +69,7 @@ export class RecentOrdersComponent implements OnInit {
       this.recentOrders = r;
       this.loading = r.loading;
     });
-<<<<<<< Updated upstream
-=======
     this.store.dispatch(new RecentOrdersFetch());
-    this.eccrService.log(RECENT_ORDER_INTERACTION.TYPE, RECENT_ORDER_INTERACTION.RESULT_COMPLETED,
-      this.configSvc.token, this.generateAdditionalDataforEccr(), this.getTransactionDataForECCR(1234567));
->>>>>>> Stashed changes
   }
 
   orderClickTag() {
@@ -82,6 +77,8 @@ export class RecentOrdersComponent implements OnInit {
       key_activity: 'new dashboard view orders',
       link_name: 'Custom: New Dashboard view orders clicked'
     });
+    this.eccrService.log(HOLD_ORDER_INTERACTION.TYPE, HOLD_ORDER_INTERACTION.RESULT_COMPLETED,
+      this.configSvc.token, this.generateAdditionalDataforEccr(), this.getTransactionDataForECCR());
     window.parent.location.href = this.configSvc.orderStatusUrl;
   }
 
@@ -91,8 +88,6 @@ export class RecentOrdersComponent implements OnInit {
       link_name: 'Custom: New Dashboard individual order clicked'
     });
     window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
-    this.eccrService.log(HOLD_ORDER_INTERACTION.TYPE, HOLD_ORDER_INTERACTION.RESULT_COMPLETED,
-      this.configSvc.token, this.generateAdditionalDataforEccr(), this.getTransactionDataForECCR(OrderNumber));
   }
 
   generateAdditionalDataforEccr() {
@@ -104,7 +99,8 @@ export class RecentOrdersComponent implements OnInit {
 
   }
 
-  getTransactionDataForECCR(OrderNumber) {
+  // TODO: Pending disucssion with Matt/Jitendra
+  getTransactionDataForECCR() {
     const transactionData = {
       trans_interaction: {
         trans: [
@@ -112,14 +108,14 @@ export class RecentOrdersComponent implements OnInit {
             'trans_seq_no': '1',
             'ref_source_key_id': 'QL',
             'ref_key_id': 'ORDER_NUM',
-            'ref_key': OrderNumber, // TODO: Abhishek to discuss with Jit
+            'ref_key': 'OrderNumber',
             TRNXS_DTL: {
               '@transactionSeq' : '1',
               TRNX_ITEM: [
                 {
                   '@sequence': '0',
                   '@name': 'NUMBER_OF_RX',
-                  '@value': '5', // TODO: Abhishek to discuss with Jit
+                  '@value': this.rxCountForEccr,
                 },
                 {
                   '@sequence': '1',
