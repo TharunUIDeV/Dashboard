@@ -25,7 +25,7 @@ export enum HOLD_ORDER_INTERACTION {
   styleUrls: ['./attention.component.css']
 })
 export class AttentionComponent implements OnInit {
-  public attentionData: RecentOrdersState = {...initialRecentOrderState};
+  public attentionData: RecentOrdersState = {loading: true, error: '', Orders: [], OrdersCount: 0};
   public loading = true;
   public recentOrders$: Observable<RecentOrdersState>;
 
@@ -55,6 +55,7 @@ export class AttentionComponent implements OnInit {
     // this.getWidgetData();
     this.store.dispatch(new RecentOrdersFetch());
     this.recentOrders$.subscribe((recentOrderState: RecentOrdersState) => {
+      this.attentionData = {loading: true, error: '', Orders: [], OrdersCount: 0};
       for (const order of recentOrderState.Orders) {
         for (const rx of order.RxList) {
           if (_.includes(ORDER_STATUS_CODES_ATTENTION_ONHOLDS, rx.StatusReasonCode)) {

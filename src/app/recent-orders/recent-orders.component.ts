@@ -29,7 +29,7 @@ export class RecentOrdersComponent implements OnInit {
   public ORDER_STATUS_HOLD_TEXT = 'On Hold';
   public loading = true;
   public recentOrders$: Observable<RecentOrdersState>;
-  public recentOrders: RecentOrdersState = {...initialRecentOrderState};
+  public recentOrders: RecentOrdersState = initialRecentOrderState;
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
@@ -62,8 +62,6 @@ export class RecentOrdersComponent implements OnInit {
   ngOnInit(): void {
     this.store.dispatch(new RecentOrdersFetch());
     this.recentOrders$.subscribe((r) => {
-      console.log('Sridhar: in fetch subscribe')
-      console.log(r);
       this.recentOrders = r;
       this.loading = r.loading;
     });
