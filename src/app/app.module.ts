@@ -17,6 +17,7 @@ import { environment } from '../environments/environment';
 import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './store/app.effects';
 import {RecentOrdersEffects} from './store/recent-orders/recent-orders.effects';
+import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
 
 
 @NgModule({
@@ -34,7 +35,9 @@ import {RecentOrdersEffects} from './store/recent-orders/recent-orders.effects';
     HttpClientModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
-    EffectsModule.forRoot([AppEffects, RecentOrdersEffects])
+    EffectsModule.forRoot([AppEffects,
+      RecentOrdersEffects,
+      RefillsCountEffects])
   ],
 
   providers: [

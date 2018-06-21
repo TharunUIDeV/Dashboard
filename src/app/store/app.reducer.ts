@@ -12,13 +12,16 @@ import {RecentOrdersReducer, RecentOrdersState} from './recent-orders/recent-ord
  * ensure that none of the reducers accidentally mutates the state.
  */
 import {storeFreeze} from 'ngrx-store-freeze';
+import {RefillsCountReducer, RefillsCountState} from './refills-count/refills-count.reducer';
 
 export interface AppState {
   recentOrdersState: RecentOrdersState;
+  refillsCountState: RefillsCountState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   recentOrdersState: RecentOrdersReducer,
+  refillsCountState: RefillsCountReducer,
 
 };
 
