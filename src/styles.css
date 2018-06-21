@@ -73,6 +73,7 @@ b {
 .view-site {
   font-size: .875em;
   float: right;
+  line-height: 2.3;
 }
 
 .block {
