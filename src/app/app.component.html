@@ -1,6 +1,4 @@
 <main *ngIf="showLatestVersion">
-  <app-spinner [loading]="loading"></app-spinner>
-
   <div class="content-wrapper">
     <a href="#" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
     <h1>
@@ -12,7 +10,6 @@
   </div>
 </main>
 <main *ngIf="!showLatestVersion">
-  <app-spinner [loading]="loading"></app-spinner>
   <div  class="content-wrapper">
     <h1 style="padding-bottom: 50px">
       {{getTitle()}}
