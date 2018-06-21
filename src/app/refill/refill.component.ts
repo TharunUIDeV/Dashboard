@@ -6,7 +6,6 @@ import {CaremarkDataService} from '../service/caremark-data.service';
 import {PZN_CONSTANTS} from '../order-status/personalization.constants';
 import {Observable} from 'rxjs/Observable';
 import {initialRefillsCountState, RefillsCountState} from '../store/refills-count/refills-count.reducer';
-import {RecentOrdersFetch} from '../store/recent-orders/recent-orders.actions';
 import {Store} from '@ngrx/store';
 import {RefillsCountFetch} from '../store/refills-count/refills-count.actions';
 
@@ -79,7 +78,6 @@ export class RefillComponent implements  OnInit {
 }
 
   public getWidgetData() {
-    // this.getRefillCount();
     this.getCDCVersion();
     this.store.dispatch(new RefillsCountFetch());
     this.refillsCount$.subscribe((r) => {
