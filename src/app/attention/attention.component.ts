@@ -29,6 +29,9 @@ export class AttentionComponent implements OnInit {
   public loading = true;
   public recentOrders$: Observable<RecentOrdersState>;
 
+  public recentOrders: RecentOrdersState;
+
+
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
               private orderStatusService: OrderStatusService,
@@ -53,6 +56,8 @@ export class AttentionComponent implements OnInit {
 
   ngOnInit(): void {
     // this.getWidgetData();
+    this.eccrService.log(HOLD_ORDER_INTERACTION.TYPE, HOLD_ORDER_INTERACTION.RESULT_COMPLETED,
+      this.configSvc.token, this.generateAdditionalDataforEccr(1234), this.getTransactionDataForECCR());
     this.store.dispatch(new RecentOrdersFetch());
     this.recentOrders$.subscribe((recentOrderState: RecentOrdersState) => {
       this.attentionData = {loading: true, error: '', Orders: [], OrdersCount: 0};
@@ -79,18 +84,24 @@ export class AttentionComponent implements OnInit {
       link_name: 'Custom: New Dashboard your task view order clicked'
     });
     this.eccrService.log(HOLD_ORDER_INTERACTION.TYPE, HOLD_ORDER_INTERACTION.RESULT_COMPLETED,
-            this.configSvc.token, this.generateAdditionalDataforEccr());
+            this.configSvc.token, this.generateAdditionalDataforEccr(OrderNumber), this.getTransactionDataForECCR());
     window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
   }
 
-  generateAdditionalDataforEccr() {
+  generateAdditionalDataforEccr(OrderNumber) {
     const additionalData = [
-      {key: 'ORDER_NUM', value: 'TEST'},
+      {key: 'ORDER_NUM', value: OrderNumber},
+      {key: 'HOLD_REASON', value: 'Dr On Hold'},
       {key: 'FAST_STYLE', value: 'FASTINT'},
       {key: 'FAST_INDICATOR', value: 'CAREMARK'}
     ];
     return additionalData;
 
+  }
+
+  getTransactionDataForECCR() {
+    const transactionData = '';
+      return transactionData;
   }
 
 }
