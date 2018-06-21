@@ -36,10 +36,6 @@ export class RecentOrdersComponent implements OnInit {
               private orderStatusService: OrderStatusService,
               private store: Store<any>) {
     this.recentOrders$ = this.store.select('recetnOrdersState');
-    this.recentOrders$.subscribe((r) => {
-      this.recentOrders = r;
-      this.loading = false;
-    });
   }
 
   public getRxCountFormatted(RxFills: number) {
@@ -64,6 +60,10 @@ export class RecentOrdersComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.recentOrders$.subscribe((r) => {
+      this.recentOrders = r;
+      this.loading = false;
+    });
     this.store.dispatch(new RecentOrdersFetch());
   }
 

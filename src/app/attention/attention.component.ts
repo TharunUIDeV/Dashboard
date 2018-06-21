@@ -37,19 +37,7 @@ export class AttentionComponent implements OnInit {
               private orderStatusService: OrderStatusService,
               private eccrService: EccrService,
               private store: Store<any>) {
-  }
-
-  public getWidgetData() {
-    this.orderStatusService.getRecentOrdersOnHold().then((orders: OrderStatus[]) => {
-      if (orders && orders.length) {
-        this.attentionData.Orders = orders;
-      }
-    }).catch((error) => {
-      console.error('Failed to get WidgetData in attention');
-      console.error(JSON.stringify(error));
-    }).then(() => {
-      this.loading = false;
-    });
+    this.recentOrders$ = this.store.select('recetnOrdersState');
   }
 
   public getOrderNumberFormatted(order: OrderStatus) {
@@ -69,9 +57,7 @@ export class AttentionComponent implements OnInit {
   ngOnInit(): void {
     // this.getWidgetData();
     this.store.dispatch(new RecentOrdersFetch());
-    this.recentOrders$ = this.store.select('recetnOrdersState');
     this.recentOrders$.subscribe((recentOrders: RecentOrdersState) => {
-      const holdOrders: OrderStatus[] = [];
       for (const order of recentOrders.Orders) {
         for (const rx of order.RxList) {
           if (_.includes(ORDER_STATUS_CODES_ATTENTION_ONHOLDS, rx.StatusReasonCode)) {
@@ -94,7 +80,8 @@ export class AttentionComponent implements OnInit {
       key_activity: 'new dashboard your tasks view order',
       link_name: 'Custom: New Dashboard your task view order clicked'
     });
-    this.eccrService.log(HOLD_ORDER_INTERACTION.TYPE, HOLD_ORDER_INTERACTION.RESULT_COMPLETED, this.configSvc.token, this.generateAdditionalDataforEccr());
+    this.eccrService.log(HOLD_ORDER_INTERACTION.TYPE, HOLD_ORDER_INTERACTION.RESULT_COMPLETED,
+            this.configSvc.token, this.generateAdditionalDataforEccr());
     window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
   }
 
