@@ -32,6 +32,7 @@ export class RecentOrdersComponent implements OnInit {
   public recentOrders$: Observable<RecentOrdersState>;
   public recentOrders: RecentOrdersState = initialRecentOrderState;
   private rxCountForEccr;
+  public counter = 0;
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
@@ -99,35 +100,55 @@ export class RecentOrdersComponent implements OnInit {
 
   }
 
-  // TODO: Pending disucssion with Matt/Jitendra
   getTransactionDataForECCR() {
-    const transactionData = {
-      trans_interaction: {
-        trans: [
-          {
-            'trans_seq_no': '1',
-            'ref_source_key_id': 'QL',
-            'ref_key_id': 'ORDER_NUM',
-            'ref_key': 'OrderNumber',
-            TRNXS_DTL: {
-              '@transactionSeq' : '1',
-              TRNX_ITEM: [
-                {
-                  '@sequence': '0',
-                  '@name': 'NUMBER_OF_RX',
-                  '@value': this.rxCountForEccr,
-                },
-                {
-                  '@sequence': '1',
-                  '@name': 'STATUS',
-                  '@value': 'Doctor On Hold', // Hardcoded until dashboard cares other order statuses
-                }
-              ]
-            },
-          }
-        ],
-      }
-    };
+    let transactionData;
+    if (this.recentOrders.OrdersCount > 0) {
+      transactionData = {
+        trans_interaction: {
+          trans: this.loopTransData(),
+        }
+      };
+    } else {
+      transactionData = '';
+    }
     return transactionData;
+  }
+
+  loopTransData() {
+    const transData = [];
+    if (this.recentOrders.OrdersCount > 0) {
+      this.recentOrders.Orders.forEach((order) => {
+        const transSeq = this.increment();
+        const trans = {
+          'trans_seq_no': transSeq,
+          'ref_source_key_id': 'QL',
+          'ref_key_id': 'ORDER_NUM',
+          'ref_key': order.OrderNumber,
+          TRNXS_DTL: {
+            '@transactionSeq': transSeq,
+            TRNX_ITEM: [
+              {
+                '@sequence': '0',
+                '@name': 'NUMBER_OF_RX',
+                '@value': this.rxCountForEccr,
+              },
+              {
+                '@sequence': '1',
+                '@name': 'STATUS',
+                '@value': order.OrderStatus,
+              }
+            ]
+          },
+        };
+        if (transData.length <= 2) {
+          transData.push(trans);
+        }
+      });
+    }
+    return transData;
+  }
+
+  increment() {
+    return this.counter += 1;
   }
 }
