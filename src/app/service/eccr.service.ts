@@ -189,7 +189,7 @@ export class EccrService {
   }
 
   log(type, status, sessionId, additionalData = [], transinteractionData ) {
-    const eccrUrl = `https://sit3pbmservices.caremark.com/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}`;
+    const eccrUrl = `https://${this.configService.env}pbmservices.caremark.com/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}`;
     const requestBody = {
       interaction: {
         ...this.interaction,
