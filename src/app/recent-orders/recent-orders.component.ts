@@ -4,11 +4,12 @@ import {ConfigService} from '../service/config.service';
 import {OrderStatusService} from '../order-status/order-status.service';
 import {OrderStatus} from '../order-status/order-status.interface';
 import {ORDER_STATUS_TYPES} from '../order-status/order-status.constants';
+import {EccrService} from '../service/eccr.service';
 import {Observable} from 'rxjs/Observable';
 import {initialRecentOrderState, RecentOrdersState} from '../store/recent-orders/recent-orders.reducer';
 import {Store} from '@ngrx/store';
 import {RecentOrdersFetch} from '../store/recent-orders/recent-orders.actions';
-
+import {HOLD_ORDER_INTERACTION} from '../attention/attention.component';
 
 export enum RECENT_ORDER_INTERACTION {
   TYPE = 3226,
@@ -30,15 +31,19 @@ export class RecentOrdersComponent implements OnInit {
   public loading = true;
   public recentOrders$: Observable<RecentOrdersState>;
   public recentOrders: RecentOrdersState = initialRecentOrderState;
+  private rxCountForEccr;
+  public counter = 0;
 
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
               private orderStatusService: OrderStatusService,
+              private eccrService: EccrService,
               private store: Store<any>) {
     this.recentOrders$ = this.store.select('recentOrdersState');
   }
 
   public getRxCountFormatted(RxFills: number) {
+    this.rxCountForEccr = RxFills;
     if (RxFills !== undefined) {
       return RxFills > 1 ? RxFills.toString() + ' ' + 'Rxs' : RxFills.toString() + ' ' + 'Rx';
     }
@@ -65,6 +70,7 @@ export class RecentOrdersComponent implements OnInit {
       this.recentOrders = r;
       this.loading = r.loading;
     });
+    this.store.dispatch(new RecentOrdersFetch());
   }
 
   orderClickTag() {
@@ -72,6 +78,8 @@ export class RecentOrdersComponent implements OnInit {
       key_activity: 'new dashboard view orders',
       link_name: 'Custom: New Dashboard view orders clicked'
     });
+    this.eccrService.log(HOLD_ORDER_INTERACTION.TYPE, HOLD_ORDER_INTERACTION.RESULT_COMPLETED,
+      this.configSvc.token, this.generateAdditionalDataforEccr(), this.getTransactionDataForECCR());
     window.parent.location.href = this.configSvc.orderStatusUrl;
   }
 
@@ -81,5 +89,66 @@ export class RecentOrdersComponent implements OnInit {
       link_name: 'Custom: New Dashboard individual order clicked'
     });
     window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
+  }
+
+  generateAdditionalDataforEccr() {
+    const additionalData = [
+      {key: 'FAST_STYLE', value: 'FASTINT'},
+      {key: 'FAST_INDICATOR', value: 'CAREMARK'}
+    ];
+    return additionalData;
+
+  }
+
+  getTransactionDataForECCR() {
+    let transactionData;
+    if (this.recentOrders.OrdersCount > 0) {
+      transactionData = {
+        trans_interaction: {
+          trans: this.loopTransData(),
+        }
+      };
+    } else {
+      transactionData = '';
+    }
+    return transactionData;
+  }
+
+  loopTransData() {
+    const transData = [];
+    if (this.recentOrders.OrdersCount > 0) {
+      this.recentOrders.Orders.forEach((order) => {
+        const transSeq = this.increment();
+        const trans = {
+          'trans_seq_no': transSeq,
+          'ref_source_key_id': 'QL',
+          'ref_key_id': 'ORDER_NUM',
+          'ref_key': order.OrderNumber,
+          TRNXS_DTL: {
+            '@transactionSeq': transSeq,
+            TRNX_ITEM: [
+              {
+                '@sequence': '0',
+                '@name': 'NUMBER_OF_RX',
+                '@value': this.rxCountForEccr,
+              },
+              {
+                '@sequence': '1',
+                '@name': 'STATUS',
+                '@value': order.OrderStatus,
+              }
+            ]
+          },
+        };
+        if (transData.length <= 2) {
+          transData.push(trans);
+        }
+      });
+    }
+    return transData;
+  }
+
+  increment() {
+    return this.counter += 1;
   }
 }

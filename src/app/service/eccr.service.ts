@@ -16,11 +16,11 @@ export class EccrService {
     'channelType': this.channelType,
     'systemID': this.getSystemId,
     'clientChannelID': this.configService.clientChannelId,
-    'corporateChannelID': 'NEWDASHBOARD',
+    'corporateChannelID': <any>window.location.href.trim(),
     'sessionStartTime': '',
     'sessionEndTime': '',
     'sessionInitiatior': 'Consumer',
-    'memberPartyIdLevel_01': '', // TODO: Member Info Service - Internal Id
+    'memberPartyIdLevel_01': '',
     'memberPartyIdLevel_02': '',
     'memberPartyIdLevel_03': '',
     'memberPartyIdLevel_04': '',
@@ -38,7 +38,7 @@ export class EccrService {
     'memberPartyRelationship': '',
     'updatedTimestamp': '',
     'sessionInitParty': '',
-    'transInteraction': this.getTransactionData(),
+    'transInteraction': '',
     'memberInteraction': '',
     'interactionData': ''
   };
@@ -176,37 +176,6 @@ export class EccrService {
   }
 
 
-  getTransactionData() {
-    const transactionData = {
-      trans_interaction: {
-       trans: [
-         {
-           'trans_seq_no': '1',
-           'ref_source_key_id': 'QL',
-           'ref_key_id': 'RX_NUM',
-           'ref_key': 'LIPITOR', // TODO: Abhishek to discuss with Jit
-           TRNXS_DTL: {
-             '@transactionSeq' : '1',
-             TRNX_ITEM: [
-               {
-                 '@sequence': '0',
-                 '@name': 'RX_NAME',
-                 '@value': 'LIPTOR', // TODO: Abhishek to discuss with Jit
-               },
-               {
-                 '@sequence': '1',
-                 '@name': 'HOLD_REASON',
-                 '@value': 'Doctor On Hold', // Hardcoded until dashboard cares other order statuses
-               }
-             ]
-           },
-         }
-       ],
-      }
-    };
-    return transactionData;
-  }
-
   constructor(private httpClient: HttpClient,
               private browserService: BrowserService,
               private configService: ConfigService) {
@@ -219,7 +188,7 @@ export class EccrService {
     }
   }
 
-  log(type, status, sessionId, additionalData = []) {
+  log(type, status, sessionId, additionalData = [], transinteractionData ) {
     const eccrUrl = `https://sit3pbmservices.caremark.com/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}`;
     const requestBody = {
       interaction: {
@@ -231,7 +200,8 @@ export class EccrService {
         sourceInteractionId: EccrService.guid,
         interactionData: {
           additional_data: additionalData
-        }
+        },
+        transInteraction: transinteractionData
       }
     };
     console.log(`ECCR Request: ${JSON.stringify(requestBody)}`);
