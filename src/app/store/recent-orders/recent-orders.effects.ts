@@ -9,7 +9,7 @@ import {
 import {Observable} from 'rxjs/Observable';
 import {Action} from '@ngrx/store';
 import {OrderStatusService} from '../../order-status/order-status.service';
-import {catchError, map, mapTo, switchMap} from 'rxjs/operators';
+import {catchError, distinct, map, mapTo, switchMap} from 'rxjs/operators';
 import {of} from 'rxjs/observable/of';
 import 'rxjs/add/observable/fromPromise';
 import {fromPromise} from 'rxjs/observable/fromPromise';
@@ -25,6 +25,10 @@ export class RecentOrdersEffects {
   @Effect()
   recentOrdersFetch$: Observable<Action> = this.actions$.pipe(
     ofType<RecentOrdersFetch>(RecentOrdersActionTypes.RecentOrdersFetch),
+    distinct(() => RecentOrdersActionTypes.RecentOrdersFetch, this.actions$.ofType(
+      RecentOrdersActionTypes.RecentOrdersFetchComplete,
+      RecentOrdersActionTypes.RecentOrdersFetchError
+    )),
     switchMap((value, index) => {
       return fromPromise(this.orderStatusService.getRecentOrders()).pipe(
         map((response: OrderStatus[]) => {

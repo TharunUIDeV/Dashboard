@@ -36,7 +36,3 @@ export function logger(reducer: ActionReducer<AppState>): ActionReducer<AppState
 }
 
 export const metaReducers: MetaReducer<AppState>[] = !environment.production ? [logger, storeFreeze] : [];
-
-export const getRecentOrdersState = createFeatureSelector<RecentOrdersState>('recentOrderState');
-
-export const getRecentOrders = createSelector(getRecentOrdersState, (state: RecentOrdersState) => state);
