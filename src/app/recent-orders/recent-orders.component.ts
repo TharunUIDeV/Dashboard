@@ -79,7 +79,7 @@ export class RecentOrdersComponent implements OnInit {
       link_name: 'Custom: New Dashboard view orders clicked'
     });
     this.eccrService.log(RECENT_ORDER_INTERACTION.TYPE, RECENT_ORDER_INTERACTION.RESULT_COMPLETED,
-      this.configSvc.token, this.generateAdditionalDataforEccr(), this.getTransactionDataForECCR());
+      this.generateAdditionalDataforEccr(), this.getTransactionDataForECCR());
     window.parent.location.href = this.configSvc.orderStatusUrl;
   }
 

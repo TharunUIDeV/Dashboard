@@ -188,7 +188,7 @@ export class EccrService {
     }
   }
 
-  log(type, status, sessionId, additionalData = [], transinteractionData ) {
+  log(type, status, additionalData = [], transinteractionData ) {
     const eccrUrl = `https://${this.configService.env}pbmservices.caremark.com/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}`;
     const requestBody = {
       interaction: {
@@ -196,7 +196,7 @@ export class EccrService {
         interactionEndTimestamp: EccrService.formatDateTime(new Date()),
         interactionResult: status,
         interactionType: type,
-        sessionID: sessionId,
+        sessionID: this.configService.token,
         sourceInteractionId: EccrService.guid,
         interactionData: {
           additional_data: additionalData

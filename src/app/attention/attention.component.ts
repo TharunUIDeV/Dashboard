@@ -80,7 +80,7 @@ export class AttentionComponent implements OnInit {
       link_name: 'Custom: New Dashboard your task view order clicked'
     });
     this.eccrService.log(HOLD_ORDER_INTERACTION.TYPE, HOLD_ORDER_INTERACTION.RESULT_COMPLETED,
-            this.configSvc.token, this.generateAdditionalDataforEccr(OrderNumber), this.getTransactionDataForECCR());
+            this.generateAdditionalDataforEccr(OrderNumber), this.getTransactionDataForECCR());
     window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
   }
 
