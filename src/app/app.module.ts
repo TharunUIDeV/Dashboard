@@ -19,6 +19,7 @@ import { AppEffects } from './store/app.effects';
 import {RecentOrdersEffects} from './store/recent-orders/recent-orders.effects';
 import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
 import {CdcHelperService} from './refill/cdc-helper.service';
+import { AppRoutingModule } from './app-routing.module';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import {CdcHelperService} from './refill/cdc-helper.service';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects,
       RecentOrdersEffects,
-      RefillsCountEffects])
+      RefillsCountEffects]),
+    AppRoutingModule
   ],
 
   providers: [
