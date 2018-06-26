@@ -24,7 +24,7 @@ export class RefillComponent implements  OnInit {
   public REFILL_URL_TEXT = 'Prescription Ready For Refill';
   public REFILLS_URL_TEXT = 'Prescriptions Ready For Refill';
   public webTrends: any;
-  public refillWidgetData: RefillWidgetData = { RefillAvailableCount: undefined, ShowCDC: false};
+  public refillWidgetData: RefillWidgetData = { RefillAvailableCount: undefined, ShowCDC: true};
   public loading = true;
   public refillsCount$: Observable<RefillsCountState>;
   public refillsCount: RefillsCountState = initialRefillsCountState;
