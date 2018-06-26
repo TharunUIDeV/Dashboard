@@ -191,7 +191,6 @@ export class EccrService {
   }
 
   log(type, status, additionalData = [], transinteractionData, orderNumber ) {
-    const eccrUrl = `https://${this.configService.env}pbmservices.caremark.com/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}`;
     const requestBody = {
       interaction: {
         ...this.interaction,
@@ -209,7 +208,7 @@ export class EccrService {
     console.log(`ECCR Request: ${JSON.stringify(requestBody)}`);
     let httpParams = new HttpParams();
     httpParams = httpParams.append('contentType', 'json');
-    return this.httpClient.post(eccrUrl, requestBody, {params: httpParams}).map(res => res)
+    return this.httpClient.post(this.buildEccrUrl(), requestBody, {params: httpParams}).map(res => res)
       .finally(() => {
         if (orderNumber === null) {
           window.parent.location.href = this.configService.orderStatusUrl;
@@ -222,5 +221,18 @@ export class EccrService {
     }, (err) => {
       console.log(`In error : ${JSON.stringify(err)}`);
     });
+  }
+
+  buildEccrUrl() {
+    let eccrUrl = '';
+    if (this.configService.env === 'dev3' || this.configService.env === 'dev1') {
+      eccrUrl = `https://devservices-west.caremark.com:11103/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}&contentType=json`;
+    } else if (this.configService.env === 'sit3' || this.configService.env === 'sit1') {
+      eccrUrl = `https://${this.configService.env}pbmservices.caremark.com/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}`;
+    } else {
+      // TODO: Add PROD Url
+      eccrUrl = ``;
+    }
+    return eccrUrl;
   }
 }
