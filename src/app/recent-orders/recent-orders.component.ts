@@ -73,7 +73,9 @@ export class RecentOrdersComponent implements OnInit {
     this.store.dispatch(new RecentOrdersFetch());
   }
 
-  orderClickTag() {
+  orderClickTag(e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.orderStatusWT = this.analytics.link({
       key_activity: 'new dashboard view orders',
       link_name: 'Custom: New Dashboard view orders clicked'
