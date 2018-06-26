@@ -230,8 +230,7 @@ export class EccrService {
     } else if (this.configService.env === 'sit3' || this.configService.env === 'sit1') {
       eccrUrl = `https://${this.configService.env}pbmservices.caremark.com/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}`;
     } else {
-      // TODO: Add PROD Url
-      eccrUrl = ``;
+      eccrUrl = `https://pbmservices.caremark.com/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}`;
     }
     return eccrUrl;
   }
