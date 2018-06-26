@@ -1,10 +1,32 @@
 import {Component, ElementRef, OnInit, ViewChild, ViewContainerRef} from '@angular/core';
 import {iFramerResizer} from 'iframe-resizer';
+import {ConfigService} from '../service/config.service';
 
+enum Widgets {
+  CDC_V4 = "CDC_V4",
+  ORDER_STATUS = "ORDER_STATUS",
+  CLAIMS_HISTORY = "CLAIMS_HISTORY",
+  REFILL_FROM_ACCOUNT = "REFILL_FROM_ACCOUNT",
+  SAMPLE_WIDGET = "SAMPLE_WIDGET"
+}
 
+const keys = {
+  CDC_V4: {
+    url: `/FASTCheckDrugCosts/v4/#/?`
+  },
+  ORDER_STATUS: {
+    url: `/orderstatus/v1/#/?`
+  },
+  CLAIMS_HISTORY: {
+    url: `/ClaimsHistory/V1.0/#/?`
+  },
+  REFILL_FROM_ACCOUNT: {
+    url: `/refillfromaccount/1.0/#/?`
+  },
+};
 
 @Component({
-  selector: 'fast-widgets',
+  selector: 'app-fast-widgets',
   templateUrl: './fast-widgets.component.html',
   styleUrls: ['./fast-widgets.component.css'],
   providers: []
@@ -13,7 +35,7 @@ export class FastWidgetsComponent implements OnInit {
   @ViewChild('myId') myId: ElementRef;
   htmlBody: any;
 
-  constructor() {}
+  constructor(private configServie: ConfigService) {}
 
 
   ngOnInit() {
@@ -21,17 +43,18 @@ export class FastWidgetsComponent implements OnInit {
 
   }
 
+  getFastConfig(screen: Widgets) {
+    const key = keys[screen];
+    return `${this.configServie.apiBaseUrl}${key.url}&apiKey=${this.configServie.apiKey}&apiSecret=${this.configServie.apiSecret}&tokenid=${this.configServie.token}&fenv=${this.configServie.env.toLowerCase()}&env=${this.configServie.env.toLowerCase()}`;
+  }
 
-  showWidget() {
-
+    showWidget() {
+    const src = this.getFastConfig(Widgets.CDC_V4);
     const iframe = document.createElement('iframe');
-    iframe.setAttribute('src', 'https://sit2fast.caremark.com/ClaimsHistory/V1.0/#/' +
-      '?apiKey=769c71df-fd85-4645-92e0-b8003a8a4ef3&apiSecret=764588f5-551e-4894-b401-13ad2d61c1cf&' +
-      'tokenid=CF0F8711B18039FDB6DA8CDD465D3C2C&fenv=demo');
-    iframe.setAttribute('id', 'iframe_' + 'ORDER_STATUS');
+    iframe.setAttribute('src', src);
+    iframe.setAttribute('id', 'iframe_' + Widgets.CDC_V4);
     iframe.setAttribute('width', '100%');
     console.log(this.myId);
-
 
     const container = this.myId.nativeElement;
     /*

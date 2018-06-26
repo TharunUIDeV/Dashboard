@@ -20,6 +20,7 @@ import {RecentOrdersEffects} from './store/recent-orders/recent-orders.effects';
 import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
 import {CdcHelperService} from './refill/cdc-helper.service';
 import { AppRoutingModule } from './app-routing.module';
+import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
 
 
 @NgModule({
@@ -30,7 +31,8 @@ import { AppRoutingModule } from './app-routing.module';
     AttentionComponent,
     SpinnerComponent,
     DefaultRefillComponent,
-    DefaultOrderStatusComponent
+    DefaultOrderStatusComponent,
+    FastWidgetsComponent,
   ],
   imports: [
     BrowserModule,
