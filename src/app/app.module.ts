@@ -18,6 +18,7 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './store/app.effects';
 import {RecentOrdersEffects} from './store/recent-orders/recent-orders.effects';
 import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
+import {CdcHelperService} from './refill/cdc-helper.service';
 
 
 @NgModule({
@@ -42,7 +43,7 @@ import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
 
   providers: [
     [...fromServices.services,
-    OrderStatusService],
+    OrderStatusService, CdcHelperService],
   ],
   bootstrap: [AppComponent]
 })

@@ -8,6 +8,7 @@ import {Observable} from 'rxjs/Observable';
 import {initialRefillsCountState, RefillsCountState} from '../store/refills-count/refills-count.reducer';
 import {Store} from '@ngrx/store';
 import {RefillsCountFetch} from '../store/refills-count/refills-count.actions';
+import {CdcHelperService} from './cdc-helper.service';
 
 interface RefillWidgetData {
   RefillAvailableCount: string;
@@ -32,6 +33,7 @@ export class RefillComponent implements  OnInit {
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
               private caremarkDataService: CaremarkDataService,
+              private cdcHelperService: CdcHelperService,
               private store: Store<any>) {
     this.refillsCount$ = this.store.select('refillsCountState');
   }
@@ -108,6 +110,7 @@ export class RefillComponent implements  OnInit {
   }
 
   findNewMedication() {
+    this.cdcHelperService.setSessionData();
     window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
   }
 
