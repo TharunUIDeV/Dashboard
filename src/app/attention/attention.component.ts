@@ -30,6 +30,7 @@ export class AttentionComponent implements OnInit {
   public recentOrders$: Observable<RecentOrdersState>;
   public holdOrderStatusDescription;
   public recentOrders: RecentOrdersState;
+
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
               private eccrService: EccrService,
@@ -74,14 +75,15 @@ export class AttentionComponent implements OnInit {
     window.parent.location.href = this.configSvc.orderStatusUrl;
   }
 
-  orderNumberClick(OrderNumber) {
+  orderNumberClick(OrderNumber, e) {
+    e.preventDefault();
+    e.stopPropagation();
     this.analytics.link({
       key_activity: 'new dashboard your tasks view order',
       link_name: 'Custom: New Dashboard your task view order clicked'
     });
     this.eccrService.log(HOLD_ORDER_INTERACTION.TYPE, HOLD_ORDER_INTERACTION.RESULT_COMPLETED,
-            this.generateAdditionalDataforEccr(OrderNumber), this.getTransactionDataForECCR());
-    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
+      this.generateAdditionalDataforEccr(OrderNumber), this.getTransactionDataForECCR(), OrderNumber);
   }
 
   generateAdditionalDataforEccr(OrderNumber) {
@@ -97,6 +99,6 @@ export class AttentionComponent implements OnInit {
 
   getTransactionDataForECCR() {
     const transactionData = '';
-      return transactionData;
+    return transactionData;
   }
 }

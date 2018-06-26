@@ -2,6 +2,8 @@ import {Injectable} from '@angular/core';
 import {HttpClient, HttpParams} from '@angular/common/http';
 import {BrowserService} from './browser.service';
 import {ConfigService} from './config.service';
+import 'rxjs/add/operator/map';
+import 'rxjs/add/operator/finally';
 
 @Injectable()
 export class EccrService {
@@ -188,7 +190,7 @@ export class EccrService {
     }
   }
 
-  log(type, status, additionalData = [], transinteractionData ) {
+  log(type, status, additionalData = [], transinteractionData, orderNumber ) {
     const eccrUrl = `https://${this.configService.env}pbmservices.caremark.com/eccr/logInteractionEventExternal?appName=CVS&apiKey=${this.configService.apiKey}&serviceName=logInteractionEventExternal&version=1.0&contentType=json&tokenID=${this.configService.token}`;
     const requestBody = {
       interaction: {
@@ -207,7 +209,15 @@ export class EccrService {
     console.log(`ECCR Request: ${JSON.stringify(requestBody)}`);
     let httpParams = new HttpParams();
     httpParams = httpParams.append('contentType', 'json');
-    return this.httpClient.post(eccrUrl, requestBody, {params: httpParams}).subscribe((data) => {
+    return this.httpClient.post(eccrUrl, requestBody, {params: httpParams}).map(res => res)
+      .finally(() => {
+        if (orderNumber === null) {
+          window.parent.location.href = this.configService.orderStatusUrl;
+        } else {
+          window.parent.location.href = this.configService.orderStatusUrl + '?scrollId=' + orderNumber;
+        }
+      })
+      .subscribe((data) => {
       console.log(`Successfully Posted to ECCR: ${JSON.stringify(data)}`);
     }, (err) => {
       console.log(`In error : ${JSON.stringify(err)}`);
