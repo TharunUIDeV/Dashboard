@@ -94,7 +94,7 @@ export class RecentOrdersComponent implements OnInit {
   generateAdditionalDataforEccr() {
     const additionalData = [
       {key: 'FAST_STYLE', value: 'FASTINT'},
-      {key: 'FAST_INDICATOR', value: 'CAREMARK'}
+      {key: 'FAST_INDICATOR', value: 'YES'}
     ];
     return additionalData;
 

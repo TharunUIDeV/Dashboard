@@ -91,7 +91,7 @@ export class AttentionComponent implements OnInit {
       {key: 'ORDER_NUM', value: OrderNumber},
       {key: 'HOLD_REASON', value: this.holdOrderStatusDescription},
       {key: 'FAST_STYLE', value: 'FASTINT'},
-      {key: 'FAST_INDICATOR', value: 'CAREMARK'}
+      {key: 'FAST_INDICATOR', value: 'YES'}
     ];
     return additionalData;
 
