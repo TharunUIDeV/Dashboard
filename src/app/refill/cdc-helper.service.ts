@@ -249,28 +249,29 @@ export class CdcHelperService {
     };
   }
 
-  setSessionStorage = function (key, data) {
+  setSessionStorage (key, data) {
     try {
       if (typeof(Storage) !== 'undefined') {
-        sessionStorage.setItem(key, JSON.stringify(data));
+        this.sessionStorage.setItem(key, JSON.stringify(data));
       }
     } catch (e) {
       console.log(e);
     }
 
-  };
+  }
 
-  getSessionStorage = function (key) {
+  getSessionStorage (key) {
     try {
-      if (typeof(Storage) !== 'undefined' && sessionStorage[key]) {
-        return JSON.parse(sessionStorage[key]);
+      if (typeof(Storage) !== 'undefined' && this.sessionStorage[key]) {
+        return JSON.parse(this.sessionStorage[key]);
       }
     } catch (e) {
       console.log(e);
       return false;
     }
     return false;
-  };
+  }
+
 
   setSessionData() {
     this.setSessionStorage(this.configService.token, this.sessionData);
