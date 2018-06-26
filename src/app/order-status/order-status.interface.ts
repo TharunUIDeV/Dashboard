@@ -22,4 +22,5 @@ export interface RxInfo {
   StatusReasonCode: string;
   StatusPriority: string;
   StatusDescription: string;
+  StatusReasonDescription: string;
 }

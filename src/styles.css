@@ -40,19 +40,27 @@ b {
 }
 /*----------------------------------- BODY -------------------------------------*/
 .content-wrapper {
-  margin: 10px 10px 30px 10px;
+  margin-top: 10px;
+  margin-right: 15px;
+  margin-left: 10px;
+  margin-bottom: 30px;
   max-width: 625px;
 }
 @media only screen and (min-device-width : 768px) {
   .content-wrapper {
-    margin: 30px 20px 30px 18px
+    margin-top: 30px;
+    margin-right: 20px;
+    margin-left: 15px;
+    margin-bottom: 30px;
   }
 }
 .content-wrapper h1 {
   clear: both;
-  font-size: 1.375em;
+  font-size: 1.75em;
   font-weight: bold;
-  padding: 0 0 20px;
+  padding-top: 0;
+  padding-right: 0;
+  padding-bottom: 15px;
 }
 @media only screen and (min-device-width : 768px) {
   .content-wrapper h1 {
@@ -65,63 +73,38 @@ b {
 .view-site {
   font-size: .875em;
   float: right;
+  line-height: 2.3;
 }
-@media only screen and (min-device-width : 768px) {
-  .view-site {
-    margin-top: 15px;
-  }
-}
+
 .block {
   border-bottom: 1px solid #EEEEEE;
   clear: both;
   margin-bottom: 15px;
-  padding: 0 0 0 10px;
-}
-.block.tasks {
-  padding-bottom: 20px;
+  margin-top: 15px;
 }
 
-.block.recent {
-  padding-bottom: 15px;
-}
-.block.refill {
-  padding-bottom: 5px;
-}
 .block > a {
   font-size: .875em;
 }
+
+.block a.link-red {
+  text-decoration: none;
+}
+
+.block a.link-red:hover {
+  color: #EB0000;
+}
+
+.block a.link-red:active {
+  color: #a50000;
+}
+
 @media only screen and (min-device-width : 768px) {
-  .block {
-    margin-bottom: 25px;
-    padding: 0;
-  }
-  .block.tasks {
-    padding-bottom: 20px;
-  }
-  .block.recent {
-    padding-bottom: 20px;
-  }
-  .block.refill {
-    padding-bottom: 10px;
+  .block p {
+    font-size: 1em;
   }
 }
-.block-title {
-  font-weight: bold;
-  padding: 0 0 10px 0;
-}
-@media only screen and (min-device-width : 768px) {
-  .block-title {
-    padding-bottom: 15px;
-  }
-  .recent .block-title{
-    padding-bottom: 10px;
-  }
-}
-@media only screen and (min-device-width : 768px) {
-  .block-title {
-    font-size: 1.125em;
-  }
-}
+
 .with-caret{
   background:	url(./assets/images/caret.png) right center no-repeat;
   background-size: 11px 18px;
@@ -129,40 +112,71 @@ b {
   padding: 2px 20px 2px 0;
   text-decoration: none;
 }
-.block p {
-  color: #333;
-  line-height: 1.325em;
-  padding: 0 0 10px;
+
+.with-caret:hover {
+  background:	url(./assets/images/caret-hover.png) right center no-repeat;
+  background-size: 11px 18px;
+  display: inline-block;
+  padding: 2px 20px 2px 0;
+  text-decoration: none;
 }
+
+.with-caret:active {
+  background:	url(./assets/images/caret-active.png) right center no-repeat;
+  background-size: 11px 18px;
+  display: inline-block;
+  padding: 2px 20px 2px 0;
+  text-decoration: none;
+}
+
+
+.block-title {
+  font-weight: bold;
+  font-size: 1.25em;
+  padding-top: 0;
+  padding-right: 0;
+  padding-left: 0;
+  padding-bottom: 15px;
+}
+
 @media only screen and (min-device-width : 768px) {
-  .block p {
-    padding-bottom: 15px;
+  .block-title {
+    font-size: 1.25em;
   }
 }
+
 .block-item {
   font-size: .875em;
-}
-.hold-order {
-  padding-bottom: 0px;
-}
-.block-item p em {
-  color: #CC0000;
-  font-weight: bold;
+  margin-bottom: 15px;
+  margin-left: 5px;
 }
 
 @media only screen and (min-device-width : 768px) {
   .block-item {
-    margin-bottom: 10px;
     margin-left: 20px;
   }
 }
+
+.alert-text p {
+  color: #333;
+}
+
+.alert-text p em {
+  color: #CC0000;
+  font-weight: bold;
+}
+
 .important {
   background:	url(./assets/images/warning.png) left center no-repeat;
   background-size: 20px 20px;
   display: inline-block;
   font-weight: bold;
   margin-bottom: 5px;
-  padding: 5px 25px;
+  padding-top: 5px;
+  padding-right: 25px;
+  padding-left: 25px;
+  padding-bottom: 5px;
+  font-size: 16px;
 }
 @media only screen and (min-device-width : 768px) {
   .hold-order > a {
@@ -171,86 +185,106 @@ b {
 }
 .hold-order ul {
   overflow: auto;
-  padding: 5px 0;
+  border: 2px solid #DEDBDB;
+  margin-bottom: 15px;
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-bottom: 10px;
+  padding-top: 10px;
+
 }
 .hold-order li {
-  padding: 5px 0;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  width: 100%;
 }
 .hold-order li.view-order {
   padding-bottom: 0px;
 }
 @media only screen and (min-device-width : 768px) {
+  .hold-order ul {
+    padding-left: 15px;
+    padding-right: 15px;
+    padding-bottom: 10px;
+    padding-top: 10px;
+  }
   .hold-order li {
     float: left;
     width: 50%;
   }
   .hold-order li.view-order {
     margin-left: 0.5px;
-    color: #CC0000;
-    text-decoration: none;
   }
 }
-.block > ul {
-  font-size: .875em;
-}
-@media only screen and (min-device-width : 768px) {
-  .block > ul {
-    margin-left: 20px;
-  }
-  .block .all-orders {
-    margin-left: 20px;
-    color: #CC0000;
-    text-decoration: none;
-  }
-}
-.block > ul li {
-  margin-bottom: 10px;
+
+
+.recent-order > ul {
   overflow: auto;
 }
-.block > ul li span, .block > ul li a {
-  padding: 4px 0;
+.recent-order > ul li {
+  margin-bottom: 15px;
+  overflow: auto;
 }
-.block > ul li a, .block > ul li .placed {
+.recent-order > ul li span, .recent-order > ul li a {
+  padding-top: 5px;
+  padding-bottom: 5px;
+}
+.recent-order > ul li a, .recent-order > ul li .placed {
   color: #000;
   clear: left;
   float: left;
 }
-.block > ul li .rx, .block > ul li .status {
+.recent-order > ul li .rx, .recent-order > ul li .status {
   float: right;
 }
-.block > ul li .status {
+.recent-order > ul li .status {
   font-weight: bold;
 }
-.block > ul li .status em {
+.recent-order > ul li .status em {
   color: #CC0000;
 }
 
-.block > ul li .status.hold {
+.recent-order > ul li .status.hold {
   color: #CC0000;
 }
+
+.recent-order > ul li a {
+  text-decoration: underline;
+}
+
+.recent-order > ul li a:hover {
+  color: #767676;
+}
+
+.recent-order > ul li a:active {
+  color: #333333;
+}
+
 @media only screen and (min-device-width : 768px) {
-  .block > ul li a {
+  .recent-order > ul li a {
     width: 25%;
     text-decoration: underline;
   }
-  .block > ul li .placed {
+  .recent-order > ul li .placed {
     clear: none;
-    width: 43%;
+    width: 45%;
   }
-  .block > ul li .rx {
-    width: 10%;
+  .recent-order > ul li .rx {
+    width: 8%;
   }
-  .block > ul li .status {
+  .recent-order > ul li .status {
     text-align: right;
     width: 20%;
   }
 }
 
+
 .block-item-button {
   background-color: #CC0000;
   border: none;
   color:white;
-  padding: 12px 0;
+  padding-top: 12px;
+  padding-bottom: 12px;
   font-size: 16px;
   border-bottom: 2px solid #a50000;
   width: 290px;
@@ -259,22 +293,20 @@ b {
   border-radius: 0;
 }
 
+.block-item-button:hover {
+  background-color: #EB0000;
+  border-color: #EB0000;
+}
+
+.block-item-button:active {
+  background-color: #a50000;
+  border-color: #a50000;
+}
+
 @media only screen and (min-device-width : 768px) {
   .block-item-button {
-    width: 215px
+    width: 215px;
   }
 }
 
 
-/*
-.btn-primary, .btn-primary:hover, .btn-primary:active, .btn-primary:visited, .btn-primary:focus {
-  background-color: #CC0000;
-  border-color: #CC0000;
-}
-*/
-
-@media only screen and (min-device-width : 768px) {
-  .block p {
-    font-size: 1em;
-  }
-}

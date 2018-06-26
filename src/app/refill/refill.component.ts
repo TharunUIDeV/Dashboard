@@ -4,6 +4,10 @@ import {TealiumUtagService} from '../service/utag.service';
 import {ConfigService} from '../service/config.service';
 import {CaremarkDataService} from '../service/caremark-data.service';
 import {PZN_CONSTANTS} from '../order-status/personalization.constants';
+import {Observable} from 'rxjs/Observable';
+import {initialRefillsCountState, RefillsCountState} from '../store/refills-count/refills-count.reducer';
+import {Store} from '@ngrx/store';
+import {RefillsCountFetch} from '../store/refills-count/refills-count.actions';
 
 interface RefillWidgetData {
   RefillAvailableCount: string;
@@ -18,13 +22,19 @@ interface RefillWidgetData {
 export class RefillComponent implements  OnInit {
   public REFILL_URL_TEXT = 'Prescription Ready For Refill';
   public REFILLS_URL_TEXT = 'Prescriptions Ready For Refill';
-  // public REFILL_URL_TEXT = 'View prescriptions';
   public webTrends: any;
   public refillWidgetData: RefillWidgetData = { RefillAvailableCount: undefined, ShowCDC: false};
   public loading = true;
+  public refillsCount$: Observable<RefillsCountState>;
+  public refillsCount: RefillsCountState = initialRefillsCountState;
 
 
-  constructor(private analytics: TealiumUtagService, private configSvc: ConfigService, private caremarkDataService: CaremarkDataService) { }
+  constructor(private analytics: TealiumUtagService,
+              private configSvc: ConfigService,
+              private caremarkDataService: CaremarkDataService,
+              private store: Store<any>) {
+    this.refillsCount$ = this.store.select('refillsCountState');
+  }
 
 
   public getRefillCount() {
@@ -68,8 +78,13 @@ export class RefillComponent implements  OnInit {
 }
 
   public getWidgetData() {
-    this.getRefillCount();
     this.getCDCVersion();
+    this.store.dispatch(new RefillsCountFetch());
+    this.refillsCount$.subscribe((r) => {
+      this.refillsCount = r;
+      this.refillWidgetData.RefillAvailableCount = r.RefillAvailableCount ? r.RefillAvailableCount.toString() : undefined;
+      this.loading = r.loading;
+    });
   }
 
   ngOnInit(): void {

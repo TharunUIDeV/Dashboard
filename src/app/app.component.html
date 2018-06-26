@@ -1,19 +1,17 @@
 <main *ngIf="showLatestVersion">
-  <app-spinner [loading]="loading"></app-spinner>
-
-  <div *ngIf="!loading" class="content-wrapper">
+  <div class="content-wrapper">
     <a href="#" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
     <h1>
       {{getTitle()}}
     </h1>
+  <div style="clear: both;"></div>
     <app-attention></app-attention>
     <app-refill></app-refill>
     <app-order-status></app-order-status>
   </div>
 </main>
 <main *ngIf="!showLatestVersion">
-  <app-spinner [loading]="loading"></app-spinner>
-  <div *ngIf="!loading" class="content-wrapper">
+  <div  class="content-wrapper">
     <h1 style="padding-bottom: 50px">
       {{getTitle()}}
     </h1>

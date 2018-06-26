@@ -137,6 +137,7 @@ export class OrderStatusService {
           rxInfo.ParticipantID = rx.ParticipantID;
           rxInfo.Status = rx.StatusDescription;
           rxInfo.StatusReasonCode = rx.StatusReasonCode;
+          rxInfo.StatusReasonDescription = rx.StatusReasonDescription;
           rxInfo.PatientFirstName = rx.PatientFirstName;
           rxInfo.PatientLastName = rx.PatientLastName;
           // Map status codes
