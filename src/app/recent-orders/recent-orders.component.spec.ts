@@ -42,7 +42,7 @@ describe('RecentOrdersComponent', () => {
       link_name: 'Custom: New Dashboard view orders clicked'
     };
     spyOn(mockTealiumUtagService, 'link').and.returnValue(result);
-    component.orderClickTag();
+    // component.orderClickTag();
     expect(component.orderStatusWT).toEqual(result);
   });
 });
