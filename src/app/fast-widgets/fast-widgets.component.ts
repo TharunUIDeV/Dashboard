@@ -4,25 +4,24 @@ import {ConfigService} from '../service/config.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DomSanitizer, SafeResourceUrl} from '@angular/platform-browser';
 
-enum WidgetTypes {
-  CDC_V4 = 'CDC_V4',
-  ORDER_STATUS = 'ORDER_STATUS',
-  CLAIMS_HISTORY = 'CLAIMS_HISTORY',
-  REFILL_FROM_ACCOUNT = 'REFILL_FROM_ACCOUNT',
-  SAMPLE_WIDGET = 'SAMPLE_WIDGET'
+export enum FastWidgetTypes {
+  FAST_CDC_V4 = 'FAST_CDC_V4',
+  FAST_ORDER_STATUS = 'FAST_ORDER_STATUS',
+  FAST_CLAIMS_HISTORY = 'FAST_CLAIMS_HISTORY',
+  FAST_REFILL_FROM_ACCOUNT = 'FAST_REFILL_FROM_ACCOUNT',
 }
 
 const keys = {
-  CDC_V4: {
+  FAST_CDC_V4: {
     url: `FASTCheckDrugCosts/v4/#/?`
   },
-  ORDER_STATUS: {
+  FAST_ORDER_STATUS: {
     url: `orderstatus/v1/#/?`
   },
-  CLAIMS_HISTORY: {
+  FAST_CLAIMS_HISTORY: {
     url: `ClaimsHistory/V1.0/#/?`
   },
-  REFILL_FROM_ACCOUNT: {
+  FAST_REFILL_FROM_ACCOUNT: {
     url: `refillfromaccount/1.0/#/?`
   },
 };
@@ -47,7 +46,7 @@ export class FastWidgetsComponent implements OnInit {
       console.log(requestedUrl);
       // Angular by default sanitises a URL, we need to bypass that so the full URL is rendered
       // NOTE: Need to look into security considerations of this
-      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.getFastConfig(WidgetTypes.CDC_V4));
+      this.url = this.sanitizer.bypassSecurityTrustResourceUrl(this.getFastConfig(requestedUrl));
       console.log(this.url);
     });
 
@@ -59,7 +58,7 @@ export class FastWidgetsComponent implements OnInit {
 
   }
 
-  getFastConfig(screen: WidgetTypes) {
+  getFastConfig(screen: string) {
     const key = keys[screen];
     return `${this.configServie.fastBaseUrl}${key.url}&apiKey=${this.configServie.apiKey}&apiSecret=${this.configServie.apiSecret}&tokenid=${this.configServie.token}&fenv=demo&env=demo`;
     // return `${this.configServie.fastBaseUrl}${key.url}&apiKey=${this.configServie.apiKey}&apiSecret=${this.configServie.apiSecret}&tokenid=${this.configServie.token}&fenv=${this.configServie.env.toLowerCase()}&env=${this.configServie.env.toLowerCase()}`;

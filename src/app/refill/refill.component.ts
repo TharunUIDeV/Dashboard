@@ -9,6 +9,7 @@ import {initialRefillsCountState, RefillsCountState} from '../store/refills-coun
 import {Store} from '@ngrx/store';
 import {RefillsCountFetch} from '../store/refills-count/refills-count.actions';
 import {CdcHelperService} from './cdc-helper.service';
+import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
 
 interface RefillWidgetData {
   RefillAvailableCount: string;
@@ -121,5 +122,9 @@ export class RefillComponent implements  OnInit {
     }
     return this.REFILLS_URL_TEXT;
 
+  }
+
+  getFastCDCPath() {
+    return FastWidgetTypes.FAST_CDC_V4;
   }
 }

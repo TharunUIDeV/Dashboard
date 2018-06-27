@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {AppComponent} from './app.component';
-import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
+import {FastWidgetsComponent, FastWidgetTypes} from './fast-widgets/fast-widgets.component';
 
 
 export const routes: Routes = [
@@ -11,7 +11,7 @@ export const routes: Routes = [
     component: AppComponent,
   },
   {
-    path: 'fastWidgets',
+    path: FastWidgetTypes.FAST_CDC_V4,
     component: FastWidgetsComponent
   },
 ];
