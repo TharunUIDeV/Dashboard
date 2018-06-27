@@ -14,6 +14,7 @@
 
   </section>
   <section class="block-item" *ngIf="refillWidgetData.ShowCDC === true">
-    <button type="button" class="block-item-button btn" (click)="findNewMedication()">Find a new medication</button>
+    <button type="button" class="block-item-button btn" (click)="findNewMedication()" routerLink="/fastWidgets">Find a new medication</button>
   </section>
 </section>
+<router-outlet></router-outlet>

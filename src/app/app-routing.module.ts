@@ -7,11 +7,11 @@ import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
 
 export const routes: Routes = [
   {
-    path: 'new-dashboard',
-    component: AppComponent
+    path: 'newDashBoard',
+    component: AppComponent,
   },
   {
-    path: 'OrderStatus',
+    path: 'fastWidgets',
     component: FastWidgetsComponent
   },
 ];
@@ -21,6 +21,7 @@ export const routes: Routes = [
     CommonModule,
     RouterModule.forRoot(routes),
   ],
+  exports: [RouterModule],
   declarations: []
 })
 export class AppRoutingModule { }

@@ -111,7 +111,7 @@ export class RefillComponent implements  OnInit {
 
   findNewMedication() {
     this.cdcHelperService.setSessionData();
-    window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
+    // window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
   }
 
   getRefillUrlFormatted (refillsCount: string) {
