@@ -18,10 +18,11 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './store/app.effects';
 import {RecentOrdersEffects} from './store/recent-orders/recent-orders.effects';
 import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
-import {CdcHelperService} from './refill/cdc-helper.service';
+import {CdcHelperService} from './cdc-search/cdc-helper.service';
 import { AppRoutingModule } from './app-routing.module';
 import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
 import { HeaderComponent } from './header/header.component';
+import { CdcSearchComponent } from './cdc-search/cdc-search.component';
 
 
 @NgModule({
@@ -35,6 +36,7 @@ import { HeaderComponent } from './header/header.component';
     DefaultOrderStatusComponent,
     FastWidgetsComponent,
     HeaderComponent,
+    CdcSearchComponent,
   ],
   imports: [
     BrowserModule,

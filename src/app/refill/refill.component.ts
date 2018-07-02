@@ -8,8 +8,6 @@ import {Observable} from 'rxjs/Observable';
 import {initialRefillsCountState, RefillsCountState} from '../store/refills-count/refills-count.reducer';
 import {Store} from '@ngrx/store';
 import {RefillsCountFetch} from '../store/refills-count/refills-count.actions';
-import {CdcHelperService} from './cdc-helper.service';
-import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
 
 interface RefillWidgetData {
   RefillAvailableCount: string;
@@ -34,7 +32,6 @@ export class RefillComponent implements  OnInit {
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
               private caremarkDataService: CaremarkDataService,
-              private cdcHelperService: CdcHelperService,
               private store: Store<any>) {
     this.refillsCount$ = this.store.select('refillsCountState');
   }
@@ -110,16 +107,6 @@ export class RefillComponent implements  OnInit {
     window.parent.location.href = this.configSvc.rxHistoryUrl;
   }
 
-  findNewMedication() {
-    this.analytics.link({
-      key_activity: 'new dashboard find a new medication',
-      link_name: 'Custom: New Dashboard find a new medication clicked'
-    });
-    window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
-    this.cdcHelperService.setSessionData();
-    // window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
-  }
-
   getRefillUrlFormatted (refillsCount: string) {
 
     if (refillsCount !== undefined) {
@@ -127,9 +114,5 @@ export class RefillComponent implements  OnInit {
     }
     return this.REFILLS_URL_TEXT;
 
-  }
-
-  getFastCDCPath() {
-    return FastWidgetTypes.FAST_CDC_V4;
   }
 }
