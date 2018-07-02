@@ -21,6 +21,7 @@ import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
 import {CdcHelperService} from './refill/cdc-helper.service';
 import { AppRoutingModule } from './app-routing.module';
 import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
@@ -33,6 +34,7 @@ import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
     DefaultRefillComponent,
     DefaultOrderStatusComponent,
     FastWidgetsComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,

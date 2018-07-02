@@ -14,6 +14,10 @@ export const routes: Routes = [
     path: FastWidgetTypes.FAST_CDC_V4,
     component: FastWidgetsComponent
   },
+  {
+    path: FastWidgetTypes.FAST_ORDER_STATUS,
+    component: FastWidgetsComponent
+  },
 ];
 
 @NgModule({
