@@ -18,6 +18,10 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './store/app.effects';
 import {RecentOrdersEffects} from './store/recent-orders/recent-orders.effects';
 import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
+import {CdcHelperService} from './refill/cdc-helper.service';
+import { AppRoutingModule } from './app-routing.module';
+import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
+import { HeaderComponent } from './header/header.component';
 
 
 @NgModule({
@@ -28,7 +32,9 @@ import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
     AttentionComponent,
     SpinnerComponent,
     DefaultRefillComponent,
-    DefaultOrderStatusComponent
+    DefaultOrderStatusComponent,
+    FastWidgetsComponent,
+    HeaderComponent,
   ],
   imports: [
     BrowserModule,
@@ -37,12 +43,13 @@ import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects,
       RecentOrdersEffects,
-      RefillsCountEffects])
+      RefillsCountEffects]),
+    AppRoutingModule
   ],
 
   providers: [
     [...fromServices.services,
-    OrderStatusService],
+    OrderStatusService, CdcHelperService],
   ],
   bootstrap: [AppComponent]
 })
