@@ -56,7 +56,7 @@ import {NgbTypeaheadModule} from './typeahead/typeahead.module';
 
   providers: [
     [...fromServices.services,
-    OrderStatusService, CdcHelperService, TypeaheadModule.forRoot().providers],
+    OrderStatusService, CdcHelperService, NgbTypeaheadModule.forRoot().providers],
   ],
   bootstrap: [AppComponent]
 })
