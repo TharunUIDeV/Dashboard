@@ -23,6 +23,9 @@ import { AppRoutingModule } from './app-routing.module';
 import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
 import { HeaderComponent } from './header/header.component';
 import { CdcSearchComponent } from './cdc-search/cdc-search.component';
+import {ReactiveFormsModule} from '@angular/forms';
+import {TypeaheadModule} from 'ngx-bootstrap';
+import {NgbTypeaheadModule} from './typeahead/typeahead.module';
 
 
 @NgModule({
@@ -41,17 +44,19 @@ import { CdcSearchComponent } from './cdc-search/cdc-search.component';
   imports: [
     BrowserModule,
     HttpClientModule,
+    ReactiveFormsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects,
       RecentOrdersEffects,
       RefillsCountEffects]),
-    AppRoutingModule
+    AppRoutingModule,
+    NgbTypeaheadModule.forRoot()
   ],
 
   providers: [
     [...fromServices.services,
-    OrderStatusService, CdcHelperService],
+    OrderStatusService, CdcHelperService, TypeaheadModule.forRoot().providers],
   ],
   bootstrap: [AppComponent]
 })

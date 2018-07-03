@@ -1,3 +1,5 @@
-<section>
-  <button type="button" class="block-item-button btn" (click)="findNewMedication()" routerLink="/FAST_CDC_V4">Find a new medication</button>
-</section>
+
+ <section>
+   <input id="typeahead-basic" type="text" placeholder="Enter drug name" class="form-control"  [ngbTypeahead]="search"/>
+   <button type="submit" class="btn block-item-button">search</button>
+ </section>
