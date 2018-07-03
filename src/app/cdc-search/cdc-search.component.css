@@ -1,0 +1,31 @@
+.form-control {
+  display: inline-block;
+  width: 60%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.form-bsubmit {
+  display: inline-block;
+  background-color: #CC0000;
+  border: none;
+  color:white;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 16px;
+  border-bottom: 2px solid #a50000;
+  width: 30%;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0;
+}
+
+.form-bsubmit:hover {
+  background-color: #EB0000;
+  border-color: #EB0000;
+}
+
+.form-bsubmit:active {
+  background-color: #a50000;
+  border-color: #a50000;
+}
