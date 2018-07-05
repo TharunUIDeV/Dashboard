@@ -66,6 +66,10 @@ export class CaremarkDataService implements CaremarkDataServiceInterface {
     return this._serviceInstance.getRefillsCount();
   }
 
+  getDrugByName(searchText): Promise<any> {
+    return this._serviceInstance.getDrugByName(searchText);
+  }
+
   getPznByIdAndResource(params: any): Promise<any> {
     return this._serviceInstance.getPznByIdAndResource(params);
   }

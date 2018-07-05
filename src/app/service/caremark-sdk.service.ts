@@ -34,6 +34,7 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
     params.tokenId = this.configService.token;
     params.memberInfo = {
       'tokenId': this.configService.token,
+      'memberId': this.configService.memberId,
     };
   }
 
@@ -111,6 +112,35 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
         console.error(JSON.stringify(result.Header));
         return reject(result.Header);
       });
+    });
+  }
+
+  public getDrugByName(searchText): Promise<any> {
+
+    return new Promise((resolve, reject) => {
+      const params: any = {};
+
+      if (!this.sdkInstance) {
+        const error = {error: 'SDK Not Initialized'};
+        console.error(JSON.stringify(error));
+        return reject(error);
+      }
+      this.setAuthConfigParams(params);
+      // caremark SDK fails on setting memberInfo
+      this.getMemberDetails().then( (memberInfo) => {
+        params.searchText = searchText;
+        params.memberInfo = memberInfo.Results.memberInfo;
+        // console.log(JSON.stringify(params));
+        this.sdkInstance.Pricing.getDrugsByName(params, (result) => {
+          if (result.Header.StatusCode === '0000') {
+            // console.log(JSON.stringify(result.Details));
+            return resolve(result.Details);
+          }
+          console.error(JSON.stringify(result.Header));
+          return reject(result.Header);
+        });
+      });
+
     });
   }
 

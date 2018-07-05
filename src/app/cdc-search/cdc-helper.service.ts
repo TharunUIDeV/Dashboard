@@ -1,6 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from '../service/config.service';
 import * as CDCCurrentSearch from '../../assets/mock-data/mock-cdcsearch-data.json';
+import {CaremarkDataService} from '../service/caremark-data.service';
 
 
 @Injectable()
@@ -9,7 +10,8 @@ export class CdcHelperService {
   private sessionStorage = window.sessionStorage;
   private sessionData = {};
 
-  constructor(private configService: ConfigService) {
+  constructor(private configService: ConfigService,
+              private caremarkDataService: CaremarkDataService) {
     this.sessionData['currentSearch'] = (<any>CDCCurrentSearch).currentSearch;
   }
 
@@ -39,6 +41,10 @@ export class CdcHelperService {
 
   setSessionData() {
     this.setSessionStorage(this.configService.token, this.sessionData);
+  }
+
+  getDrugSearchResults(searchText) {
+    this.caremarkDataService.getDrugByName(searchText);
   }
 
 }
