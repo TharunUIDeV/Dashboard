@@ -156,7 +156,7 @@ export class NgbTypeahead implements ControlValueAccessor,
   private _onChange = (_: any) => {};
 
   constructor(
-      private _elementRef: ElementRef<HTMLInputElement>, private _viewContainerRef: ViewContainerRef,
+      private _elementRef: ElementRef, private _viewContainerRef: ViewContainerRef,
       private _renderer: Renderer2, private _injector: Injector, componentFactoryResolver: ComponentFactoryResolver,
       config: NgbTypeaheadConfig, ngZone: NgZone, private _live: Live) {
     this.container = config.container;

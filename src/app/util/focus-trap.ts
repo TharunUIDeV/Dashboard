@@ -13,7 +13,7 @@ const FOCUSABLE_ELEMENTS_SELECTOR = [
  * Returns first and last focusable elements inside of a given element based on specific CSS selector
  */
 function getFocusableBoundaryElements(element: HTMLElement): HTMLElement[] {
-  const list: NodeListOf<HTMLElement> = element.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR);
+  const list: NodeListOf<any> = element.querySelectorAll(FOCUSABLE_ELEMENTS_SELECTOR);
   return [list[0], list[list.length - 1]];
 }
 
