@@ -86,15 +86,15 @@ export class RecentOrdersComponent implements OnInit {
       this.generateAdditionalDataforEccr(), this.getTransactionDataForECCR(), null);
   }
 
-  orderNumberClick(order) {
+  orderNumberClick(order, e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.analytics.link({
       key_activity: 'new dashboard individual order',
       link_name: 'Custom: New Dashboard individual order clicked'
     });
     this.eccrService.log(RECENT_ORDER_INTERACTION.ORDER_CLICK_TYPE, RECENT_ORDER_INTERACTION.RESULT_COMPLETED,
-      this.generateAdditionalDataforOrderClickEccr(order), null, null);
-
-    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + order.OrderNumber;
+      this.generateAdditionalDataforOrderClickEccr(order), null, order.OrderNumber);
   }
 
   generateAdditionalDataforOrderClickEccr(order) {
