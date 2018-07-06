@@ -13,6 +13,9 @@ import {of} from 'rxjs/observable/of';
 import {fromPromise} from 'rxjs/observable/fromPromise';
 import {NgForm} from '@angular/forms';
 import {MemberService} from '../service/member.service';
+import {ActivatedRoute, Router} from '@angular/router';
+import {DomSanitizer} from '@angular/platform-browser';
+import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
 
 @Component({
   selector: 'app-cdc-search',
@@ -34,6 +37,8 @@ export class CdcSearchComponent implements OnInit {
               private caremarkDataService: CaremarkDataService,
               private cdcHelperService: CdcHelperService,
               private memberService: MemberService,
+              private route: ActivatedRoute,
+              private router: Router,
               private store: Store<any>) {
     this.drugSearch$ = this.store.select('drugSearchState');
   }
@@ -89,6 +94,7 @@ export class CdcSearchComponent implements OnInit {
     this.currentSearch.drugDetails = this.drugCache[this.drugSelected];
     this.currentSearch.drugName = this.drugSelected;
     this.cdcHelperService.setSessionData(this.currentSearch);
+    this.router.navigate([FastWidgetTypes.FAST_CDC_V4]);
   }
 
   selectedItem(item) {
