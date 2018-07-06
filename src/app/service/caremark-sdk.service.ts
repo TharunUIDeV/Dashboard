@@ -133,12 +133,35 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
         // console.log(JSON.stringify(params));
         this.sdkInstance.Pricing.getDrugsByName(params, (result) => {
           if (result.Header.StatusCode === '0000') {
-            // console.log(JSON.stringify(result.Details));
+            // console.log(JSON.stringify(result));
             return resolve(result.Details);
           }
           console.error(JSON.stringify(result.Header));
           return reject(result.Header);
         });
+      });
+
+    });
+  }
+
+  public getDefaultPharmacy(): Promise<any> {
+
+    return new Promise((resolve, reject) => {
+      const params: any = {};
+
+      if (!this.sdkInstance) {
+        const error = {error: 'SDK Not Initialized'};
+        console.error(JSON.stringify(error));
+        return reject(error);
+      }
+      this.setAuthConfigParams(params);
+      this.sdkInstance.Pharmacy.getDefaultPharmacy(params, (result) => {
+        if (result.Header.StatusCode === '0000') {
+          // console.log(JSON.stringify(result));
+          return resolve(result.Details);
+        }
+        console.error(JSON.stringify(result.Header));
+        return reject(result.Header);
       });
 
     });

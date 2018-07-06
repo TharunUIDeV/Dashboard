@@ -23,7 +23,7 @@ import { AppRoutingModule } from './app-routing.module';
 import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
 import { HeaderComponent } from './header/header.component';
 import { CdcSearchComponent } from './cdc-search/cdc-search.component';
-import {ReactiveFormsModule} from '@angular/forms';
+import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {TypeaheadModule} from 'ngx-bootstrap';
 import {NgbTypeaheadModule} from './typeahead/typeahead.module';
 
@@ -45,6 +45,7 @@ import {NgbTypeaheadModule} from './typeahead/typeahead.module';
     BrowserModule,
     HttpClientModule,
     ReactiveFormsModule,
+    FormsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects,
