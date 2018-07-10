@@ -58,6 +58,7 @@ export class ConfigService {
       if (_.includes(this.env, 'sit')) {
         this.apiBaseUrl = `https://${this.env}pbmservices.caremark.com/`;
         this.fastBaseUrl = `https://${this.env}fast.caremark.com/`;
+        // this.fastBaseUrl = `https://localhost:8089/`;
       } else if (_.includes(this.env, 'dev')) {
         this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
         this.fastBaseUrl = `https://${this.env}fast.caremark.com`;

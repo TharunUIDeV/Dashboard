@@ -74,8 +74,11 @@ export class CdcSearchComponent implements OnInit {
     )
 
   ngOnInit() {
-    this.caremarkDataService.getDefaultPharmacy().then((result) => this.defaultPharmacy = result);
-    this.memberService.getMemberDetails().then((result) =>
+    this.caremarkDataService.getDefaultPharmacy().then((result) => {
+      // console.log(result);
+      this.defaultPharmacy = result;
+    });
+    this.memberService.getMemberDetailsLegacy().then((result) =>
       this.memberInfo = result
     );
   }
@@ -90,10 +93,12 @@ export class CdcSearchComponent implements OnInit {
   onSubmit(form: NgForm) {
     // console.log(this.drugSelected);
     this.currentSearch.userName = this.memberInfo;
-    this.currentSearch.pharmacy = this.defaultPharmacy;
-    this.currentSearch.drugDetails = this.drugCache[this.drugSelected];
-    this.currentSearch.drugName = this.drugSelected;
+    this.currentSearch.pharmacy = this.cdcHelperService.setPharmacyDetail(this.defaultPharmacy);
+    this.currentSearch.drugDetails = this.cdcHelperService.getDrugData(this.drugCache[this.drugSelected]);
+    this.currentSearch.drugName = this.cdcHelperService.getDrugName(this.currentSearch.drugDetails);
+    // console.log(this.currentSearch);
     this.cdcHelperService.setSessionData(this.currentSearch);
+    // console.log(this.currentSearch);
     this.router.navigate([FastWidgetTypes.FAST_CDC_V4]);
   }
 

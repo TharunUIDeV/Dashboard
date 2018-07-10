@@ -14,6 +14,7 @@ export enum FastWidgetTypes {
 const keys = {
   FAST_CDC_V4: {
     url: `FASTCheckDrugCosts/v4/#/?`
+   // url: `FASTCheckDrugCosts/v4/index.html#/?`
   },
   FAST_ORDER_STATUS: {
     url: `orderstatus/v1/#/?`
@@ -60,8 +61,10 @@ export class FastWidgetsComponent implements OnInit {
 
   getFastConfig(screen: string) {
     const key = keys[screen];
-    return `${this.configServie.fastBaseUrl}${key.url}&apiKey=${this.configServie.apiKey}&apiSecret=${this.configServie.apiSecret}&tokenid=${this.configServie.token}&fenv=demo&env=demo`;
-    // return `${this.configServie.fastBaseUrl}${key.url}&apiKey=${this.configServie.apiKey}&apiSecret=${this.configServie.apiSecret}&tokenid=${this.configServie.token}&fenv=${this.configServie.env.toLowerCase()}&env=${this.configServie.env.toLowerCase()}`;
+    // console.log(this.configServie.fastBaseUrl);
+    // return `${this.configServie.fastBaseUrl}${key.url}&fenv=demo&faststyle=caremark`;
+    // return `${this.configServie.fastBaseUrl}${key.url}&apiKey=${this.configServie.apiKey}&apiSecret=${this.configServie.apiSecret}&tokenid=${this.configServie.token}&fenv=demo&env=demo`;
+    return `${this.configServie.fastBaseUrl}${key.url}&apiKey=${this.configServie.apiKey}&apiSecret=${this.configServie.apiSecret}&tokenid=${this.configServie.token}&fenv=${this.configServie.env.toLowerCase()}&env=${this.configServie.env.toLowerCase()}`;
   }
 
   /*
