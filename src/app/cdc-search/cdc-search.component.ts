@@ -99,7 +99,13 @@ export class CdcSearchComponent implements OnInit {
     // console.log(this.currentSearch);
     this.cdcHelperService.setSessionData(this.currentSearch);
     // console.log(this.currentSearch);
-    this.router.navigate([FastWidgetTypes.FAST_CDC_V4]);
+    // this.router.navigate([FastWidgetTypes.FAST_CDC_V4]);
+    this.analytics.link({
+      key_activity: 'new dashboard find a new medication',
+      link_name: 'Custom: New Dashboard find a new medication clicked'
+    });
+    window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
+
   }
 
   selectedItem(item) {

@@ -24,7 +24,6 @@ import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
 import { HeaderComponent } from './header/header.component';
 import { CdcSearchComponent } from './cdc-search/cdc-search.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {TypeaheadModule} from 'ngx-bootstrap';
 import {NgbTypeaheadModule} from './typeahead/typeahead.module';
 
 
