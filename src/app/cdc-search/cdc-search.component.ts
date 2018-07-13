@@ -49,17 +49,12 @@ export class CdcSearchComponent implements OnInit {
       debounceTime(300),
       distinctUntilChanged(),
       tap(() => this.searching = true),
-      /*
-      filter( () => {
-        if (this.defaultPharmacy && this.memberInfo) {
-          return true;
-        } else {
-          return false;
-        }
-      }),*/
       switchMap(term =>
-        fromPromise(this.caremarkDataService.getDrugByName(term)).pipe(
-          tap( () => this.searchFailed = false),
+        this.cdcHelperService.drugSearch(term).pipe(
+          tap( (drugs) => {
+            this.searchFailed = false;
+            this.cdcHelperService.cachedrugSearchResults(term, drugs);
+          }),
           map( (drugs) =>  drugs.map(drug => {
             let drugKey = this.cdcHelperService.getDrugName(drug);
             drugKey = this.cdcHelperService.transformTitleCase(drugKey);

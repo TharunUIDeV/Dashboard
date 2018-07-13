@@ -1,5 +1,8 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from '../service/config.service';
+import {of} from 'rxjs/observable/of';
+import {CaremarkDataService} from '../service/caremark-data.service';
+import {fromPromise} from 'rxjs/observable/fromPromise';
 
 
 @Injectable()
@@ -9,8 +12,10 @@ export class CdcHelperService {
   private sessionData: any = {};
   private memberDetail: any = {};
   private memberList: any = [];
+  private drugSearchResultCache: any = {};
 
-  constructor(private configService: ConfigService) {
+  constructor(private configService: ConfigService,
+              private caremarkDataService: CaremarkDataService) {
   }
 
 
@@ -376,6 +381,32 @@ export class CdcHelperService {
       return input.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase() ));
     }
   }
+
+  /**
+   * Search for a drug
+   * @param currentSearchkeyword
+   * @returns {*|l.promise|{then, catch, finally}|d.promise|Function|promise}
+   */
+  drugSearch(currentSearchkeyword) {
+    const savedKey = currentSearchkeyword.toLowerCase();
+    let searchResultFromStorage;
+
+    const sessionStoredData = this.getSessionStorage(this.configService.token);
+    if (sessionStoredData) {
+      searchResultFromStorage = sessionStoredData['drugSearchResultCache'];
+    }
+    if (searchResultFromStorage && searchResultFromStorage[savedKey]) {
+      console.log('drugsearch: serving from cache');
+      return of(searchResultFromStorage[savedKey]);
+    }
+    return fromPromise(this.caremarkDataService.getDrugByName(currentSearchkeyword));
+  }
+
+  cachedrugSearchResults(searchKey: string, result) {
+    this.drugSearchResultCache[searchKey] = result;
+    this.setSessionStorage(this.configService.token, {'drugSearchResultCache': this.drugSearchResultCache});
+  }
+
 
   setSessionData(currentSearch) {
     this.sessionData.currentSearch = currentSearch;
