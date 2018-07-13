@@ -78,8 +78,11 @@ export class CdcSearchComponent implements OnInit {
       // console.log(result);
       this.defaultPharmacy = result;
     });
-    this.memberService.getMemberDetailsLegacy().then((result) =>
-      this.memberInfo = result
+    this.memberService.getMemberDetailsLegacy().then((result) => {
+        this.memberInfo = result;
+        this.cdcHelperService.setMemberDetails(this.memberInfo);
+        this.cdcHelperService.setMemberList(this.memberInfo);
+      }
     );
   }
 
