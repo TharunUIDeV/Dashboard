@@ -1,6 +1,6 @@
 <section>
   <form (ngSubmit)="onSubmit(drugSearchForm)" #drugSearchForm="ngForm">
-    <input id="drugSearchInput" (selectItem)="selectedItem($event)"  type="text" placeholder="Enter drug name" class="form-control" [ngbTypeahead]="search"/>
+    <input id="drugSearchInput" (selectItem)="selectedItem($event)"  type="text" placeholder="Enter drug name" class="form-control" [ngbTypeahead]="search">
     <button type="submit" class="btn form-bsubmit">search</button>
   </form>
 </section>

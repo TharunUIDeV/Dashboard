@@ -136,7 +136,7 @@ export class CdcHelperService {
       const genericName = this.getGenericName(drug);
       if (genericName) {
         genericInfo = drug;
-        /*
+        /* Revisit
         responseList.forEach(function (storedNameValue) {
           if (this.getDrugName(storedNameValue).toLowerCase() === genericName.toLowerCase()) {
             genericInfo = storedNameValue;
@@ -271,8 +271,7 @@ export class CdcHelperService {
       member.isPrefPharmacyEligibile = this.isPrefPharmacyEligibile(member);
       this.memberList.push(member);
 
-      if (memberInfo.family) {
-        if (memberInfo.family.dependentList && memberInfo.family.dependentList.memberInfo) {
+      if (memberInfo.family && memberInfo.family.dependentList && memberInfo.family.dependentList.memberInfo) {
           const memberInfoList = this.convertToArray(memberInfo.family.dependentList.memberInfo);
           memberInfoList.forEach((element) => {
             element.isVaccineEligibile = this.isVaccineEligibile(element);
@@ -290,7 +289,6 @@ export class CdcHelperService {
           this.memberList.sort(function (a, b) {
             return a.dateOfBirth - b.dateOfBirth;
           });
-        }
       }
     }
     return this.memberList;
@@ -301,12 +299,14 @@ export class CdcHelperService {
    */
   isVaccineEligibile(data) {
     let isVaccineEligibile = false;
-    if (data.eligibility && data.eligibility.benefitPlanList && data.eligibility.benefitPlanList.benefitPlan) {
-      data.eligibility.benefitPlanList.benefitPlan.forEach( function (benefitPlan) {
-        if (!isVaccineEligibile && benefitPlan.deliverySystem === '3') {
-          isVaccineEligibile = benefitPlan.vaccineEligible;
-        }
-      });
+    if (data.eligibility &&
+        data.eligibility.benefitPlanList &&
+        data.eligibility.benefitPlanList.benefitPlan) {
+          data.eligibility.benefitPlanList.benefitPlan.forEach( (benefitPlan) => {
+            if (!isVaccineEligibile && benefitPlan.deliverySystem === '3') {
+            isVaccineEligibile = benefitPlan.vaccineEligible;
+            }
+          });
     }
     return isVaccineEligibile;
   }
@@ -320,7 +320,10 @@ export class CdcHelperService {
 
     let isPreferredPharmacyActive = false;
 
-    if ( !isPreferredPharmacyActive && data.eligibility && data.eligibility.prefPharmInd && data.eligibility.prefPharmInd == 'Y') {
+    if ( !isPreferredPharmacyActive &&
+      data.eligibility &&
+      data.eligibility.prefPharmInd &&
+      data.eligibility.prefPharmInd === 'Y') {
 
       isPreferredPharmacyActive = true;
     } else if ( data.hasOwnProperty('prefPharmInd') && data.prefPharmInd === 'Y') {
@@ -340,9 +343,9 @@ export class CdcHelperService {
     if (data.eligibility && data.eligibility.benefitPlanList && data.eligibility.benefitPlanList.benefitPlan) {
       data.eligibility.benefitPlanList.benefitPlan.forEach(  (benefitPlan) => {
         if (!isBestPharmacy && benefitPlan.deliverySystem === '3') {
-          isBestPharmacy = (benefitPlan.mandatoryRetail90DaySupplyProgram && benefitPlan.mandatoryRetail90DaySupplyProgram === 'true')
-            || (benefitPlan.retail90DaySupplyProgram && benefitPlan.retail90DaySupplyProgram === 'true')
-            || (benefitPlan.maintenanceChoiceIndicator && benefitPlan.maintenanceChoiceIndicator === 'true');
+          isBestPharmacy = (benefitPlan.mandatoryRetail90DaySupplyProgram && benefitPlan.mandatoryRetail90DaySupplyProgram === 'true') ||
+                            (benefitPlan.retail90DaySupplyProgram && benefitPlan.retail90DaySupplyProgram === 'true') ||
+                            (benefitPlan.maintenanceChoiceIndicator && benefitPlan.maintenanceChoiceIndicator === 'true');
         }
       });
     }
@@ -356,12 +359,22 @@ export class CdcHelperService {
    */
   isPrefPharmacyEligibile(data) {
     let isPrefPharmEligibile = false;
-    if (data.eligibility && data.eligibility.prefPharmInd && data.eligibility.prefPharmInd === 'Y') {
+    if (data.eligibility &&
+      data.eligibility.prefPharmInd &&
+      data.eligibility.prefPharmInd === 'Y') {
       isPrefPharmEligibile = true;
     } else if ( data.hasOwnProperty('prefPharmInd') && data.prefPharmInd === 'Y') {
       isPrefPharmEligibile = true;
     }
     return isPrefPharmEligibile;
+  }
+
+  transformTitleCase(input: string): string {
+    if (!input) {
+      return '';
+    } else {
+      return input.replace(/\w\S*/g, (txt => txt[0].toUpperCase() + txt.substr(1).toLowerCase() ));
+    }
   }
 
   setSessionData(currentSearch) {

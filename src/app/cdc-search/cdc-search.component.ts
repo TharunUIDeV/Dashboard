@@ -16,6 +16,7 @@ import {MemberService} from '../service/member.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {DomSanitizer} from '@angular/platform-browser';
 import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
+import {environment} from '../../environments/environment';
 
 @Component({
   selector: 'app-cdc-search',
@@ -60,11 +61,15 @@ export class CdcSearchComponent implements OnInit {
         fromPromise(this.caremarkDataService.getDrugByName(term)).pipe(
           tap( () => this.searchFailed = false),
           map( (drugs) =>  drugs.map(drug => {
-            const drugKey = this.cdcHelperService.getDrugName(drug);
+            let drugKey = this.cdcHelperService.getDrugName(drug);
+            drugKey = this.cdcHelperService.transformTitleCase(drugKey);
             // console.log(drugKey);
             this.drugCache[drugKey] = drug;
             return drugKey;
           })),
+          map((drugNames) => drugNames.filter( (drugName) => {
+            return (  drugName.toLowerCase().indexOf(term.toLowerCase()) === 0);
+          }) ),
           catchError(() => {
             this.searchFailed = true;
             return of([]);
@@ -102,13 +107,15 @@ export class CdcSearchComponent implements OnInit {
     // console.log(this.currentSearch);
     this.cdcHelperService.setSessionData(this.currentSearch);
     // console.log(this.currentSearch);
-    // this.router.navigate([FastWidgetTypes.FAST_CDC_V4]);
     this.analytics.link({
       key_activity: 'new dashboard find a new medication',
       link_name: 'Custom: New Dashboard find a new medication clicked'
     });
-    window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
-
+    if (environment.production === true) {
+      window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
+    } else {
+      this.router.navigate([FastWidgetTypes.FAST_CDC_V4]);
+    }
   }
 
   selectedItem(item) {

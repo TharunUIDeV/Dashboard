@@ -29,3 +29,7 @@
   background-color: #a50000;
   border-color: #a50000;
 }
+
+.my-load-spinner {
+  background: url(../../assets/images/loop.svg) right no-repeat;
+}
