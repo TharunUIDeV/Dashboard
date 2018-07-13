@@ -60,7 +60,7 @@ export class CdcSearchComponent implements OnInit {
         fromPromise(this.caremarkDataService.getDrugByName(term)).pipe(
           tap( () => this.searchFailed = false),
           map( (drugs) =>  drugs.map(drug => {
-            const drugKey = drug.drugName + ' ' + drug.drugStrength;
+            const drugKey = this.cdcHelperService.getDrugName(drug);
             // console.log(drugKey);
             this.drugCache[drugKey] = drug;
             return drugKey;
