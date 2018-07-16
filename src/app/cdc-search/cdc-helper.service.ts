@@ -396,7 +396,6 @@ export class CdcHelperService {
       searchResultFromStorage = sessionStoredData['drugSearchResultCache'];
     }
     if (searchResultFromStorage && searchResultFromStorage[savedKey]) {
-      console.log('drugsearch: serving from cache');
       return of(searchResultFromStorage[savedKey]);
     }
     return fromPromise(this.caremarkDataService.getDrugByName(currentSearchkeyword));
@@ -412,6 +411,7 @@ export class CdcHelperService {
     this.sessionData.currentSearch = currentSearch;
     this.sessionData.loggedInUserInfo = this.memberDetail;
     this.sessionData.memberList = this.memberList;
+    this.sessionData.drugSearchResultCache = this.drugSearchResultCache;
 
     this.setSessionStorage(this.configService.token, this.sessionData);
   }
