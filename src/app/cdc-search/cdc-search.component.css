@@ -30,6 +30,23 @@
   border-color: #a50000;
 }
 
-.my-load-spinner {
-  background: url(../../assets/images/loop.svg) right no-repeat;
+searchContainer {
+  position: relative;
+}
+
+.icon-spinner {
+  position: absolute;
+  left: 12rem;
+  animation: spin 1000ms infinite linear;
+}
+
+@media only screen and (min-device-width : 768px) {
+  .icon-spinner {
+    left: 23rem;
+  }
+}
+
+@keyframes spin {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(359deg);}
 }
