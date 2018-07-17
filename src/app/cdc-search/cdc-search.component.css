@@ -34,15 +34,35 @@ searchContainer {
   position: relative;
 }
 
-.icon-spinner {
+.close_icon_grey {
+  height: 21px;
+  width: 21px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
   position: absolute;
   left: 12rem;
+  background-image: url(../../assets/images/CVSDesktopIcons.XCloseSearchBar.png);
+}
+
+.pull-right {
+  float: right!important;
+}
+
+.icon-spinner {
+  position: absolute;
+  left: 11rem;
   animation: spin 1000ms infinite linear;
 }
 
 @media only screen and (min-device-width : 768px) {
   .icon-spinner {
-    left: 23rem;
+    left: 22rem;
+    margin-top: 5px;
+  }
+  .close_icon_grey {
+    left: 23.5rem;
+    margin-top: 10px;
   }
 }
 

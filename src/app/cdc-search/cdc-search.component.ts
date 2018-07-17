@@ -10,11 +10,9 @@ import {Observable} from 'rxjs/Observable';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
 import {of} from 'rxjs/observable/of';
-import {fromPromise} from 'rxjs/observable/fromPromise';
 import {NgForm} from '@angular/forms';
 import {MemberService} from '../service/member.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {DomSanitizer} from '@angular/platform-browser';
 import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
 import {environment} from '../../environments/environment';
 
@@ -27,6 +25,7 @@ export class CdcSearchComponent implements OnInit {
 
   searching = false;
   searchFailed = false;
+  drugSearched = '';
   private drugSearch$;
   private drugSelected;
   private drugCache = {};
@@ -48,7 +47,10 @@ export class CdcSearchComponent implements OnInit {
     text$.pipe(
       debounceTime(300),
       distinctUntilChanged(),
-      tap(() => this.searching = true),
+      tap((term) => {
+        this.searching = true;
+        this.drugSearched = term;
+      }),
       switchMap(term =>
         this.cdcHelperService.drugSearch(term).pipe(
           tap( (drugs) => {
@@ -111,6 +113,10 @@ export class CdcSearchComponent implements OnInit {
     } else {
       this.router.navigate([FastWidgetTypes.FAST_CDC_V4]);
     }
+  }
+
+  clearDrugSearch() {
+    console.log('Called to clear Drug Search');
   }
 
   selectedItem(item) {

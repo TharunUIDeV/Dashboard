@@ -4,6 +4,7 @@
       <input class="SearchInput" (selectItem)="selectedItem($event)" type="text" placeholder="Enter drug name"
              class="form-control" [ngbTypeahead]="search">
       <button type="submit" class="btn form-bsubmit">search</button>
+      <!--i *ngIf="drugSearched && drugSearched.length > 0" (click)="clearDrugSearch()" class=" close_icon_grey pull-right"></i-->
       <span *ngIf="searching">
       <svg class="icon-spinner" width="24" height="24" viewBox="0 0 24 24">
         <path
