@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import {AfterViewInit, Component, OnInit} from '@angular/core';
 import {ConfigService} from '../service/config.service';
 import {CdcHelperService} from './cdc-helper.service';
 import {TealiumUtagService} from '../service/utag.service';
@@ -14,13 +14,14 @@ import {MemberService} from '../service/member.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
 import {environment} from '../../environments/environment';
+import * as _ from 'lodash';
 
 @Component({
   selector: 'app-cdc-search',
   templateUrl: './cdc-search.component.html',
   styleUrls: ['./cdc-search.component.css']
 })
-export class CdcSearchComponent implements OnInit {
+export class CdcSearchComponent implements OnInit, AfterViewInit {
 
   searching = false;
   searchFailed = false;
@@ -46,6 +47,7 @@ export class CdcSearchComponent implements OnInit {
     text$.pipe(
       debounceTime(300),
       distinctUntilChanged(),
+      // filter((term) => term.length > 2),
       tap((term) => {
         this.searching = true;
         this.drugSearched = term;
@@ -62,17 +64,31 @@ export class CdcSearchComponent implements OnInit {
             drugKey = this.cdcHelperService.transformTitleCase(drugKey);
             console.log(drugKey);
             this.drugCache[drugKey] = drug;
-            return drugKey;
+            drug.drugKey = drugKey;
+            return drug;
           })),
+          // map((drugs) => _.sortBy(drugs, 'drugKey' ) ),
+          map((drugs) => {
+            this.cdcHelperService.sortList(drugs, 'drugKey' );
+            return drugs;
+          } ),
+          map((drugs) => drugs.map(drug => drug.drugKey)),
           map((drugNames) => drugNames.filter( (drugName) => {
             return (  drugName.toLowerCase().indexOf(term.toLowerCase()) === 0);
           }) ),
-          catchError(() => {
+          catchError((err) => {
             this.searchFailed = true;
-            return of([]);
+            console.log(err.message);
+            return of([err.message]);
           }))),
       tap(() => this.searching = false)
     )
+
+  ngAfterViewInit() {
+    if (true) {
+      this.drugSearched = null;
+    }
+  }
 
   ngOnInit() {
     this.cdcHelperService.getDefaultPharmacy().subscribe((pharmacy) => {
@@ -119,6 +135,7 @@ export class CdcSearchComponent implements OnInit {
 
   clearDrugSearch() {
     console.log('Called to clear Drug Search');
+    this.search(of('clear'));
   }
 
   selectedItem(item) {

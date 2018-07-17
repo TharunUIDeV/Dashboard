@@ -394,6 +394,9 @@ export class CdcHelperService {
     const savedKey = currentSearchkeyword.toLowerCase();
     let searchResultFromStorage;
 
+    if (savedKey.length < 3) {
+      return of([]);
+    }
     const sessionStoredData = this.getSessionStorage(this.configService.token);
     if (sessionStoredData) {
       searchResultFromStorage = sessionStoredData['drugSearchResultCache'];

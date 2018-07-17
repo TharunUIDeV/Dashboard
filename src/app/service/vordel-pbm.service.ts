@@ -1,7 +1,7 @@
 import {Injectable} from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {catchError, map, mergeMap, tap} from 'rxjs/operators';
+import {catchError, map, mergeMap, tap, flatMap, switchMap} from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 import {Observable} from 'rxjs/Observable';
 import {ConfigService} from './config.service';
@@ -198,18 +198,23 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
         queryParam.memberID = memberInfo.internalID;
         url = this.baseUrl + 'drug/drugDetails?' + VordelPbmService.createQueryString(queryParam);
       }),
-      mergeMap((memberInfo) => this.httpClient.post(url, undefined, httpOptions)),
-      map((result) => {
-        const resultJson: any = this.x2jsParser.xml2js(result);
-        const response = resultJson.response;
+      switchMap((memberInfo) => this.httpClient.post(url, undefined, httpOptions).pipe(
+        map((result) => {
+          const resultJson: any = this.x2jsParser.xml2js(result);
+          const response = resultJson.response;
 
-        if (response.header.statusCode === '0000') {
-          // console.log(response.detail.drugDetailsList);
-          return response.detail.drugDetailsList.drug;
-        }
-        console.error(JSON.stringify(response.header));
-        throw new Error(response.header || 'Server error');
-      })
+          if (response.header.statusCode === '0000') {
+            // console.log(response.detail.drugDetailsList);
+            return response.detail.drugDetailsList.drug;
+          } else if (response.header.statusCode === '2020') {
+            throw new Error(
+              'No results found. Check your spelling or enter just the first 3 letters of the drug you wish to price, then try again.'
+            );
+          }
+          console.error(JSON.stringify(response.header));
+          throw new Error('Some parts of Caremark.com may be unavailable at this time. If the problem persists, please call Customer Care at the number on your prescription benefit ID card.');
+        })
+      )),
     );
   }
 
