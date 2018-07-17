@@ -208,7 +208,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
           return response.detail.drugDetailsList.drug;
         }
         console.error(JSON.stringify(response.header));
-        return Observable.throw(response.header || 'Server error');
+        throw new Error(response.header || 'Server error');
       })
     );
   }
@@ -247,12 +247,12 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
           const response = resultJson.response;
 
           if (response.header.statusCode === '0000') {
-            // console.log(response);
-            return of(response.pharmacy);
+            console.log(response);
+            return response.pharmacy;
           }
           console.error(JSON.stringify(response.header));
           // throw new Error(response.header);
-          return Observable.throw(response.header || 'Server error');
+          throw new Error(response.header || 'Server error');
         })
       );
   }

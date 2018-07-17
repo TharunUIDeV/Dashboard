@@ -76,7 +76,11 @@ export class CdcSearchComponent implements OnInit {
 
   ngOnInit() {
     this.cdcHelperService.getDefaultPharmacy().subscribe((pharmacy) => {
-      this.defaultPharmacy = this.cdcHelperService.setPharmacyDetail(pharmacy)
+      // console.log(JSON.stringify(pharmacy));
+      this.defaultPharmacy = this.cdcHelperService.setPharmacyDetail(pharmacy);
+    }, error => {
+      console.log(JSON.stringify(error));
+      this.defaultPharmacy = undefined;
     });
     this.memberService.getMemberDetailsLegacy().then((result) => {
         this.memberInfo = result;

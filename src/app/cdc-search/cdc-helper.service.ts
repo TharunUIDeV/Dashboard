@@ -12,7 +12,6 @@ export class CdcHelperService {
   private memberDetail: any = {};
   private memberList: any = [];
   private drugSearchResultCache: any = {};
-  private defaultPharmacy: any = undefined;
 
   constructor(private configService: ConfigService,
               private vordelService: VordelPbmService) {
@@ -188,14 +187,6 @@ export class CdcHelperService {
       pharmacyDetails.pharmacyIndicator = pharmacy.pharmacyIndicator;
     }
     return pharmacyDetails;
-  }
-
-  setDefaultPharmacy() {
-    this.vordelService.getDefaultPharmacy().subscribe((data) => {
-       this.defaultPharmacy = this.setPharmacyDetail(data);
-    }, error1 => {
-      this.defaultPharmacy = undefined;
-    });
   }
 
   getDefaultPharmacy() {
