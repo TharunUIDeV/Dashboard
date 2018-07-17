@@ -1,12 +1,14 @@
 import {Injectable} from '@angular/core';
 import {CaremarkDataServiceInterface} from './caremark-data.service.interface';
 import {HttpClient, HttpErrorResponse, HttpHeaders} from '@angular/common/http';
-import {catchError} from 'rxjs/operators';
+import {catchError, map, mergeMap, tap} from 'rxjs/operators';
 import 'rxjs/add/observable/throw';
 import {Observable} from 'rxjs/Observable';
 import {ConfigService} from './config.service';
 import * as xml2js from 'xml2js';
 import * as x2js from 'x2js';
+import {of} from 'rxjs/observable/of';
+import {fromPromise} from 'rxjs/observable/fromPromise';
 
 @Injectable()
 export class VordelPbmService implements CaremarkDataServiceInterface {
@@ -165,100 +167,94 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
     });
   }
 
-
   public getDrugByName(searchText) {
-    return new Promise((resolve, reject) => {
+    const queryParam: any = {
+      apiKey: this.configService.apiKey,
+      apiSecret: this.configService.apiSecret,
+      appName: this.QueryConstants.appName,
+      channelName: this.QueryConstants.channelName,
+      deviceType: this.QueryConstants.deviceType,
+      tokenID: this.configService.token,
+      drugName: searchText,
+      memberID: this.configService.memberId,
+      lineOfBusiness: this.QueryConstants.lineOfBusiness,
+      serviceCORS: 'TRUE',
+      version: '1.0',
+      deviceID: this.QueryConstants.deviceID,
+      deviceToken: this.QueryConstants.deviceToken,
+      serviceName: 'drugDetails',
+    };
 
-      const queryParam: any = {
-        apiKey: this.configService.apiKey,
-        apiSecret: this.configService.apiSecret,
-        appName: this.QueryConstants.appName,
-        channelName: this.QueryConstants.channelName,
-        deviceType: this.QueryConstants.deviceType,
-        tokenID: this.configService.token,
-        drugName: searchText,
-        memberID: this.configService.memberId,
-        lineOfBusiness: this.QueryConstants.lineOfBusiness,
-        serviceCORS: 'TRUE',
-        version: '1.0',
-        deviceID: this.QueryConstants.deviceID,
-        deviceToken: this.QueryConstants.deviceToken,
-        serviceName: 'drugDetails',
-      };
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/xml'
+      }),
+      responseType: 'text' as 'text',
+    };
+    let url;
 
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/xml'
-        }),
-        responseType: 'text' as 'text',
-      };
-
-      this.getMemberDetails().then((memberInfo) => {
+    return fromPromise(this.getMemberDetails()).pipe(
+      tap((memberInfo) => {
         queryParam.memberID = memberInfo.internalID;
-        const url = this.baseUrl + 'drug/drugDetails?' + VordelPbmService.createQueryString(queryParam);
-        this.httpClient.post(url, undefined, httpOptions)
-          .pipe(
-            catchError(this.handleError)
-          ).subscribe((result) => {
+        url = this.baseUrl + 'drug/drugDetails?' + VordelPbmService.createQueryString(queryParam);
+      }),
+      mergeMap((memberInfo) => this.httpClient.post(url, undefined, httpOptions)),
+      map((result) => {
+        const resultJson: any = this.x2jsParser.xml2js(result);
+        const response = resultJson.response;
+
+        if (response.header.statusCode === '0000') {
+          // console.log(response.detail.drugDetailsList);
+          return response.detail.drugDetailsList.drug;
+        }
+        console.error(JSON.stringify(response.header));
+        return Observable.throw(response.header || 'Server error');
+      })
+    );
+  }
+
+  public getDefaultPharmacy() {
+    const queryParam: any = {
+      apiKey: this.configService.apiKey,
+      apiSecret: this.configService.apiSecret,
+      appName: this.QueryConstants.appName,
+      channelName: this.QueryConstants.channelName,
+      deviceType: this.QueryConstants.deviceType,
+      tokenID: this.configService.token,
+      deviceID: this.QueryConstants.deviceID,
+      deviceToken: this.QueryConstants.deviceToken,
+      lineOfBusiness: this.QueryConstants.lineOfBusiness,
+      serviceCORS: 'TRUE',
+      version: '1.0',
+      serviceName: 'primaryPharmacy',
+      preferredPharmacy: 'BLNK',
+      operationName: 'getDefaultPharmacy',
+      env: this.configService.env
+    };
+
+    const url = this.baseUrl + '/pharmacy/getDefaultPharmacy?' + VordelPbmService.createQueryString(queryParam);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/xml'
+      }),
+      responseType: 'text' as 'text',
+    };
+
+    return this.httpClient.post(url, undefined, httpOptions)
+      .pipe(
+        map((result) => {
           const resultJson: any = this.x2jsParser.xml2js(result);
           const response = resultJson.response;
 
           if (response.header.statusCode === '0000') {
-            // console.log(response.detail.drugDetailsList);
-            return resolve(response.detail.drugDetailsList.drug);
+            // console.log(response);
+            return of(response.pharmacy);
           }
           console.error(JSON.stringify(response.header));
-          return reject(response.header);
-
-        }, error => reject(error));
-      });
-    });
-  }
-
-  public getDefaultPharmacy() {
-    return new Promise((resolve, reject) => {
-
-      const queryParam: any = {
-        apiKey: this.configService.apiKey,
-        apiSecret: this.configService.apiSecret,
-        appName: this.QueryConstants.appName,
-        channelName: this.QueryConstants.channelName,
-        deviceType: this.QueryConstants.deviceType,
-        tokenID: this.configService.token,
-        deviceID: this.QueryConstants.deviceID,
-        deviceToken: this.QueryConstants.deviceToken,
-        lineOfBusiness: this.QueryConstants.lineOfBusiness,
-        serviceCORS: 'TRUE',
-        version: '1.0',
-        serviceName: 'primaryPharmacy',
-        preferredPharmacy: 'BLNK',
-        operationName: 'getDefaultPharmacy',
-        env: this.configService.env
-      };
-
-      const url = this.baseUrl + '/pharmacy/getDefaultPharmacy?' + VordelPbmService.createQueryString(queryParam);
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/xml'
-        }),
-        responseType: 'text' as 'text',
-      };
-
-      this.httpClient.post(url, undefined, httpOptions)
-        .pipe(
-          catchError(this.handleError)
-        ).subscribe((result) => {
-          const resultJson: any = this.x2jsParser.xml2js(result);
-        const response = resultJson.response;
-
-        if (response.header.statusCode === '0000') {
-          // console.log(response);
-          return resolve(response.pharmacy);
-        }
-        console.error(JSON.stringify(response.header));
-        return reject(response.header);
-      }, error => reject(error));
-    });
+          // throw new Error(response.header);
+          return Observable.throw(response.header || 'Server error');
+        })
+      );
   }
 
   public getMemberDetails(): Promise<any> {
@@ -291,14 +287,14 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
         .pipe(
           catchError(this.handleError)
         ).subscribe((result) => {
-          const resultJson: any = this.x2jsParser.xml2js(result);
-          const response = resultJson.response;
+        const resultJson: any = this.x2jsParser.xml2js(result);
+        const response = resultJson.response;
 
-          if (response.header.statusCode === '0000') {
-            return resolve(response.detail.memberInfo);
-          }
-          console.error(JSON.stringify(response.header));
-          return reject(response.header);
+        if (response.header.statusCode === '0000') {
+          return resolve(response.detail.memberInfo);
+        }
+        console.error(JSON.stringify(response.header));
+        return reject(response.header);
       }, error => reject(error));
     });
   }

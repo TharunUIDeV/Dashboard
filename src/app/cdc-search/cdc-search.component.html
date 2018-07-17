@@ -1,4 +1,4 @@
-<section xmlns="http://www.w3.org/1999/html">
+<section *ngIf="defaultPharmacy">
   <form (ngSubmit)="onSubmit(drugSearchForm)" #drugSearchForm="ngForm">
     <div class="SearchContainer">
       <input class="SearchInput" (selectItem)="selectedItem($event)" type="text" placeholder="Enter drug name"
@@ -14,4 +14,7 @@
       </span>
     </div>
   </form>
+</section>
+<section class="block-item" *ngIf="!defaultPharmacy">
+    <button type="button" class="block-item-button btn" (click)="findNewMedication()">Find a new medication</button>
 </section>

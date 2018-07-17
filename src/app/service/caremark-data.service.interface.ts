@@ -4,8 +4,8 @@ export interface CaremarkDataServiceInterface {
   getRefills(): Promise<any>;
   getRefillsCount(): Promise<any>;
   getMemberDetails(): Promise<any>;
-  getDrugByName?(searchText): Promise<any>;
-  getDefaultPharmacy?(): Promise<any>;
+  getDrugByName?(searchText): any;
+  getDefaultPharmacy?(): any;
   getPznByIdAndResource(params: any): Promise<any>;
 }
 

@@ -1,8 +1,7 @@
 import {Injectable} from '@angular/core';
 import {ConfigService} from '../service/config.service';
 import {of} from 'rxjs/observable/of';
-import {CaremarkDataService} from '../service/caremark-data.service';
-import {fromPromise} from 'rxjs/observable/fromPromise';
+import {VordelPbmService} from '../service/vordel-pbm.service';
 
 
 @Injectable()
@@ -13,9 +12,10 @@ export class CdcHelperService {
   private memberDetail: any = {};
   private memberList: any = [];
   private drugSearchResultCache: any = {};
+  private defaultPharmacy: any = undefined;
 
   constructor(private configService: ConfigService,
-              private caremarkDataService: CaremarkDataService) {
+              private vordelService: VordelPbmService) {
   }
 
 
@@ -188,6 +188,18 @@ export class CdcHelperService {
       pharmacyDetails.pharmacyIndicator = pharmacy.pharmacyIndicator;
     }
     return pharmacyDetails;
+  }
+
+  setDefaultPharmacy() {
+    this.vordelService.getDefaultPharmacy().subscribe((data) => {
+       this.defaultPharmacy = this.setPharmacyDetail(data);
+    }, error1 => {
+      this.defaultPharmacy = undefined;
+    });
+  }
+
+  getDefaultPharmacy() {
+    return this.vordelService.getDefaultPharmacy();
   }
 
   setMemberDetails (memberInfo) {
@@ -398,7 +410,7 @@ export class CdcHelperService {
     if (searchResultFromStorage && searchResultFromStorage[savedKey]) {
       return of(searchResultFromStorage[savedKey]);
     }
-    return fromPromise(this.caremarkDataService.getDrugByName(currentSearchkeyword));
+    return this.vordelService.getDrugByName(currentSearchkeyword);
   }
 
   cachedrugSearchResults(searchKey: string, result) {

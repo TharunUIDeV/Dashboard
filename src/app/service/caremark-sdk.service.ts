@@ -116,10 +116,6 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
   }
 
   public getDrugByName(searchText): Promise<any> {
-    return this.vordelPbmService.getDrugByName(searchText);
-  }
-
-  public getDrugByNameV2(searchText): Promise<any> {
 
     return new Promise((resolve, reject) => {
       const params: any = {};
@@ -149,10 +145,6 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
   }
 
   public getDefaultPharmacy(): Promise<any> {
-    return this.vordelPbmService.getDefaultPharmacy();
-  }
-
-  public getDefaultPharmacyV2(): Promise<any> {
 
     return new Promise((resolve, reject) => {
       const params: any = {};

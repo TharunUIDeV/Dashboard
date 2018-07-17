@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import {ConfigService} from '../service/config.service';
 import {CdcHelperService} from './cdc-helper.service';
-import {CaremarkDataService} from '../service/caremark-data.service';
 import {TealiumUtagService} from '../service/utag.service';
 import 'rxjs/add/operator/debounceTime';
 import 'rxjs/add/operator/distinctUntilChanged';
@@ -26,15 +25,15 @@ export class CdcSearchComponent implements OnInit {
   searching = false;
   searchFailed = false;
   drugSearched = '';
+  defaultPharmacy = undefined;
+
   private drugSearch$;
   private drugSelected;
   private drugCache = {};
-  private defaultPharmacy = undefined;
   private memberInfo = undefined;
   private currentSearch: any = {};
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
-              private caremarkDataService: CaremarkDataService,
               private cdcHelperService: CdcHelperService,
               private memberService: MemberService,
               private route: ActivatedRoute,
@@ -51,16 +50,17 @@ export class CdcSearchComponent implements OnInit {
         this.searching = true;
         this.drugSearched = term;
       }),
-      switchMap(term =>
+      switchMap((term) =>
         this.cdcHelperService.drugSearch(term).pipe(
           tap( (drugs) => {
+            console.log(drugs);
             this.searchFailed = false;
             this.cdcHelperService.cachedrugSearchResults(term, drugs);
           }),
           map( (drugs) =>  drugs.map(drug => {
             let drugKey = this.cdcHelperService.getDrugName(drug);
             drugKey = this.cdcHelperService.transformTitleCase(drugKey);
-            // console.log(drugKey);
+            console.log(drugKey);
             this.drugCache[drugKey] = drug;
             return drugKey;
           })),
@@ -70,15 +70,13 @@ export class CdcSearchComponent implements OnInit {
           catchError(() => {
             this.searchFailed = true;
             return of([]);
-          }))
-      ),
+          }))),
       tap(() => this.searching = false)
     )
 
   ngOnInit() {
-    this.caremarkDataService.getDefaultPharmacy().then((result) => {
-      // console.log(result);
-      this.defaultPharmacy = result;
+    this.cdcHelperService.getDefaultPharmacy().subscribe((pharmacy) => {
+      this.defaultPharmacy = this.cdcHelperService.setPharmacyDetail(pharmacy)
     });
     this.memberService.getMemberDetailsLegacy().then((result) => {
         this.memberInfo = result;
@@ -98,7 +96,7 @@ export class CdcSearchComponent implements OnInit {
   onSubmit(form: NgForm) {
     // console.log(this.drugSelected);
     this.currentSearch.userName = this.memberInfo;
-    this.currentSearch.pharmacy = this.cdcHelperService.setPharmacyDetail(this.defaultPharmacy);
+    this.currentSearch.pharmacy = this.defaultPharmacy;
     this.currentSearch.drugDetails = this.cdcHelperService.getDrugData(this.drugCache[this.drugSelected]);
     this.currentSearch.drugName = this.cdcHelperService.getDrugName(this.currentSearch.drugDetails);
     // console.log(this.currentSearch);
