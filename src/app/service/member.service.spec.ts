@@ -7,6 +7,7 @@ import {CaremarkSdkService} from './caremark-sdk.service';
 import {VordelPbmService} from './vordel-pbm.service';
 import {IceSdkService} from './ice-sdk.service';
 import {HttpClient, HttpHandler} from '@angular/common/http';
+import {SessionManager} from './session-manager';
 
 describe('MemberService', () => {
   beforeEach(() => {
@@ -19,7 +20,8 @@ describe('MemberService', () => {
         VordelPbmService,
         IceSdkService,
         HttpClient,
-        HttpHandler
+        HttpHandler,
+        SessionManager
       ]
     });
   });

@@ -7,6 +7,7 @@ import {VordelPbmService} from './vordel-pbm.service';
 import {HttpClient, HttpHandler} from '@angular/common/http';
 import {CareMarkSdkServiceProvider, IceSdkServiceProvider} from './index';
 import {CaremarkSdkService} from './caremark-sdk.service';
+import {SessionManager} from './session-manager';
 
 describe('CaremarkDataService', () => {
   beforeEach(() => {
@@ -18,7 +19,8 @@ describe('CaremarkDataService', () => {
         VordelPbmService,
         CaremarkSdkService,
         HttpClient,
-        HttpHandler
+        HttpHandler,
+        SessionManager
       ]
     });
   });
