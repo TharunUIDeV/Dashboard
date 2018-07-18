@@ -14,7 +14,7 @@
 
   </section>
   <section class="block-item" *ngIf="refillWidgetData.ShowCDC === true">
-    <app-cdc-search></app-cdc-search>
+    <app-cdc-search (loading)="isCDCLoaded($event)"></app-cdc-search>
   </section>
 </section>
 <router-outlet></router-outlet>

@@ -30,6 +30,16 @@
   border-color: #a50000;
 }
 
+input {
+  font-weight: bold;
+  font-size: 20px;
+}
+input::placeholder {
+  color: #333;
+  font-weight: normal;
+}
+
+
 searchContainer {
   position: relative;
 }

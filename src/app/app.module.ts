@@ -25,6 +25,7 @@ import { HeaderComponent } from './header/header.component';
 import { CdcSearchComponent } from './cdc-search/cdc-search.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbTypeaheadModule} from './typeahead/typeahead.module';
+import {DrugSearchEffects} from './store/drug-search/drug-search.effects';
 
 
 @NgModule({
@@ -49,7 +50,8 @@ import {NgbTypeaheadModule} from './typeahead/typeahead.module';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects,
       RecentOrdersEffects,
-      RefillsCountEffects]),
+      RefillsCountEffects,
+      DrugSearchEffects]),
     AppRoutingModule,
     NgbTypeaheadModule.forRoot()
   ],

@@ -197,7 +197,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
     let url;
 
     if (!searchText) {
-      observable.throw('Invaid input parameters');
+      Observable.throw('Invaid input parameters');
     }
 
     return this.getMemberDetails().pipe(

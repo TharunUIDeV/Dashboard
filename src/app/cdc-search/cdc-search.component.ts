@@ -1,10 +1,7 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
 import {ConfigService} from '../service/config.service';
 import {CdcHelperService} from './cdc-helper.service';
 import {TealiumUtagService} from '../service/utag.service';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
 import {Observable} from 'rxjs/Observable';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
@@ -14,8 +11,8 @@ import {MemberService} from '../service/member.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
 import {environment} from '../../environments/environment';
-import * as _ from 'lodash';
 import {VordelPbmService} from '../service/vordel-pbm.service';
+import {DrugSearchFetchDefaultPharmacy} from '../store/drug-search/drug-search.actions';
 
 @Component({
   selector: 'app-cdc-search',
@@ -28,6 +25,9 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
   searchFailed = false;
   drugSearched = '';
   defaultPharmacy = undefined;
+  defaultPharmacy$;
+  defaultPharmacyNgStore$;
+  @Output() loading = new EventEmitter<string>();
 
   private drugSearch$;
   private drugSelected;
@@ -43,6 +43,7 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
               private router: Router,
               private store: Store<any>) {
     this.drugSearch$ = this.store.select('drugSearchState');
+    this.defaultPharmacyNgStore$ = this.store.select('drugSearchDefaultPharmacy');
   }
 
   search = (text$: Observable<string>) =>
@@ -64,7 +65,7 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
             drugKey = this.cdcHelperService.transformTitleCase(drugKey);
             this.drugCache[drugKey] = drug;
             drug.drugKey = drugKey;
-            drug.sortKey = this.cdcHelperService.getDrugName(drug).toLowerCase();
+            drug.sortKey = this.cdcHelperService.getSortKey(drug);
             return drug;
           })),
           // map((drugs) => _.sortBy(drugs, 'drugKey' ) ),
@@ -92,12 +93,15 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
   }
 
   ngOnInit() {
-    this.cdcHelperService.getDefaultPharmacy().subscribe((pharmacy) => {
-      // console.log(JSON.stringify(pharmacy));
-      this.defaultPharmacy = this.cdcHelperService.setPharmacyDetail(pharmacy);
+    this.store.dispatch(new DrugSearchFetchDefaultPharmacy());
+    this.defaultPharmacy$ =  this.cdcHelperService.getDefaultPharmacy();
+    this.defaultPharmacyNgStore$.subscribe((pharmacy) => {
+      this.defaultPharmacy = this.cdcHelperService.setPharmacyDetail(pharmacy.DefaultPharmacy);
+      this.loading.emit('false');
     }, error => {
       console.log(JSON.stringify(error));
       this.defaultPharmacy = undefined;
+      this.loading.emit('false');
     });
     this.memberService.getMemberDetailsLegacy().then((result) => {
         this.memberInfo = result;

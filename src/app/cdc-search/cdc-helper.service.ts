@@ -46,6 +46,15 @@ export class CdcHelperService {
    * @param drug
    * @returns {string}
    */
+  getSortKey(drug) {
+    return (drug.drugName.__cdata + ' '  + drug.drugForm.__cdata + ' ' + drug.drugStrength.__cdata).toLowerCase() ;
+  }
+
+  /**
+   * getting the searched drug name
+   * @param drug
+   * @returns {string}
+   */
   getGenericName(drug) {
     if (drug.genericName) {
       return drug.genericName.__cdata + ' ' + drug.drugStrength.__cdata + ' ' + drug.drugForm.__cdata;

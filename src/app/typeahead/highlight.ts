@@ -9,7 +9,7 @@ import {regExpEscape, toString} from '../util/util';
       `</ng-template>`,  // template needs to be formatted in a certain way so we don't add empty text nodes
   styles: [`
     .ngb-highlight {
-      font-weight: bold;
+      font-weight: normal;
     }
   `]
 })
