@@ -25,6 +25,10 @@ export interface ResultTemplateContext {
     <ng-template #rt let-result="result" let-term="term" let-formatter="formatter">
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
     </ng-template>
+    <ng-template *ngIf="errorMessage">
+      <button type="button"  style="font-weight: bold; width: 363px; white-space: initial; line-height: 1.5em" class="dropdown-item" role="option">
+      </button>
+    </ng-template>
     <ng-template ngFor [ngForOf]="results" let-result let-idx="index">
       <button type="button"  style="font-weight: bold; width: 363px; white-space: initial; line-height: 1.5em" class="dropdown-item" role="option"
         [id]="id + '-' + idx"
@@ -59,6 +63,11 @@ export class NgbTypeaheadWindow implements OnInit {
    * Typeahead match results to be displayed
    */
   @Input() results;
+
+  /**
+   * Typeahead match results to be displayed
+   */
+  @Input() errorMessage: string;
 
   /**
    * Search term used to get current results
@@ -119,7 +128,17 @@ export class NgbTypeaheadWindow implements OnInit {
 
   select(item) { this.selectEvent.emit(item); }
 
-  ngOnInit() { this.resetActive(); }
+  ngOnInit() {
+    this.resetActive();
+    this.handleError();
+  }
+
+  handleError() {
+    if ( this.results && this.results.length === 1 && this.results[0].message) {
+      this.errorMessage = this.results[0].message;
+      this.results = [];
+    }
+  }
 
   private _activeChanged() {
     this.activeChangeEvent.emit(this.activeIdx >= 0 ? this.id + '-' + this.activeIdx : undefined);
