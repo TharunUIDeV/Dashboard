@@ -3,14 +3,17 @@ import {CaremarkDataService} from './caremark-data.service';
 import {caremarksdk} from '../types/caremarksdk';
 import {ConfigService} from './config.service';
 import {PZN_CONSTANTS} from '../order-status/personalization.constants';
+import {VordelPbmService} from './vordel-pbm.service';
 
 @Injectable()
 export class MemberService {
 
   private _underageLimit;
   private _memberDetails: caremarksdk.MemberInfoResult;
+  private _memberDetailsLegacy;
 
   constructor(private caremarkDataService: CaremarkDataService,
+              private vordelPbmService: VordelPbmService,
               private configService: ConfigService) {
   }
 
@@ -26,6 +29,22 @@ export class MemberService {
         });
       } else {
         return resolve(this._memberDetails);
+      }
+    });
+  }
+
+  public getMemberDetailsLegacy() {
+    return new Promise((resolve, reject) => {
+      if (!this._memberDetailsLegacy) {
+        this.vordelPbmService.getMemberDetails().then((memberData) => {
+          this._memberDetailsLegacy = memberData;
+          resolve(this._memberDetailsLegacy);
+        }).catch((error) => {
+          console.log(error);
+          return reject(error);
+        });
+      } else {
+        return resolve(this._memberDetailsLegacy);
       }
     });
   }

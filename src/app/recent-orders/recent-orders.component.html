@@ -4,7 +4,7 @@
   <section class="block-item recent-order">
     <ul>
       <li *ngFor="let Order of recentOrders.Orders | slice:0:3">
-        <a href="" (click)="orderNumberClick(Order.OrderNumber)">Order #{{getOrderNumberFormatted(Order)}}</a>
+        <a href="" (click)="orderNumberClick(Order, $event)">Order #{{getOrderNumberFormatted(Order)}}</a>
         <span class="status" [ngClass]="{'hold' : Order.OrderStatus === ORDER_STATUS_HOLD_TEXT}">{{Order.OrderStatus}}</span>
         <span class="placed">Placed on {{Order.OrderDate | date:"MM/dd/yy"}} {{Order.OrderedFor}}</span>
         <span class="rx">{{getRxCountFormatted(Order.RxList.length)}}</span>
