@@ -1,6 +1,7 @@
 <section *ngIf="defaultPharmacy$ | async ">
   <form (ngSubmit)="onSubmit(drugSearchForm)" #drugSearchForm="ngForm">
     <div class="SearchContainer">
+      <label class="SearchLabel">Find a new medication</label><br/>
       <input class="SearchInput form-control" (selectItem)="selectedItem($event)" type="text" placeholder="Enter drug name"
              [ngbTypeahead]="search" [value]="drugSearched">
       <button type="submit" class="btn form-bsubmit">search</button>
