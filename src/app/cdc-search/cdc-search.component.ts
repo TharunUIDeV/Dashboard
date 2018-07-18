@@ -64,11 +64,12 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
             drugKey = this.cdcHelperService.transformTitleCase(drugKey);
             this.drugCache[drugKey] = drug;
             drug.drugKey = drugKey;
+            drug.sortKey = this.cdcHelperService.getDrugName(drug).toLowerCase();
             return drug;
           })),
           // map((drugs) => _.sortBy(drugs, 'drugKey' ) ),
           map((drugs) => {
-            this.cdcHelperService.sortList(drugs, 'drugKey' );
+            this.cdcHelperService.sortList(drugs, 'sortKey' );
             return drugs;
           } ),
           map((drugs) => drugs.map(drug => drug.drugKey)),
