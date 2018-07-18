@@ -15,6 +15,7 @@ import {ActivatedRoute, Router} from '@angular/router';
 import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
 import {environment} from '../../environments/environment';
 import * as _ from 'lodash';
+import {VordelPbmService} from '../service/vordel-pbm.service';
 
 @Component({
   selector: 'app-cdc-search',
@@ -36,6 +37,7 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
               private cdcHelperService: CdcHelperService,
+              private vordelService: VordelPbmService,
               private memberService: MemberService,
               private route: ActivatedRoute,
               private router: Router,
@@ -52,17 +54,14 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
         this.searching = true;
         this.drugSearched = term;
       }),
-      switchMap((term) =>
-        this.cdcHelperService.drugSearch(term).pipe(
+      switchMap((term) => this.cdcHelperService.drugSearch(term).pipe(
           tap( (drugs) => {
-            console.log(drugs);
             this.searchFailed = false;
             this.cdcHelperService.cachedrugSearchResults(term, drugs);
           }),
           map( (drugs) =>  drugs.map(drug => {
             let drugKey = this.cdcHelperService.getDrugName(drug);
             drugKey = this.cdcHelperService.transformTitleCase(drugKey);
-            console.log(drugKey);
             this.drugCache[drugKey] = drug;
             drug.drugKey = drugKey;
             return drug;
@@ -80,7 +79,8 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
             this.searchFailed = true;
             console.log(err.message);
             return of([err.message]);
-          }))),
+          }))
+      ),
       tap(() => this.searching = false)
     )
 

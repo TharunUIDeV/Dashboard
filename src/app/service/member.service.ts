@@ -36,10 +36,10 @@ export class MemberService {
   public getMemberDetailsLegacy() {
     return new Promise((resolve, reject) => {
       if (!this._memberDetailsLegacy) {
-        this.vordelPbmService.getMemberDetails().then((memberData) => {
+        this.vordelPbmService.getMemberDetails().subscribe((memberData) => {
           this._memberDetailsLegacy = memberData;
           resolve(this._memberDetailsLegacy);
-        }).catch((error) => {
+        }, (error) => {
           console.log(error);
           return reject(error);
         });

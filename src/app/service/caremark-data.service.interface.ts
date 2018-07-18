@@ -1,3 +1,4 @@
+import {Observable} from 'rxjs/Observable';
 
 export interface CaremarkDataServiceInterface {
   getOrderStatus(): Promise<any>;

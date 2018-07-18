@@ -8,7 +8,8 @@ import {ConfigService} from './config.service';
 import * as xml2js from 'xml2js';
 import * as x2js from 'x2js';
 import {of} from 'rxjs/observable/of';
-import {fromPromise} from 'rxjs/observable/fromPromise';
+import {observable} from 'rxjs/symbol/observable';
+import {SessionManager} from './session-manager';
 
 @Injectable()
 export class VordelPbmService implements CaremarkDataServiceInterface {
@@ -26,7 +27,9 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
   private x2jsParser = new x2js({keepCData: true});
 
 
-  constructor(private httpClient: HttpClient, private configService: ConfigService) {
+  constructor(private httpClient: HttpClient,
+              private configService: ConfigService,
+              private sessionManager: SessionManager) {
   }
 
 
@@ -167,7 +170,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
     });
   }
 
-  public getDrugByName(searchText) {
+  public getDrugByName(searchText): any {
     const queryParam: any = {
       apiKey: this.configService.apiKey,
       apiSecret: this.configService.apiSecret,
@@ -193,32 +196,38 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
     };
     let url;
 
-    return fromPromise(this.getMemberDetails()).pipe(
-      tap((memberInfo) => {
+    if (!searchText) {
+      observable.throw('Invaid input parameters');
+    }
+
+    return this.getMemberDetails().pipe(
+      map( (memberInfo: any) => {
         queryParam.memberID = memberInfo.internalID;
         url = this.baseUrl + 'drug/drugDetails?' + VordelPbmService.createQueryString(queryParam);
+        return url;
       }),
-      switchMap((memberInfo) => this.httpClient.post(url, undefined, httpOptions).pipe(
-        map((result) => {
+      flatMap( (finalUrl: string) => {
+      return this.httpClient.post(finalUrl, undefined, httpOptions)
+        .map( (result) => {
           const resultJson: any = this.x2jsParser.xml2js(result);
-          const response = resultJson.response;
+          const response: any = resultJson.response;
 
           if (response.header.statusCode === '0000') {
             // console.log(response.detail.drugDetailsList);
             return response.detail.drugDetailsList.drug;
           } else if (response.header.statusCode === '2020') {
             throw new Error(
-              'No results found. Check your spelling or enter just the first 3 letters of the drug you wish to price, then try again.'
+            'No results found. Check your spelling or enter just the first 3 letters of the drug you wish to price, then try again.'
             );
           }
           console.error(JSON.stringify(response.header));
           throw new Error('Some parts of Caremark.com may be unavailable at this time. If the problem persists, please call Customer Care at the number on your prescription benefit ID card.');
-        })
-      )),
+        });
+    })
     );
   }
 
-  public getDefaultPharmacy() {
+  public getDefaultPharmacy(): any {
     const queryParam: any = {
       apiKey: this.configService.apiKey,
       apiSecret: this.configService.apiSecret,
@@ -237,7 +246,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       env: this.configService.env
     };
 
-    const url = this.baseUrl + '/pharmacy/getDefaultPharmacy?' + VordelPbmService.createQueryString(queryParam);
+    const url = this.baseUrl + 'pharmacy/getDefaultPharmacy?' + VordelPbmService.createQueryString(queryParam);
     const httpOptions = {
       headers: new HttpHeaders({
         'Content-Type': 'application/xml'
@@ -262,46 +271,48 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
       );
   }
 
-  public getMemberDetails(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      const queryParam: any = {
-        apiKey: this.configService.apiKey,
-        apiSecret: this.configService.apiSecret,
-        appName: this.QueryConstants.appName,
-        channelName: this.QueryConstants.channelName,
-        deviceType: this.QueryConstants.deviceType,
-        tokenID: this.configService.token,
-        deviceID: this.QueryConstants.deviceID,
-        deviceToken: this.QueryConstants.deviceToken,
-        lineOfBusiness: this.QueryConstants.lineOfBusiness,
-        serviceCORS: 'TRUE',
-        version: '1.0',
-        serviceName: 'getMemberInfoByToken',
-        env: this.configService.env
-      };
+  public getMemberDetails(): any {
+    const queryParam: any = {
+      apiKey: this.configService.apiKey,
+      apiSecret: this.configService.apiSecret,
+      appName: this.QueryConstants.appName,
+      channelName: this.QueryConstants.channelName,
+      deviceType: this.QueryConstants.deviceType,
+      tokenID: this.configService.token,
+      deviceID: this.QueryConstants.deviceID,
+      deviceToken: this.QueryConstants.deviceToken,
+      lineOfBusiness: this.QueryConstants.lineOfBusiness,
+      serviceCORS: 'TRUE',
+      version: '1.0',
+      serviceName: 'getMemberInfoByToken',
+      env: this.configService.env
+    };
 
-      const url = this.baseUrl + 'refill/getMemberInfoByToken?' + VordelPbmService.createQueryString(queryParam);
-      const httpOptions = {
-        headers: new HttpHeaders({
-          'Content-Type': 'application/xml'
-        }),
-        responseType: 'text' as 'text',
-      };
+    const url = this.baseUrl + 'refill/getMemberInfoByToken?' + VordelPbmService.createQueryString(queryParam);
+    const httpOptions = {
+      headers: new HttpHeaders({
+        'Content-Type': 'application/xml'
+      }),
+      responseType: 'text' as 'text',
+    };
 
-      this.httpClient.post(url, undefined, httpOptions)
-        .pipe(
-          catchError(this.handleError)
-        ).subscribe((result) => {
-        const resultJson: any = this.x2jsParser.xml2js(result);
-        const response = resultJson.response;
+    const sessionMemberInfo = this.sessionManager.getMemberInfo();
+    if (sessionMemberInfo) {
+        return of(sessionMemberInfo);
+    }
 
-        if (response.header.statusCode === '0000') {
-          return resolve(response.detail.memberInfo);
-        }
-        console.error(JSON.stringify(response.header));
-        return reject(response.header);
-      }, error => reject(error));
-    });
+    return this.httpClient.post(url, undefined, httpOptions)
+      .map(result => {
+          const resultJson: any = this.x2jsParser.xml2js(result);
+          const response = resultJson.response;
+
+          if (response.header.statusCode === '0000') {
+            this.sessionManager.setMemberInfo(response.detail.memberInfo);
+            return response.detail.memberInfo;
+          }
+          console.error(JSON.stringify(response.header));
+          throw new Error(response.header || 'Server error');
+        });
   }
 
   public getRefillsCount() {
@@ -328,7 +339,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
         // env: this.configService.env
       };
 
-      const url = this.baseUrl + '/refill/getRefills?' + VordelPbmService.createQueryString(queryParam);
+      const url = this.baseUrl + 'refill/getRefills?' + VordelPbmService.createQueryString(queryParam);
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/xml'
@@ -364,7 +375,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
 
   public getRefills() {
     return new Promise((resolve, reject) => {
-      const url = this.baseUrl + '/caremark/refill/getRefills/V2';
+      const url = this.baseUrl + 'caremark/refill/getRefills/V2';
       const httpOptions = {
         headers: new HttpHeaders({
           'Content-Type': 'application/xml'

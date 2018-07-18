@@ -2,43 +2,20 @@ import {Injectable} from '@angular/core';
 import {ConfigService} from '../service/config.service';
 import {of} from 'rxjs/observable/of';
 import {VordelPbmService} from '../service/vordel-pbm.service';
+import {SessionManager} from '../service/session-manager';
+import {Observable} from 'rxjs/Observable';
 
 
 @Injectable()
 export class CdcHelperService {
-
-  private sessionStorage = window.sessionStorage;
   private sessionData: any = {};
   private memberDetail: any = {};
   private memberList: any = [];
   private drugSearchResultCache: any = {};
 
   constructor(private configService: ConfigService,
-              private vordelService: VordelPbmService) {
-  }
-
-
-  setSessionStorage (key, data) {
-    try {
-      if (typeof(Storage) !== 'undefined') {
-        this.sessionStorage.setItem(key, JSON.stringify(data));
-      }
-    } catch (e) {
-      console.log(e);
-    }
-
-  }
-
-  getSessionStorage (key) {
-    try {
-      if (typeof(Storage) !== 'undefined' && this.sessionStorage[key]) {
-        return JSON.parse(this.sessionStorage[key]);
-      }
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
-    return false;
+              private vordelService: VordelPbmService,
+              private sessionManager: SessionManager) {
   }
 
   /**
@@ -195,7 +172,7 @@ export class CdcHelperService {
 
   setMemberDetails (memberInfo) {
 
-    if (this.memberDetail) {
+    if (memberInfo) {
       this.memberDetail = Object.assign(memberInfo);
       if (memberInfo.addresses) {
         const address = memberInfo.addresses;
@@ -390,14 +367,14 @@ export class CdcHelperService {
    * @param currentSearchkeyword
    * @returns {*|l.promise|{then, catch, finally}|d.promise|Function|promise}
    */
-  drugSearch(currentSearchkeyword) {
+  drugSearch(currentSearchkeyword): Observable<any[]> {
     const savedKey = currentSearchkeyword.toLowerCase();
     let searchResultFromStorage;
 
     if (savedKey.length < 3) {
       return of([]);
     }
-    const sessionStoredData = this.getSessionStorage(this.configService.token);
+    const sessionStoredData = this.sessionManager.getSessionStorage(this.configService.token);
     if (sessionStoredData) {
       searchResultFromStorage = sessionStoredData['drugSearchResultCache'];
     }
@@ -405,21 +382,25 @@ export class CdcHelperService {
       return of(searchResultFromStorage[savedKey]);
     }
     return this.vordelService.getDrugByName(currentSearchkeyword);
+    /*
+    return this.vordelService.getDrugByName(currentSearchkeyword).subscribe((drugs) => {
+        return of(drugs);
+      }
+    );*/
   }
 
   cachedrugSearchResults(searchKey: string, result) {
-    this.drugSearchResultCache[searchKey] = result;
-    this.setSessionStorage(this.configService.token, {'drugSearchResultCache': this.drugSearchResultCache});
+    if (searchKey && searchKey.length > 2) {
+      this.drugSearchResultCache[searchKey] = result;
+      this.sessionManager.setDrugSearchResults(this.drugSearchResultCache);
+    }
   }
 
 
   setSessionData(currentSearch) {
-    this.sessionData.currentSearch = currentSearch;
-    this.sessionData.loggedInUserInfo = this.memberDetail;
-    this.sessionData.memberList = this.memberList;
-    this.sessionData.drugSearchResultCache = this.drugSearchResultCache;
-
-    this.setSessionStorage(this.configService.token, this.sessionData);
+    this.sessionManager.setCDCCurrentSearch(currentSearch);
+    this.sessionManager.setCDCMemberDetails(this.memberDetail, this.memberList);
+    this.sessionManager.setDrugSearchResults(this.drugSearchResultCache);
   }
 
 }
