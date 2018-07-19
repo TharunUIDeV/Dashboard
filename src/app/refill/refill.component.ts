@@ -91,10 +91,6 @@ export class RefillComponent implements  OnInit {
     this.getWidgetData();
   }
 
-  isCDCLoaded(value) {
-    this.loading = false;
-  }
-
   refillClickTag() {
     this.webTrends = this.analytics.link({
       key_activity: 'new dashboard view prescriptions',

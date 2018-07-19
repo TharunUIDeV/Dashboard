@@ -1,4 +1,4 @@
-import {AfterViewInit, Component, EventEmitter, OnInit, Output} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ConfigService} from '../service/config.service';
 import {CdcHelperService} from './cdc-helper.service';
 import {TealiumUtagService} from '../service/utag.service';
@@ -20,14 +20,13 @@ import {DrugSearchFetchDefaultPharmacy} from '../store/drug-search/drug-search.a
   styleUrls: ['./cdc-search.component.css']
 })
 export class CdcSearchComponent implements OnInit, AfterViewInit {
-
   searching = false;
   searchFailed = false;
   drugSearched = '';
   defaultPharmacy = undefined;
   defaultPharmacy$;
   defaultPharmacyNgStore$;
-  @Output() loading = new EventEmitter<string>();
+  loading = true;
 
   private drugSearch$;
   private drugSelected;
@@ -96,11 +95,10 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
     this.defaultPharmacy$ =  this.cdcHelperService.getDefaultPharmacy();
     this.defaultPharmacyNgStore$.subscribe((pharmacy) => {
       this.defaultPharmacy = this.cdcHelperService.setPharmacyDetail(pharmacy.DefaultPharmacy);
-      this.loading.emit('false');
+      this.loading = false;
     }, error => {
-      console.log(JSON.stringify(error));
       this.defaultPharmacy = undefined;
-      this.loading.emit('false');
+      this.loading = false;
     });
     this.memberService.getMemberDetailsLegacy().then((result) => {
         this.memberInfo = result;

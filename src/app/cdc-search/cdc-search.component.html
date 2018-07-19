@@ -1,4 +1,6 @@
-<section *ngIf="(defaultPharmacy$ | async); else findMedication">
+<app-spinner [loading]="loading"></app-spinner>
+<section  *ngIf="!loading">
+<section *ngIf="(defaultPharmacy$ | async ); else findMedication">
   <form (ngSubmit)="onSubmit(drugSearchForm)" #drugSearchForm="ngForm">
     <div class="SearchContainer">
       <label class="SearchLabel">Find a new medication</label><br/>
@@ -21,4 +23,5 @@
 <ng-template #findMedication>
   <button type="button" class="block-item-button btn" (click)="findNewMedication()">Find a new medication</button>
 </ng-template>
+</section>
 

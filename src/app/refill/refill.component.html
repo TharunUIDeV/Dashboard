@@ -11,10 +11,9 @@
       <a href="#" (click)="refillClickTag()" class="link-red with-caret">{{refillWidgetData.RefillAvailableCount}}
         {{getRefillUrlFormatted(refillWidgetData.RefillAvailableCount)}}</a>
     </section>
-
   </section>
   <section class="block-item" *ngIf="refillWidgetData.ShowCDC === true">
-    <app-cdc-search (loading)="isCDCLoaded($event)"></app-cdc-search>
+    <app-cdc-search></app-cdc-search>
   </section>
 </section>
 <router-outlet></router-outlet>
