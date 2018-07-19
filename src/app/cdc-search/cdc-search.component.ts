@@ -68,7 +68,6 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
             drug.sortKey = this.cdcHelperService.getSortKey(drug);
             return drug;
           })),
-          // map((drugs) => _.sortBy(drugs, 'drugKey' ) ),
           map((drugs) => {
             this.cdcHelperService.sortList(drugs, 'sortKey' );
             return drugs;
@@ -139,13 +138,10 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
   }
 
   clearDrugSearch() {
-    console.log('Called to clear Drug Search');
-    this.search(of('clear'));
   }
 
   selectedItem(item) {
     this.drugSelected = item.item;
-    // console.log(this.drugCache[this.drugSelected]);
   }
 
 }

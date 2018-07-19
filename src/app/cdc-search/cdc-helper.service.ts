@@ -8,7 +8,6 @@ import {Observable} from 'rxjs/Observable';
 
 @Injectable()
 export class CdcHelperService {
-  private sessionData: any = {};
   private memberDetail: any = {};
   private memberList: any = [];
   private drugSearchResultCache: any = {};
@@ -305,11 +304,6 @@ export class CdcHelperService {
     return isVaccineEligibile;
   }
 
-  /**
-   * ITPR017648 Vishnu R: 09/15/2016
-   * Added new funciton to check preferred pharmacy eligibility
-   */
-
   isPreferredPharmacyActive(data: any) {
 
     let isPreferredPharmacyActive = false;
@@ -391,11 +385,6 @@ export class CdcHelperService {
       return of(searchResultFromStorage[savedKey]);
     }
     return this.vordelService.getDrugByName(currentSearchkeyword);
-    /*
-    return this.vordelService.getDrugByName(currentSearchkeyword).subscribe((drugs) => {
-        return of(drugs);
-      }
-    );*/
   }
 
   cachedrugSearchResults(searchKey: string, result) {

@@ -8,7 +8,6 @@ import {ConfigService} from './config.service';
 import * as xml2js from 'xml2js';
 import * as x2js from 'x2js';
 import {of} from 'rxjs/observable/of';
-import {observable} from 'rxjs/symbol/observable';
 import {SessionManager} from './session-manager';
 
 @Injectable()
