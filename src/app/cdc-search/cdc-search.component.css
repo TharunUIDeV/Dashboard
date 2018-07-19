@@ -39,7 +39,7 @@ input::placeholder {
   font-weight: normal;
 }
 
-.input::-ms-clear {
+input[type=text]::-ms-clear {
   display: none;
 }
 
