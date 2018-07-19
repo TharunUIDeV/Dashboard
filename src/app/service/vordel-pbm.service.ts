@@ -265,7 +265,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
           }
           console.error(JSON.stringify(response.header));
           // throw new Error(response.header);
-          throw new Error(response.header || 'Server error');
+          Observable.throw('Server error');
         })
       );
   }
@@ -310,7 +310,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
             return response.detail.memberInfo;
           }
           console.error(JSON.stringify(response.header));
-          throw new Error(response.header || 'Server error');
+          Observable.throw('Server error');
         });
   }
 

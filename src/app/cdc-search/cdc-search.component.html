@@ -1,9 +1,9 @@
-<section *ngIf="defaultPharmacy$ | async ">
+<section *ngIf="defaultPharmacy$ | async; else findMedication">
   <form (ngSubmit)="onSubmit(drugSearchForm)" #drugSearchForm="ngForm">
     <div class="SearchContainer">
       <label class="SearchLabel">Find a new medication</label><br/>
       <input class="SearchInput form-control" (selectItem)="selectedItem($event)" type="text" placeholder="Enter drug name"
-             [ngbTypeahead]="search" [value]="drugSearched">
+            [ngbTypeahead]="search" [value]="drugSearched">
       <button type="submit" class="btn form-bsubmit">search</button>
       <i *ngIf="drugSearched && drugSearched.length > 0" (click)="clearDrugSearch()" class=" close_icon_grey pull-right"></i>
       <span *ngIf="searching">
@@ -16,6 +16,7 @@
     </div>
   </form>
 </section>
-<section class="block-item" *ngIf="!defaultPharmacy$ | async">
+<ng-template #findMedication>
     <button type="button" class="block-item-button btn" (click)="findNewMedication()">Find a new medication</button>
-</section>
+</ng-template>
+
