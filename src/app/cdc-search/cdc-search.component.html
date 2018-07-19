@@ -5,9 +5,9 @@
         <label class="SearchLabel">Find a new medication</label><br/>
         <input class="SearchInput form-control" (selectItem)="selectedItem($event)" type="text"
                placeholder="Enter drug name"
-               [ngbTypeahead]="search" [value]="drugSearched">
+               [ngbTypeahead]="search" [(ngModel)]="drugSearched"  [ngModelOptions]="{standalone: true}">
         <button type="submit" class="btn form-bsubmit">search</button>
-        <i *ngIf="drugSearched && drugSearched.length > 0" (click)="clearDrugSearch()"
+        <i *ngIf="drugSearched && drugSearched.length > 0" (click)="clearDrugSearch($event)"
            class=" close_icon_grey pull-right"></i>
         <span *ngIf="searching">
       <svg class="icon-spinner" width="24" height="24" viewBox="0 0 24 24">

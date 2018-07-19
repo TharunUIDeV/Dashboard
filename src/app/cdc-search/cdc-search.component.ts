@@ -133,7 +133,9 @@ export class CdcSearchComponent implements OnInit {
     }
   }
 
-  clearDrugSearch() {
+  clearDrugSearch(e) {
+    e.preventDefault();
+    e.stopPropagation();
     this.drugSearched = null;
     this.searching = false;
   }
