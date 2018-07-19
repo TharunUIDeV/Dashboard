@@ -6,7 +6,7 @@
         <input class="SearchInput form-control" (selectItem)="selectedItem($event)" type="text"
                placeholder="Enter drug name"
                [ngbTypeahead]="search" [(ngModel)]="drugSearched"  [ngModelOptions]="{standalone: true}">
-        <button type="submit" class="btn form-bsubmit">search</button>
+        <button type="submit" class="btn form-bsubmit">Search</button>
         <i *ngIf="drugSearched && drugSearched.length > 0" (click)="clearDrugSearch($event)"
            class=" close_icon_grey pull-right"></i>
         <span *ngIf="searching">
