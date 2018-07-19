@@ -78,7 +78,7 @@ export class CdcSearchComponent implements OnInit {
           catchError((err) => {
             this.searchFailed = true;
             console.log(err.message);
-            return of([err.message]);
+            return of([err]);
           }))
       ),
       tap(() => this.searching = false)

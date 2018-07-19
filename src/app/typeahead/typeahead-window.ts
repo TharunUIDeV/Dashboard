@@ -15,6 +15,8 @@ export interface ResultTemplateContext {
    * Search term from the input used to get current result
    */
   term: string;
+
+  errorMessage: string;
 }
 
 @Component({
@@ -25,10 +27,6 @@ export interface ResultTemplateContext {
     <ng-template #rt let-result="result" let-term="term" let-formatter="formatter">
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
     </ng-template>
-    <ng-template *ngIf="errorMessage">
-      <button type="button"  style="font-weight: bold; width: 363px; white-space: initial; line-height: 1.5em" class="dropdown-item" role="option">
-      </button>
-    </ng-template>
     <ng-template ngFor [ngForOf]="results" let-result let-idx="index">
       <button type="button"  style="font-weight: bold; width: 363px; white-space: initial; line-height: 1.5em" class="dropdown-item" role="option"
         [id]="id + '-' + idx"
@@ -36,7 +34,7 @@ export interface ResultTemplateContext {
         (mouseenter)="markActive(idx)"
         (click)="select(result)">
           <ng-template [ngTemplateOutlet]="resultTemplate || rt"
-          [ngTemplateOutletContext]="{result: result, term: term, formatter: formatter}"></ng-template>
+          [ngTemplateOutletContext]="{result: result, term: term, errorMessage: errorMessage, formatter: formatter}"></ng-template>
       </button>
     </ng-template>`, styles: [
     `:host {
@@ -97,8 +95,10 @@ export class NgbTypeaheadWindow implements OnInit {
   getActive() { return this.results[this.activeIdx]; }
 
   markActive(activeIdx: number) {
-    this.activeIdx = activeIdx;
-    this._activeChanged();
+    if (!this.errorMessage) {
+      this.activeIdx = activeIdx;
+      this._activeChanged();
+    }
   }
 
   next() {
@@ -122,22 +122,23 @@ export class NgbTypeaheadWindow implements OnInit {
   }
 
   resetActive() {
-    this.activeIdx = this.focusFirst ? 0 : -1;
-    this._activeChanged();
+    if (!this.errorMessage) {
+      this.activeIdx = this.focusFirst ? 0 : -1;
+      this._activeChanged();
+    } else {
+      this.activeIdx = -1;
+    }
   }
 
-  select(item) { this.selectEvent.emit(item); }
+  select(item) {
+    this.selectEvent.emit(item);
+  }
 
   ngOnInit() {
     this.resetActive();
-    this.handleError();
   }
 
   handleError() {
-    if ( this.results && this.results.length === 1 && this.results[0].message) {
-      this.errorMessage = this.results[0].message;
-      this.results = [];
-    }
   }
 
   private _activeChanged() {
