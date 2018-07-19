@@ -77,7 +77,9 @@ export class CdcSearchComponent implements OnInit {
           }) ),
           catchError((err) => {
             this.searchFailed = true;
-            console.log(err.message);
+            if (err &&  err.name && err.name !== 'NDBError') {
+              err.message = 'Some parts of Caremark.com may be unavailable at this time. If the problem persists, please call Customer Care at the number on your prescription benefit ID card.';
+            }
             return of([err]);
           }))
       ),
@@ -133,6 +135,7 @@ export class CdcSearchComponent implements OnInit {
 
   clearDrugSearch() {
     this.drugSearched = null;
+    this.searching = false;
   }
 
   selectedItem(item) {

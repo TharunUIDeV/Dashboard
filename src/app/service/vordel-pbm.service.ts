@@ -200,29 +200,31 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
     }
 
     return this.getMemberDetails().pipe(
-      map( (memberInfo: any) => {
+      map((memberInfo: any) => {
         queryParam.memberID = memberInfo.internalID;
         url = this.baseUrl + 'drug/drugDetails?' + VordelPbmService.createQueryString(queryParam);
         return url;
       }),
-      flatMap( (finalUrl: string) => {
-      return this.httpClient.post(finalUrl, undefined, httpOptions)
-        .map( (result) => {
-          const resultJson: any = this.x2jsParser.xml2js(result);
-          const response: any = resultJson.response;
+      flatMap((finalUrl: string) => {
+        return this.httpClient.post(finalUrl, undefined, httpOptions)
+          .map((result) => {
+            const resultJson: any = this.x2jsParser.xml2js(result);
+            const response: any = resultJson.response;
 
-          if (response.header.statusCode === '0000') {
-            // console.log(response.detail.drugDetailsList);
-            return response.detail.drugDetailsList.drug;
-          } else if (response.header.statusCode === '2020') {
-            throw new Error(
-            'No results found. Check your spelling or enter just the first 3 letters of the drug you wish to price, then try again.'
-            );
-          }
-          console.error(JSON.stringify(response.header));
-          throw new Error('Some parts of Caremark.com may be unavailable at this time. If the problem persists, please call Customer Care at the number on your prescription benefit ID card.');
-        });
-    })
+            if (response.header.statusCode === '0000') {
+              // console.log(response.detail.drugDetailsList);
+              return response.detail.drugDetailsList.drug;
+            } else if (response.header.statusCode === '2020') {
+              const myError =  new Error(
+              'No results found. Check your spelling or enter just the first 3 letters of the drug you wish to price, then try again.'
+              );
+              myError.name = 'NDBError';
+              throw myError;
+            }
+            console.error(JSON.stringify(response.header));
+            Observable.throw('Some parts of Caremark.com may be unavailable at this time. If the problem persists, please call Customer Care at the number on your prescription benefit ID card.');
+          });
+      })
     );
   }
 
@@ -263,7 +265,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
             return response.pharmacy;
           }
           console.error(JSON.stringify(response.header));
-          // throw new Error(response.header);
+// throw new Error(response.header);
           Observable.throw('Server error');
         })
       );
@@ -296,21 +298,21 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
 
     const sessionMemberInfo = this.sessionManager.getMemberInfo();
     if (sessionMemberInfo) {
-        return of(sessionMemberInfo);
+      return of(sessionMemberInfo);
     }
 
     return this.httpClient.post(url, undefined, httpOptions)
       .map(result => {
-          const resultJson: any = this.x2jsParser.xml2js(result);
-          const response = resultJson.response;
+        const resultJson: any = this.x2jsParser.xml2js(result);
+        const response = resultJson.response;
 
-          if (response.header.statusCode === '0000') {
-            this.sessionManager.setMemberInfo(response.detail.memberInfo);
-            return response.detail.memberInfo;
-          }
-          console.error(JSON.stringify(response.header));
-          Observable.throw('Server error');
-        });
+        if (response.header.statusCode === '0000') {
+          this.sessionManager.setMemberInfo(response.detail.memberInfo);
+          return response.detail.memberInfo;
+        }
+        console.error(JSON.stringify(response.header));
+        Observable.throw('Server error');
+      });
   }
 
   public getRefillsCount() {
@@ -321,12 +323,12 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
         apiKey: this.configService.apiKey,
         apiSecret: this.configService.apiSecret,
         appName: this.QueryConstants.appName,
-        // channelName: this.QueryConstants.channelName,
-        // deviceType: this.QueryConstants.deviceType,
+// channelName: this.QueryConstants.channelName,
+// deviceType: this.QueryConstants.deviceType,
         tokenID: this.configService.token,
         deviceID: this.QueryConstants.deviceID,
-        // deviceToken: this.QueryConstants.deviceToken,
-        // lineOfBusiness: this.QueryConstants.lineOfBusiness,
+// deviceToken: this.QueryConstants.deviceToken,
+// lineOfBusiness: this.QueryConstants.lineOfBusiness,
         serviceCORS: 'TRUE',
         version: '5.0',
         xmlFormat: 'True',
@@ -334,7 +336,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
         operationName: 'getRefillCounts',
         estimatedCost: '1',
         familyRefills: 'TRUE',
-        // env: this.configService.env
+// env: this.configService.env
       };
 
       const url = this.baseUrl + 'refill/getRefills?' + VordelPbmService.createQueryString(queryParam);
@@ -356,7 +358,7 @@ export class VordelPbmService implements CaremarkDataServiceInterface {
               return reject({error: 'failed to convert xml to json'});
             }
             const response = jsonData.response;
-            // console.log(JSON.stringify(response));
+// console.log(JSON.stringify(response));
 
             if (response.header.statusCode === '0000') {
               // console.log(JSON.stringify(response.detail));
