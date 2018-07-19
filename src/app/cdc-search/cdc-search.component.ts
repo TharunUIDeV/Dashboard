@@ -19,12 +19,11 @@ import {DrugSearchFetchDefaultPharmacy} from '../store/drug-search/drug-search.a
   templateUrl: './cdc-search.component.html',
   styleUrls: ['./cdc-search.component.css']
 })
-export class CdcSearchComponent implements OnInit, AfterViewInit {
+export class CdcSearchComponent implements OnInit {
   searching = false;
   searchFailed = false;
   drugSearched = '';
   defaultPharmacy = undefined;
-  defaultPharmacy$;
   defaultPharmacyNgStore$;
   loading = true;
 
@@ -33,6 +32,7 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
   private drugCache = {};
   private memberInfo = undefined;
   private currentSearch: any = {};
+  public setDefaultPharmacy = false;
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
               private cdcHelperService: CdcHelperService,
@@ -84,18 +84,14 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
       tap(() => this.searching = false)
     )
 
-  ngAfterViewInit() {
-    if (true) {
-      this.drugSearched = null;
-    }
-  }
-
   ngOnInit() {
     this.store.dispatch(new DrugSearchFetchDefaultPharmacy());
-    this.defaultPharmacy$ =  this.cdcHelperService.getDefaultPharmacy();
     this.defaultPharmacyNgStore$.subscribe((pharmacy) => {
-      this.defaultPharmacy = this.cdcHelperService.setPharmacyDetail(pharmacy.DefaultPharmacy);
       this.loading = false;
+      if (pharmacy && pharmacy.DefaultPharmacy) {
+        this.defaultPharmacy = this.cdcHelperService.setPharmacyDetail(pharmacy.DefaultPharmacy);
+        this.setDefaultPharmacy = true;
+      }
     }, error => {
       this.defaultPharmacy = undefined;
       this.loading = false;
