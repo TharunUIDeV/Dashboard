@@ -39,6 +39,10 @@ input::placeholder {
   font-weight: normal;
 }
 
+.input::-ms-clear {
+  display: none;
+}
+
 .SearchLabel {
   font-weight: bold;
   margin-bottom: 15px;
