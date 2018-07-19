@@ -132,6 +132,7 @@ export class CdcSearchComponent implements OnInit {
   }
 
   clearDrugSearch() {
+    this.drugSearched = null;
   }
 
   selectedItem(item) {

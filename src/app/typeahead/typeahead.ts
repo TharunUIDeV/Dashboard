@@ -345,6 +345,7 @@ export class NgbTypeahead implements ControlValueAccessor,
         this._windowRef.instance.focusFirst = this.focusFirst;
         if ( results && results.length === 1 && results[0].message) {
           this._windowRef.instance.errorMessage = results[0].message;
+          results[0] = this._windowRef.instance.errorMessage;
         }
         this._windowRef.instance.results = results;
         this._windowRef.instance.term = this._elementRef.nativeElement.value;

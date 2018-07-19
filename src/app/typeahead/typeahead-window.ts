@@ -131,7 +131,9 @@ export class NgbTypeaheadWindow implements OnInit {
   }
 
   select(item) {
-    this.selectEvent.emit(item);
+    if (!this.errorMessage) {
+      this.selectEvent.emit(item);
+    }
   }
 
   ngOnInit() {
