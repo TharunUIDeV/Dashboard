@@ -101,6 +101,7 @@ export class CdcSearchComponent implements OnInit {
     this.memberService.getMemberDetailsLegacy().then((result) => {
         this.memberInfo = result;
         this.cdcHelperService.setMemberDetails(this.memberInfo);
+        this.cdcHelperService.convertPerferredPharmacy(this.memberInfo);
         this.cdcHelperService.setMemberList(this.memberInfo);
       }
     );

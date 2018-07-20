@@ -250,6 +250,19 @@ export class CdcHelperService {
     }
   }
 
+  convertPerferredPharmacy(memberInfo) {
+    if (memberInfo && memberInfo.preferredPharmacy) {
+      memberInfo.preferredPharmacy.address = memberInfo.preferredPharmacy.address.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.city = memberInfo.preferredPharmacy.city.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.pharmacyId = memberInfo.preferredPharmacy.pharmacyId.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.pharmacyName = memberInfo.preferredPharmacy.pharmacyName.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.phoneNumber = memberInfo.preferredPharmacy.phoneNumber.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.prcsTypeCode = memberInfo.preferredPharmacy.prcsTypeCode.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.state = memberInfo.preferredPharmacy.state.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.zipCode = memberInfo.preferredPharmacy.zipCode.replace('<![CDATA[', '').replace(']]>', '');
+    }
+  }
+
   /**
    * getting member list
    */
@@ -262,11 +275,13 @@ export class CdcHelperService {
       member.isVaccineEligibile = this.isVaccineEligibile(member);
       member.isBestPharmacy = this.isBestPharmacy(member);
       member.isPrefPharmacyEligibile = this.isPrefPharmacyEligibile(member);
+      this.convertPerferredPharmacy(member);
       this.memberList.push(member);
 
       if (memberInfo.family && memberInfo.family.dependentList && memberInfo.family.dependentList.memberInfo) {
           const memberInfoList = this.convertToArray(memberInfo.family.dependentList.memberInfo);
           memberInfoList.forEach((element) => {
+            this.convertPerferredPharmacy(element);
             element.isVaccineEligibile = this.isVaccineEligibile(element);
             element.isBestPharmacy = this.isBestPharmacy(element);
             element.dateOfBirth = this.getDate(element.dateOfBirth);
