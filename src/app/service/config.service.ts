@@ -60,11 +60,13 @@ export class ConfigService {
         this.fastBaseUrl = `https://${this.env}fast.caremark.com/`;
         // this.fastBaseUrl = `https://localhost:8089/`;
       } else if (_.includes(this.env, 'dev')) {
-        this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
-        this.fastBaseUrl = `https://${this.env}fast.caremark.com`;
+        this.apiBaseUrl = `https://devservices-west.caremark.com:11103/`;
+        this.fastBaseUrl = `https://${this.env}fast.caremark.com/`;
+        // this.fastBaseUrl = `https://localhost:8089/`;
       } else if (_.includes(this.env, 'stp')) {
         this.apiBaseUrl = `https://stpservices.caremark.com:11101/`;
-        this.fastBaseUrl = `https://stpfast.caremark.com`;
+        this.fastBaseUrl = `https://stpfast.caremark.com/`;
+        // this.fastBaseUrl = `https://localhost:8089/`;
       } else if (_.includes(this.env, 'prod')) {
         this.apiBaseUrl = `https://pbmservices.caremark.com/`;
         this.fastBaseUrl = `https://fast.caremark.com/`;

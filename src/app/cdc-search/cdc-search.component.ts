@@ -1,10 +1,7 @@
-import {AfterViewInit, Component, OnInit} from '@angular/core';
+import {AfterViewInit, Component, EventEmitter, OnChanges, OnInit, Output, SimpleChanges} from '@angular/core';
 import {ConfigService} from '../service/config.service';
 import {CdcHelperService} from './cdc-helper.service';
 import {TealiumUtagService} from '../service/utag.service';
-import 'rxjs/add/operator/debounceTime';
-import 'rxjs/add/operator/distinctUntilChanged';
-import 'rxjs/add/operator/switchMap';
 import {Observable} from 'rxjs/Observable';
 import {catchError, debounceTime, distinctUntilChanged, filter, map, switchMap, tap} from 'rxjs/operators';
 import {Store} from '@ngrx/store';
@@ -14,33 +11,38 @@ import {MemberService} from '../service/member.service';
 import {ActivatedRoute, Router} from '@angular/router';
 import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
 import {environment} from '../../environments/environment';
-import * as _ from 'lodash';
+import {VordelPbmService} from '../service/vordel-pbm.service';
+import {DrugSearchFetchDefaultPharmacy} from '../store/drug-search/drug-search.actions';
 
 @Component({
   selector: 'app-cdc-search',
   templateUrl: './cdc-search.component.html',
   styleUrls: ['./cdc-search.component.css']
 })
-export class CdcSearchComponent implements OnInit, AfterViewInit {
-
+export class CdcSearchComponent implements OnInit {
   searching = false;
   searchFailed = false;
   drugSearched = '';
   defaultPharmacy = undefined;
+  defaultPharmacyNgStore$;
+  loading = true;
 
   private drugSearch$;
   private drugSelected;
   private drugCache = {};
   private memberInfo = undefined;
   private currentSearch: any = {};
+  public setDefaultPharmacy = false;
   constructor(private analytics: TealiumUtagService,
               private configSvc: ConfigService,
               private cdcHelperService: CdcHelperService,
+              private vordelService: VordelPbmService,
               private memberService: MemberService,
               private route: ActivatedRoute,
               private router: Router,
               private store: Store<any>) {
     this.drugSearch$ = this.store.select('drugSearchState');
+    this.defaultPharmacyNgStore$ = this.store.select('drugSearchDefaultPharmacy');
   }
 
   search = (text$: Observable<string>) =>
@@ -52,24 +54,21 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
         this.searching = true;
         this.drugSearched = term;
       }),
-      switchMap((term) =>
-        this.cdcHelperService.drugSearch(term).pipe(
+      switchMap((term) => this.cdcHelperService.drugSearch(term).pipe(
           tap( (drugs) => {
-            console.log(drugs);
             this.searchFailed = false;
             this.cdcHelperService.cachedrugSearchResults(term, drugs);
           }),
           map( (drugs) =>  drugs.map(drug => {
             let drugKey = this.cdcHelperService.getDrugName(drug);
             drugKey = this.cdcHelperService.transformTitleCase(drugKey);
-            console.log(drugKey);
             this.drugCache[drugKey] = drug;
             drug.drugKey = drugKey;
+            drug.sortKey = this.cdcHelperService.getSortKey(drug);
             return drug;
           })),
-          // map((drugs) => _.sortBy(drugs, 'drugKey' ) ),
           map((drugs) => {
-            this.cdcHelperService.sortList(drugs, 'drugKey' );
+            this.cdcHelperService.sortList(drugs, 'sortKey' );
             return drugs;
           } ),
           map((drugs) => drugs.map(drug => drug.drugKey)),
@@ -78,29 +77,31 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
           }) ),
           catchError((err) => {
             this.searchFailed = true;
-            console.log(err.message);
-            return of([err.message]);
-          }))),
+            if (err &&  err.name && err.name !== 'NDBError') {
+              err.message = 'Some parts of Caremark.com may be unavailable at this time. If the problem persists, please call Customer Care at the number on your prescription benefit ID card.';
+            }
+            return of([err]);
+          }))
+      ),
       tap(() => this.searching = false)
     )
 
-  ngAfterViewInit() {
-    if (true) {
-      this.drugSearched = null;
-    }
-  }
-
   ngOnInit() {
-    this.cdcHelperService.getDefaultPharmacy().subscribe((pharmacy) => {
-      // console.log(JSON.stringify(pharmacy));
-      this.defaultPharmacy = this.cdcHelperService.setPharmacyDetail(pharmacy);
+    this.store.dispatch(new DrugSearchFetchDefaultPharmacy());
+    this.defaultPharmacyNgStore$.subscribe((pharmacy) => {
+      this.loading = false;
+      if (pharmacy && pharmacy.DefaultPharmacy) {
+        this.defaultPharmacy = this.cdcHelperService.setPharmacyDetail(pharmacy.DefaultPharmacy);
+        this.setDefaultPharmacy = true;
+      }
     }, error => {
-      console.log(JSON.stringify(error));
       this.defaultPharmacy = undefined;
+      this.loading = false;
     });
     this.memberService.getMemberDetailsLegacy().then((result) => {
         this.memberInfo = result;
         this.cdcHelperService.setMemberDetails(this.memberInfo);
+        this.cdcHelperService.convertPerferredPharmacy(this.memberInfo);
         this.cdcHelperService.setMemberList(this.memberInfo);
       }
     );
@@ -133,14 +134,15 @@ export class CdcSearchComponent implements OnInit, AfterViewInit {
     }
   }
 
-  clearDrugSearch() {
-    console.log('Called to clear Drug Search');
-    this.search(of('clear'));
+  clearDrugSearch(e) {
+    e.preventDefault();
+    e.stopPropagation();
+    this.drugSearched = null;
+    this.searching = false;
   }
 
   selectedItem(item) {
     this.drugSelected = item.item;
-    // console.log(this.drugCache[this.drugSelected]);
   }
 
 }

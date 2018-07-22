@@ -19,12 +19,14 @@ export interface AppState {
   recentOrdersState: RecentOrdersState;
   refillsCountState: RefillsCountState;
   drugSearchState: DrugSearchState;
+  drugSearchDefaultPharmacy: DrugSearchState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   recentOrdersState: RecentOrdersReducer,
   refillsCountState: RefillsCountReducer,
   drugSearchState: DrugSearchReducer,
+  drugSearchDefaultPharmacy: DrugSearchReducer,
 };
 
 // console.log all actions

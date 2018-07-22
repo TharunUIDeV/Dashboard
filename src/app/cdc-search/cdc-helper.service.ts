@@ -2,43 +2,19 @@ import {Injectable} from '@angular/core';
 import {ConfigService} from '../service/config.service';
 import {of} from 'rxjs/observable/of';
 import {VordelPbmService} from '../service/vordel-pbm.service';
+import {SessionManager} from '../service/session-manager';
+import {Observable} from 'rxjs/Observable';
 
 
 @Injectable()
 export class CdcHelperService {
-
-  private sessionStorage = window.sessionStorage;
-  private sessionData: any = {};
   private memberDetail: any = {};
   private memberList: any = [];
   private drugSearchResultCache: any = {};
 
   constructor(private configService: ConfigService,
-              private vordelService: VordelPbmService) {
-  }
-
-
-  setSessionStorage (key, data) {
-    try {
-      if (typeof(Storage) !== 'undefined') {
-        this.sessionStorage.setItem(key, JSON.stringify(data));
-      }
-    } catch (e) {
-      console.log(e);
-    }
-
-  }
-
-  getSessionStorage (key) {
-    try {
-      if (typeof(Storage) !== 'undefined' && this.sessionStorage[key]) {
-        return JSON.parse(this.sessionStorage[key]);
-      }
-    } catch (e) {
-      console.log(e);
-      return false;
-    }
-    return false;
+              private vordelService: VordelPbmService,
+              private sessionManager: SessionManager) {
   }
 
   /**
@@ -62,6 +38,15 @@ export class CdcHelperService {
    */
   getDrugName(drug) {
     return drug.drugName.__cdata + ' ' + drug.drugStrength.__cdata + ' ' + drug.drugForm.__cdata;
+  }
+
+  /**
+   * getting the searched drug name
+   * @param drug
+   * @returns {string}
+   */
+  getSortKey(drug) {
+    return (drug.drugName.__cdata + ' '  + drug.drugForm.__cdata + ' ' + drug.drugStrength.__cdata).toLowerCase() ;
   }
 
   /**
@@ -195,7 +180,7 @@ export class CdcHelperService {
 
   setMemberDetails (memberInfo) {
 
-    if (this.memberDetail) {
+    if (memberInfo) {
       this.memberDetail = Object.assign(memberInfo);
       if (memberInfo.addresses) {
         const address = memberInfo.addresses;
@@ -265,6 +250,19 @@ export class CdcHelperService {
     }
   }
 
+  convertPerferredPharmacy(memberInfo) {
+    if (memberInfo && memberInfo.preferredPharmacy) {
+      memberInfo.preferredPharmacy.address = memberInfo.preferredPharmacy.address.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.city = memberInfo.preferredPharmacy.city.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.pharmacyId = memberInfo.preferredPharmacy.pharmacyId.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.pharmacyName = memberInfo.preferredPharmacy.pharmacyName.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.phoneNumber = memberInfo.preferredPharmacy.phoneNumber.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.prcsTypeCode = memberInfo.preferredPharmacy.prcsTypeCode.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.state = memberInfo.preferredPharmacy.state.replace('<![CDATA[', '').replace(']]>', '');
+      memberInfo.preferredPharmacy.zipCode = memberInfo.preferredPharmacy.zipCode.replace('<![CDATA[', '').replace(']]>', '');
+    }
+  }
+
   /**
    * getting member list
    */
@@ -277,11 +275,13 @@ export class CdcHelperService {
       member.isVaccineEligibile = this.isVaccineEligibile(member);
       member.isBestPharmacy = this.isBestPharmacy(member);
       member.isPrefPharmacyEligibile = this.isPrefPharmacyEligibile(member);
+      this.convertPerferredPharmacy(member);
       this.memberList.push(member);
 
       if (memberInfo.family && memberInfo.family.dependentList && memberInfo.family.dependentList.memberInfo) {
           const memberInfoList = this.convertToArray(memberInfo.family.dependentList.memberInfo);
           memberInfoList.forEach((element) => {
+            this.convertPerferredPharmacy(element);
             element.isVaccineEligibile = this.isVaccineEligibile(element);
             element.isBestPharmacy = this.isBestPharmacy(element);
             element.dateOfBirth = this.getDate(element.dateOfBirth);
@@ -318,11 +318,6 @@ export class CdcHelperService {
     }
     return isVaccineEligibile;
   }
-
-  /**
-   * ITPR017648 Vishnu R: 09/15/2016
-   * Added new funciton to check preferred pharmacy eligibility
-   */
 
   isPreferredPharmacyActive(data: any) {
 
@@ -390,14 +385,14 @@ export class CdcHelperService {
    * @param currentSearchkeyword
    * @returns {*|l.promise|{then, catch, finally}|d.promise|Function|promise}
    */
-  drugSearch(currentSearchkeyword) {
+  drugSearch(currentSearchkeyword): Observable<any[]> {
     const savedKey = currentSearchkeyword.toLowerCase();
     let searchResultFromStorage;
 
     if (savedKey.length < 3) {
       return of([]);
     }
-    const sessionStoredData = this.getSessionStorage(this.configService.token);
+    const sessionStoredData = this.sessionManager.getSessionStorage(this.configService.token);
     if (sessionStoredData) {
       searchResultFromStorage = sessionStoredData['drugSearchResultCache'];
     }
@@ -408,18 +403,17 @@ export class CdcHelperService {
   }
 
   cachedrugSearchResults(searchKey: string, result) {
-    this.drugSearchResultCache[searchKey] = result;
-    this.setSessionStorage(this.configService.token, {'drugSearchResultCache': this.drugSearchResultCache});
+    if (searchKey && searchKey.length > 2) {
+      this.drugSearchResultCache[searchKey] = result;
+      this.sessionManager.setDrugSearchResults(this.drugSearchResultCache);
+    }
   }
 
 
   setSessionData(currentSearch) {
-    this.sessionData.currentSearch = currentSearch;
-    this.sessionData.loggedInUserInfo = this.memberDetail;
-    this.sessionData.memberList = this.memberList;
-    this.sessionData.drugSearchResultCache = this.drugSearchResultCache;
-
-    this.setSessionStorage(this.configService.token, this.sessionData);
+    this.sessionManager.setCDCCurrentSearch(currentSearch);
+    this.sessionManager.setCDCMemberDetails(this.memberDetail, this.memberList);
+    this.sessionManager.setDrugSearchResults(this.drugSearchResultCache);
   }
 
 }

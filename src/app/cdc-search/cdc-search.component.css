@@ -30,7 +30,26 @@
   border-color: #a50000;
 }
 
-searchContainer {
+input {
+  font-weight: bold;
+  font-size: 20px;
+}
+input::placeholder {
+  color: #333;
+  font-weight: normal;
+}
+
+input[type=text]::-ms-clear {
+  display: none;
+}
+
+.SearchLabel {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+
+.searchContainer {
   position: relative;
 }
 
