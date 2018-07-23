@@ -1,0 +1,91 @@
+.form-control {
+  display: inline-block;
+  width: 60%;
+  padding-top: 12px;
+  padding-bottom: 12px;
+}
+
+.form-bsubmit {
+  display: inline-block;
+  background-color: #CC0000;
+  border: none;
+  color:white;
+  padding-top: 12px;
+  padding-bottom: 12px;
+  font-size: 16px;
+  border-bottom: 2px solid #a50000;
+  width: 30%;
+  text-align: center;
+  text-decoration: none;
+  border-radius: 0;
+}
+
+.form-bsubmit:hover {
+  background-color: #EB0000;
+  border-color: #EB0000;
+}
+
+.form-bsubmit:active {
+  background-color: #a50000;
+  border-color: #a50000;
+}
+
+input {
+  font-weight: bold;
+  font-size: 20px;
+}
+input::placeholder {
+  color: #333;
+  font-weight: normal;
+}
+
+input[type=text]::-ms-clear {
+  display: none;
+}
+
+.SearchLabel {
+  font-weight: bold;
+  margin-bottom: 15px;
+}
+
+
+.searchContainer {
+  position: relative;
+}
+
+.close_icon_grey {
+  height: 21px;
+  width: 21px;
+  display: inline-block;
+  background-size: contain;
+  background-repeat: no-repeat;
+  position: absolute;
+  left: 12rem;
+  background-image: url(../../assets/images/CVSDesktopIcons.XCloseSearchBar.png);
+}
+
+.pull-right {
+  float: right!important;
+}
+
+.icon-spinner {
+  position: absolute;
+  left: 11rem;
+  animation: spin 1000ms infinite linear;
+}
+
+@media only screen and (min-device-width : 768px) {
+  .icon-spinner {
+    left: 22rem;
+    margin-top: 5px;
+  }
+  .close_icon_grey {
+    left: 23.5rem;
+    margin-top: 10px;
+  }
+}
+
+@keyframes spin {
+  from {transform:rotate(0deg);}
+  to {transform:rotate(359deg);}
+}
