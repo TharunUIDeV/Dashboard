@@ -9,6 +9,7 @@ export enum FastWidgetTypes {
   FAST_ORDER_STATUS = 'FAST_ORDER_STATUS',
   FAST_CLAIMS_HISTORY = 'FAST_CLAIMS_HISTORY',
   FAST_REFILL_FROM_ACCOUNT = 'FAST_REFILL_FROM_ACCOUNT',
+  FAST_PLAN_SUMMARY = 'FAST_PLAN_SUMMARY',
 }
 
 const keys = {
@@ -24,6 +25,9 @@ const keys = {
   },
   FAST_REFILL_FROM_ACCOUNT: {
     url: `refillfromaccount/1.0/#/?`
+  },
+  FAST_PLAN_SUMMARY: {
+    url: `FASTPlanSummary/v1/#/?`
   },
 };
 

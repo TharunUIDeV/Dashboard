@@ -28,6 +28,7 @@ export class ConfigService {
   public clientID: string;
   public showLatestVersion: boolean;
   public rxHistoryUrl: string;
+  public planSummaryFastUrl: string;
   public checkDrugCostFastUrl: string;
   public portalSessionId: string;
   public clientChannelId: string;
@@ -125,6 +126,7 @@ export class ConfigService {
         }
         this.participantFirstName = data.appData.ParticipantFirstName;
         this.refillRxUrl = data.appData.RefillRXUrl;
+        this.planSummaryFastUrl = data.appData.planSummaryFastUrl;
         this.homePageUrl = data.appData.HomePageUrl;
         this.memberId = data.appData.ParticipantExternalId;
         this.emailAddr = data.appData.ParticpantUserId;
@@ -134,6 +136,7 @@ export class ConfigService {
         this.portalSessionId = data.appData.sessionID;
         this.clientChannelId = data.appData.clientChannelId;
         this.checkDrugCostFastUrl = '/wps/myportal/CHECK_DRUG_COST_FAST';
+        this.planSummaryFastUrl = '/wps/myportal/MY_PRESCRIPTION_PLAN';
         if (this.userProfile === 'ICE') {
           this.iceApiKey = this.getIceApiKey();
           this.iceApiSecret = this.getIceApiSecret();

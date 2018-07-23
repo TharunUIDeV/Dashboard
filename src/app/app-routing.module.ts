@@ -18,6 +18,10 @@ export const routes: Routes = [
     path: FastWidgetTypes.FAST_ORDER_STATUS,
     component: FastWidgetsComponent
   },
+  {
+    path: FastWidgetTypes.FAST_PLAN_SUMMARY,
+    component: FastWidgetsComponent
+  },
 ];
 
 @NgModule({

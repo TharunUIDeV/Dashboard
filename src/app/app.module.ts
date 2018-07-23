@@ -26,6 +26,7 @@ import { CdcSearchComponent } from './cdc-search/cdc-search.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbTypeaheadModule} from './typeahead/typeahead.module';
 import {DrugSearchEffects} from './store/drug-search/drug-search.effects';
+import { PlanSummaryComponent } from './plan-summary/plan-summary.component';
 
 
 @NgModule({
@@ -40,6 +41,7 @@ import {DrugSearchEffects} from './store/drug-search/drug-search.effects';
     FastWidgetsComponent,
     HeaderComponent,
     CdcSearchComponent,
+    PlanSummaryComponent,
   ],
   imports: [
     BrowserModule,
