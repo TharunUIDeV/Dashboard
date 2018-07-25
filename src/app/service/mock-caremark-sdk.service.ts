@@ -7,6 +7,7 @@ import * as MockGetRefillsCountData from '../../assets/mock-data/mock-getRefills
 import * as MockGetPznByIdAndResource from '../../assets/mock-data/mock-getPznByIdAndResource-data.json';
 import * as MockDrugByName from '../../assets/mock-data/mock-drugByName-data.json';
 import * as MockDefaultPharmacy from '../../assets/mock-data/mock-defaultPharmacy-data.json';
+import * as MockPlanSummary from '../../assets/mock-data/mock-planSummary.json';
 
 @Injectable()
 export class MockCaremarkSdkService implements CaremarkDataServiceInterface {
@@ -59,4 +60,9 @@ export class MockCaremarkSdkService implements CaremarkDataServiceInterface {
     });
   }
 
+  public getPlanSummary(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      resolve((<any>MockPlanSummary));
+    });
+  }
 }

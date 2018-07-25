@@ -4,8 +4,8 @@
       "deductible": [
         {
           "individual": {
-            "appliedAmount": "$0.00",
-            "appliedAmountNumeric": "0.0",
+            "appliedAmount": "$1000.00",
+            "appliedAmountNumeric": "1000.0",
             "deliveryCodeDesc": "In-Network Paper Claims",
             "drugListProfileDescription": "All Drugs",
             "drugs": "All Drugs",
@@ -17,7 +17,7 @@
             "planAmountMet": false,
             "planType": "Individual",
             "planTypeRxDesc": "Individual",
-            "remainingAmount": "$2,000.00",
+            "remainingAmount": "$1,000.00",
             "retail": true,
             "startMonth": "1",
             "startMonthString": "January",

@@ -24,6 +24,7 @@
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
     "@angular/core": "^5.2.0",
+    "@angular/flex-layout": "^5.0.0-beta.15",
     "@angular/forms": "^5.2.0",
     "@angular/http": "^5.2.0",
     "@angular/platform-browser": "^5.2.0",
@@ -35,6 +36,7 @@
     "@ngrx/store": "^5.2.0",
     "@ngrx/store-devtools": "^5.2.0",
     "@types/moment": "^2.13.0",
+    "angular-svg-round-progressbar": "1.2.1",
     "bootstrap": "4.1.1",
     "bowser": "^1.7.1",
     "core-js": "^2.4.1",
@@ -44,8 +46,7 @@
     "rxjs": "^5.5.6",
     "x2js": "^3.2.1",
     "xml2js": "^0.4.19",
-    "zone.js": "^0.8.19",
-    "angular-svg-round-progressbar": "1.2.1"
+    "zone.js": "^0.8.19"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",

@@ -1,10 +1,17 @@
 <app-spinner [loading]="loading"></app-spinner>
 <section class="block border-box" *ngIf="!loading">
   <h2 align="center" class="block-title">Your Health Plan</h2>
-  <round-progress [current]="10" [max]="100" [color]="'rgb(167, 206, 57)'" [background]="'#eaeaea'" [radius]="125"
-                  [stroke]="20" [semicircle]="true"
-                  [rounded]="false" [clockwise]="true" [responsive]="false" [duration]="800"
-                  [animation]="'easeInOutQuart'" [animationDelay]="200">
-  </round-progress>
-
+  <div align="center" *ngIf="appliedAmount !== undefined && planAmount !== undefined">
+    <h4 class="block-title">{{deductibleTitle}}</h4>
+    <round-progress [current]="appliedAmount" [max]="planAmount" [color]="'rgb(167, 206, 57)'" [background]="'#eaeaea'"
+                    [radius]="100"
+                    [stroke]="20" [semicircle]="true"
+                    [rounded]="false" [clockwise]="true" [responsive]="false" [duration]="800"
+                    [animation]="'easeInOutQuart'" [animationDelay]="200">
+    </round-progress>
+    <h4 style="position: relative;top:-60px"><span>{{remainingAmount | currency}}</span><br/>to go</h4>
+    <p>{{"until your " + planAmount + " deductible is met"}}</p>
+  </div>
+  <a href="" style="margin-top: 15px" class="link-red with-caret" (click)="coverageClick($event)">{{"Your insurance coverage details"}}</a>
+  <a href="" style="margin-top: 15px" class="link-red with-caret" (click)="copayClick($event)">{{"Your copay details"}}</a>
 </section>

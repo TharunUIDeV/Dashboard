@@ -19,10 +19,7 @@ export class PlanSummaryService {
   }
 
   getPlanSummaryData() {
-    return this.caremarkDataService.getPlanSummary()
-      .then((data) => {
-        return data;
-      });
+    return this.caremarkDataService.getPlanSummary();
 
   }
 
