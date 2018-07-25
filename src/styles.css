@@ -83,6 +83,15 @@ b {
   margin-top: 15px;
 }
 
+.block.border-box {
+  border: 2px solid #DEDBDB;
+  padding-top: 15px;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-bottom: 15px;
+}
+
+
 .block > a {
   font-size: .875em;
 }

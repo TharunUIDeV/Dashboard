@@ -27,6 +27,9 @@ import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbTypeaheadModule} from './typeahead/typeahead.module';
 import {DrugSearchEffects} from './store/drug-search/drug-search.effects';
 import { PlanSummaryComponent } from './plan-summary/plan-summary.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { DashboardWidgetLoaderComponent } from './dashboard/dashboard-widget-loader.component';
+import {FlexLayoutModule} from '@angular/flex-layout';
 
 
 @NgModule({
@@ -42,6 +45,8 @@ import { PlanSummaryComponent } from './plan-summary/plan-summary.component';
     HeaderComponent,
     CdcSearchComponent,
     PlanSummaryComponent,
+    DashboardComponent,
+    DashboardWidgetLoaderComponent
   ],
   imports: [
     BrowserModule,
@@ -55,13 +60,17 @@ import { PlanSummaryComponent } from './plan-summary/plan-summary.component';
       RefillsCountEffects,
       DrugSearchEffects]),
     AppRoutingModule,
-    NgbTypeaheadModule.forRoot()
+    NgbTypeaheadModule.forRoot(),
+    FlexLayoutModule
   ],
 
   providers: [
     [...fromServices.services,
     OrderStatusService, CdcHelperService, NgbTypeaheadModule.forRoot().providers],
   ],
-  bootstrap: [AppComponent]
+  bootstrap: [AppComponent,
+    /*PlanSummaryComponent,
+    RecentOrdersComponent,
+    RefillComponent*/]
 })
 export class AppModule { }

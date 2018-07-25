@@ -3,12 +3,18 @@ import { CommonModule } from '@angular/common';
 import {RouterModule, Routes} from '@angular/router';
 import {AppComponent} from './app.component';
 import {FastWidgetsComponent, FastWidgetTypes} from './fast-widgets/fast-widgets.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
 
 
 export const routes: Routes = [
   {
-    path: 'newDashBoard',
-    component: AppComponent,
+    path: '',
+    pathMatch: 'full',
+    redirectTo: 'new-dashboard'
+  },
+  {
+    path: 'new-dashboard',
+    component: DashboardComponent
   },
   {
     path: FastWidgetTypes.FAST_CDC_V4,
