@@ -1,0 +1,133 @@
+{
+  "planSummary": [
+    {
+      "deductible": [
+        {
+          "individual": {
+            "appliedAmount": "$0.00",
+            "appliedAmountNumeric": "0.0",
+            "deliveryCodeDesc": "In-Network Paper Claims",
+            "drugListProfileDescription": "All Drugs",
+            "drugs": "All Drugs",
+            "flagDollarInd": "0",
+            "mail": false,
+            "oopExcludeDed": false,
+            "oopIncludeDed": false,
+            "planAmount": "2000.0",
+            "planAmountMet": false,
+            "planType": "Individual",
+            "planTypeRxDesc": "Individual",
+            "remainingAmount": "$2,000.00",
+            "retail": true,
+            "startMonth": "1",
+            "startMonthString": "January",
+            "timePeriod": "Lifetime",
+            "totCovDrugCost": "$0.00"
+          }
+        }
+      ],
+      "maxOutOfPockets": [
+        {
+          "family": {
+            "appliedAmount": "$7.00",
+            "appliedAmountNumeric": "7.0",
+            "deliveryCodeDesc": "In-Network Paper Claims",
+            "drugListProfileDescription": "All Drugs",
+            "drugs": "All Drugs",
+            "flagDollarInd": "0",
+            "mail": false,
+            "oopExcludeDed": false,
+            "oopIncludeDed": false,
+            "planAmount": "6000.0",
+            "planAmountMet": false,
+            "planType": "Family",
+            "planTypeRxDesc": "Family",
+            "remainingAmount": "$5,993.00",
+            "retail": true,
+            "startMonth": "1",
+            "startMonthString": "January",
+            "timePeriod": "Lifetime",
+            "totCovDrugCost": "$7.00"
+          },
+          "individual": {
+            "appliedAmount": "$7.00",
+            "appliedAmountNumeric": "7.0",
+            "deliveryCodeDesc": "In-Network Paper Claims",
+            "drugListProfileDescription": "All Drugs",
+            "drugs": "All Drugs",
+            "flagDollarInd": "0",
+            "mail": false,
+            "oopExcludeDed": false,
+            "oopIncludeDed": false,
+            "planAmount": "3000.0",
+            "planAmountMet": false,
+            "planType": "Individual",
+            "planTypeRxDesc": "Individual",
+            "remainingAmount": "$2,993.00",
+            "retail": true,
+            "startMonth": "1",
+            "startMonthString": "January",
+            "timePeriod": "Lifetime",
+            "totCovDrugCost": "$7.00"
+          }
+        },
+        {
+          "family": {
+            "appliedAmount": "$7.00",
+            "appliedAmountNumeric": "7.0",
+            "deliveryCodeDesc": "Out-of-Network Paper Claims",
+            "drugListProfileDescription": "All Drugs",
+            "drugs": "All Drugs",
+            "flagDollarInd": "0",
+            "mail": false,
+            "oopExcludeDed": false,
+            "oopIncludeDed": false,
+            "planAmount": "4000.0",
+            "planAmountMet": false,
+            "planType": "Family",
+            "planTypeRxDesc": "Family",
+            "remainingAmount": "$3,993.00",
+            "retail": true,
+            "startMonth": "1",
+            "startMonthString": "January",
+            "timePeriod": "Lifetime",
+            "totCovDrugCost": "$7.00"
+          }
+        },
+        {
+          "family": {
+            "appliedAmount": "$7.00",
+            "appliedAmountNumeric": "7.0",
+            "deliveryCodeDesc": "Retail",
+            "drugListProfileDescription": "All Drugs",
+            "drugs": "All Drugs",
+            "flagDollarInd": "0",
+            "mail": false,
+            "oopExcludeDed": true,
+            "oopIncludeDed": false,
+            "planAmount": "4000.0",
+            "planAmountMet": false,
+            "planType": "Family",
+            "planTypeRxDesc": "Family",
+            "remainingAmount": "$3,993.00",
+            "retail": true,
+            "startMonth": "1",
+            "startMonthString": "January",
+            "timePeriod": "Lifetime",
+            "totCovDrugCost": "$7.00"
+          }
+        }
+      ],
+      "medicare": false,
+      "oopExcludeDed": false,
+      "oopIncludeDed": false,
+      "suppressDeductible": false,
+      "suppressMoop": false,
+      "refills": {
+        "mail": false,
+        "retail": false
+      },
+      "primary": false
+    }
+  ]
+}

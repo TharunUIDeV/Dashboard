@@ -167,6 +167,25 @@ export class CaremarkSdkService implements CaremarkDataServiceInterface {
     });
   }
 
+  public getPlanSummary(): Promise<any> {
+    return new Promise((resolve, reject) => {
+      const params: any = {};
+      if (!this.sdkInstance) {
+        const error = {error: 'SDK Not Initialized'};
+        console.error(JSON.stringify(error));
+        return reject(error);
+      }
+      this.setAuthConfigParams(params);
+      this.sdkInstance.Member.getPlanSummary(params, (result) => {
+        if (result.Header.StatusCode === '0000') {
+          return resolve(result.Details);
+        }
+        console.error(JSON.stringify(result.Header));
+        return reject(result.Header);
+      });
+    });
+  }
+
   public getRefillsCount(): Promise<any> {
     return this.vordelPbmService.getRefillsCount();
 /*

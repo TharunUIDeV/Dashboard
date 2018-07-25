@@ -1,5 +1,10 @@
 <app-spinner [loading]="loading"></app-spinner>
 <section class="block border-box" *ngIf="!loading">
   <h2 align="center" class="block-title">Your Health Plan</h2>
-  <a href="" class="link-red with-caret" (click)="planSummary($event)">PlanSummary</a>
+  <round-progress [current]="10" [max]="100" [color]="'rgb(167, 206, 57)'" [background]="'#eaeaea'" [radius]="125"
+                  [stroke]="20" [semicircle]="true"
+                  [rounded]="false" [clockwise]="true" [responsive]="false" [duration]="800"
+                  [animation]="'easeInOutQuart'" [animationDelay]="200">
+  </round-progress>
+
 </section>

@@ -24,7 +24,6 @@
     "@angular/common": "^5.2.0",
     "@angular/compiler": "^5.2.0",
     "@angular/core": "^5.2.0",
-    "@angular/flex-layout": "^5.0.0-beta.15",
     "@angular/forms": "^5.2.0",
     "@angular/http": "^5.2.0",
     "@angular/platform-browser": "^5.2.0",
@@ -45,7 +44,8 @@
     "rxjs": "^5.5.6",
     "x2js": "^3.2.1",
     "xml2js": "^0.4.19",
-    "zone.js": "^0.8.19"
+    "zone.js": "^0.8.19",
+    "angular-svg-round-progressbar": "1.2.1"
   },
   "devDependencies": {
     "@angular/cli": "~1.7.3",

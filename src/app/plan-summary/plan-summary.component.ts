@@ -3,27 +3,26 @@ import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
 import {environment} from '../../environments/environment';
 import {ConfigService} from '../service/config.service';
 import {ActivatedRoute, Router} from '@angular/router';
-import {AbstractDashboardWidget} from '../dashboard/abstract-dashboard-widget';
-import {DashboardWidget} from '../dashboard/dashboard-widget';
+import {PlanSummaryService} from '../service/plan-summary.service';
 
 @Component({
   selector: 'app-plan-summary',
   templateUrl: './plan-summary.component.html',
   styleUrls: ['./plan-summary.component.css']
 })
-export class PlanSummaryComponent  implements OnInit {
+export class PlanSummaryComponent implements OnInit {
+
+  private planSummaryData;
 
   constructor(private configSvc: ConfigService,
               private route: ActivatedRoute,
               private router: Router,
-              private injector: Injector) {
-   /* super(injector.get(DashboardWidget.metadata.NAME),
-      injector.get(DashboardWidget.metadata.ROUTERLINK),
-      injector.get(DashboardWidget.metadata.COLS),
-      injector.get(DashboardWidget.metadata.ROWS));*/
+              private injector: Injector,
+              private planSummaryService: PlanSummaryService) {
   }
 
   ngOnInit() {
+    this.planSummaryData = this.planSummaryService.getPlanSummaryData();
   }
 
   planSummary() {
@@ -33,5 +32,5 @@ export class PlanSummaryComponent  implements OnInit {
       this.router.navigate([FastWidgetTypes.FAST_PLAN_SUMMARY]);
     }
   }
-
 }
+

@@ -14,6 +14,7 @@ import {HttpClient} from '@angular/common/http';
 import {MockIceSdkService} from './mock-ice-sdk.service';
 import {EccrService} from './eccr.service';
 import {SessionManager} from './session-manager';
+import {PlanSummaryService} from './plan-summary.service';
 
 
 const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService)  => {
@@ -65,5 +66,6 @@ export const services: any[]  = [
   MemberService,
   EccrService,
   SessionManager,
+  PlanSummaryService
 ];
 

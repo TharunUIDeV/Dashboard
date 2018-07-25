@@ -10,27 +10,27 @@ import {SpinnerComponent} from './spinner/spinner.component';
 import {OrderStatusService} from './order-status/order-status.service';
 import {DefaultRefillComponent} from './default-refill/default-refill.component';
 import {DefaultOrderStatusComponent} from './default-order-status/default-order-status.component';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './store/app.reducer';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
-import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './store/app.effects';
+import {StoreModule} from '@ngrx/store';
+import {reducers, metaReducers} from './store/app.reducer';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
+import {EffectsModule} from '@ngrx/effects';
+import {AppEffects} from './store/app.effects';
 import {RecentOrdersEffects} from './store/recent-orders/recent-orders.effects';
 import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
 import {CdcHelperService} from './cdc-search/cdc-helper.service';
-import { AppRoutingModule } from './app-routing.module';
+import {AppRoutingModule} from './app-routing.module';
 import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
-import { HeaderComponent } from './header/header.component';
-import { CdcSearchComponent } from './cdc-search/cdc-search.component';
+import {HeaderComponent} from './header/header.component';
+import {CdcSearchComponent} from './cdc-search/cdc-search.component';
 import {FormsModule, ReactiveFormsModule} from '@angular/forms';
 import {NgbTypeaheadModule} from './typeahead/typeahead.module';
 import {DrugSearchEffects} from './store/drug-search/drug-search.effects';
-import { PlanSummaryComponent } from './plan-summary/plan-summary.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { DashboardWidgetLoaderComponent } from './dashboard/dashboard-widget-loader.component';
+import {PlanSummaryComponent} from './plan-summary/plan-summary.component';
+import {DashboardComponent} from './dashboard/dashboard.component';
+import {DashboardWidgetLoaderComponent} from './dashboard/dashboard-widget-loader.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
-
+import {RoundProgressModule} from 'angular-svg-round-progressbar';
 
 @NgModule({
   declarations: [
@@ -53,7 +53,7 @@ import {FlexLayoutModule} from '@angular/flex-layout';
     HttpClientModule,
     ReactiveFormsModule,
     FormsModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
+    StoreModule.forRoot(reducers, {metaReducers}),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects,
       RecentOrdersEffects,
@@ -61,16 +61,18 @@ import {FlexLayoutModule} from '@angular/flex-layout';
       DrugSearchEffects]),
     AppRoutingModule,
     NgbTypeaheadModule.forRoot(),
-    FlexLayoutModule
+    FlexLayoutModule,
+    RoundProgressModule
   ],
 
   providers: [
     [...fromServices.services,
-    OrderStatusService, CdcHelperService, NgbTypeaheadModule.forRoot().providers],
+      OrderStatusService, CdcHelperService, NgbTypeaheadModule.forRoot().providers],
   ],
   bootstrap: [AppComponent,
     /*PlanSummaryComponent,
     RecentOrdersComponent,
     RefillComponent*/]
 })
-export class AppModule { }
+export class AppModule {
+}
