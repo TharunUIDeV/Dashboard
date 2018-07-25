@@ -14,6 +14,8 @@ export class PlanSummaryComponent implements OnInit {
 
   private planSummaryData;
 
+  public loading = true;
+
   constructor(private configSvc: ConfigService,
               private route: ActivatedRoute,
               private router: Router,
@@ -23,6 +25,7 @@ export class PlanSummaryComponent implements OnInit {
 
   ngOnInit() {
     this.planSummaryData = this.planSummaryService.getPlanSummaryData();
+    this.loading = false;
   }
 
   planSummary() {
