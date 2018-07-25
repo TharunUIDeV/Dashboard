@@ -13,6 +13,8 @@ import {DashboardWidget} from '../dashboard/dashboard-widget';
 })
 export class PlanSummaryComponent  implements OnInit {
 
+  public loading = true;
+
   constructor(private configSvc: ConfigService,
               private route: ActivatedRoute,
               private router: Router,
@@ -24,6 +26,7 @@ export class PlanSummaryComponent  implements OnInit {
   }
 
   ngOnInit() {
+    this.loading = false;
   }
 
   planSummary() {
