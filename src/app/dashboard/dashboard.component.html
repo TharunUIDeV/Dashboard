@@ -1,10 +1,15 @@
 <div class="dashboard-container" fxLayout="column">
-  <div class="header"></div>
   <div fxLayout="row" fxLayout.xs="column" fxLayoutGap="15px" fxLayoutGap.xs="5px" class="main">
     <div fxFlex="5%" class="nav-menu"></div>
     <!--app-dashboard-widget-loader *ngFor="let widget of widgets" [widget]="widget">
     </app-dashboard-widget-loader-->
-    <div fxLayout="column"  fxFlex="60%" fxFlexOrder class="center-widgets">
+    <div fxLayout="column" fxFlex="60%" fxFlexOrder class="center-widgets">
+      <div class="content-wrapper">
+        <a href="#" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
+        <h1>
+          {{getTitle()}}
+        </h1>
+      </div>
       <app-attention></app-attention>
       <app-refill></app-refill>
       <app-order-status></app-order-status>
@@ -13,6 +18,5 @@
       <app-plan-summary></app-plan-summary>
     </div>
   </div>
-  <div class="footer"></div>
 </div>
 

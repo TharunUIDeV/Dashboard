@@ -9,9 +9,12 @@
                     [rounded]="false" [clockwise]="true" [responsive]="false" [duration]="800"
                     [animation]="'easeInOutQuart'" [animationDelay]="200">
     </round-progress>
-    <h4 style="position: relative;top:-60px"><span>{{remainingAmount | currency}}</span><br/>to go</h4>
-    <p>{{"until your " + planAmount + " deductible is met"}}</p>
+    <span style="position: absolute; margin-left: -100px">$0</span>
+    <span style="position: absolute;">{{planAmount | currency:'USD':true:'1.2-2'}}</span>
+    <h4 style="position: relative;top:-60px"><span>{{remainingAmount | currency:'USD':true:'1.2-2' }}</span><br/>to go
+    </h4>
+    <p>until your {{ planAmount | currency:'USD':true:'1.2-2' }} deductible is met</p>
   </div>
-  <a href="" style="margin-top: 15px" class="link-red with-caret" (click)="coverageClick($event)">{{"Your insurance coverage details"}}</a>
+  <a href="" style="margin-top: 15px" class="link-red with-caret" (click)="coverageClick($event)">{{"Your insurance coverage details"}}</a> <br/>
   <a href="" style="margin-top: 15px" class="link-red with-caret" (click)="copayClick($event)">{{"Your copay details"}}</a>
 </section>

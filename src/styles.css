@@ -40,18 +40,12 @@ b {
 }
 /*----------------------------------- BODY -------------------------------------*/
 .content-wrapper {
-  margin-top: 10px;
-  margin-right: 15px;
-  margin-left: 10px;
-  margin-bottom: 30px;
+  margin: 10px 10px 30px 15px;
   max-width: 625px;
 }
 @media only screen and (min-device-width : 768px) {
   .content-wrapper {
-    margin-top: 30px;
-    margin-right: 20px;
-    margin-left: 15px;
-    margin-bottom: 30px;
+    margin: 30px 15px 30px 20px;
   }
 }
 .content-wrapper h1 {
@@ -85,10 +79,8 @@ b {
 
 .block.border-box {
   border: 2px solid #DEDBDB;
-  padding-top: 15px;
-  padding-left: 15px;
-  padding-right: 15px;
-  padding-bottom: 15px;
+  padding: 15px;
+  margin-top: 75px;
 }
 
 
@@ -142,10 +134,7 @@ b {
 .block-title {
   font-weight: bold;
   font-size: 1.25em;
-  padding-top: 0;
-  padding-right: 0;
-  padding-left: 0;
-  padding-bottom: 15px;
+  padding: 0 0 15px 0;
 }
 
 @media only screen and (min-device-width : 768px) {
@@ -181,10 +170,7 @@ b {
   display: inline-block;
   font-weight: bold;
   margin-bottom: 5px;
-  padding-top: 5px;
-  padding-right: 25px;
-  padding-left: 25px;
-  padding-bottom: 5px;
+  padding: 5px 25px;
   font-size: 16px;
 }
 @media only screen and (min-device-width : 768px) {

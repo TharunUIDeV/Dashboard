@@ -1,31 +1,30 @@
-import { Component, OnInit } from '@angular/core';
+import {Component} from '@angular/core';
 import {DashboardWidget} from './dashboard-widget';
 import {PlanSummaryComponent} from '../plan-summary/plan-summary.component';
 import {RecentOrdersComponent} from '../recent-orders/recent-orders.component';
 import {RefillComponent} from '../refill/refill.component';
 import {ObservableMedia} from '@angular/flex-layout';
 import {Observable} from 'rxjs/Observable';
+import {ConfigService} from '../service/config.service';
 import 'rxjs/add/operator/startWith';
+import * as _ from 'lodash';
+import {TealiumUtagService} from '../service/utag.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.css']
 })
-export class DashboardComponent implements OnInit {
-
+export class DashboardComponent {
+  title: String;
   widgets: DashboardWidget[] = [];
   cols: Observable<number>;
   cols_big: Observable<number>;
   cols_sml: Observable<number>;
 
-  constructor( private observableMedia: ObservableMedia) {
-  }
-
-  ngOnInit() {
-    /*
-    this.loadWidgets();
-    */
+  constructor(private observableMedia: ObservableMedia,
+              private configSvc: ConfigService,
+              private analytics: TealiumUtagService) {
   }
 
   loadWidgets() {
@@ -142,5 +141,16 @@ export class DashboardComponent implements OnInit {
       }, RefillComponent));
   }
 
+  getTitle() {
+    this.title = 'Hello '.concat(_.upperFirst(_.toLower(this.configSvc.participantFirstName)));
+    return this.title;
+  }
 
+  gotoDashboard() {
+    this.analytics.link({
+      key_activity: 'new dashboard view my current dashboard',
+      link_name: 'Custom: New Dashboard view my current dashboard clicked'
+    });
+    window.parent.location.href = this.configSvc.homePageUrl;
+  }
 }

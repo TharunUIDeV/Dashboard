@@ -1,10 +1,13 @@
-import {Component, Injector, OnInit} from '@angular/core';
-import {FastWidgetTypes} from '../fast-widgets/fast-widgets.component';
-import {environment} from '../../environments/environment';
-import {ConfigService} from '../service/config.service';
-import {ActivatedRoute, Router} from '@angular/router';
+import {Component, OnInit} from '@angular/core';
 import {PlanSummaryService} from '../service/plan-summary.service';
 import {isArray} from 'util';
+import * as _ from 'lodash';
+
+export enum PLAN_TYPE {
+  DEDUCTIBLE = 'Deductible',
+  MEDICATIONS = 'Medications',
+  ALL_DRUGS = 'All Drugs'
+}
 
 @Component({
   selector: 'app-plan-summary',
@@ -15,32 +18,25 @@ export class PlanSummaryComponent implements OnInit {
 
   private planSummaryData;
   public appliedAmount;
-  public planAmount: number;
+  private deductibleType;
+  public planAmount: string;
   public remainingAmount: string;
-  public deductibleTitle = 'Individual Deductible';
-
+  public deductibleTitle;
   public loading = true;
 
-  constructor(private configSvc: ConfigService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private injector: Injector,
-              private planSummaryService: PlanSummaryService) {
-  }
+  constructor(private planSummaryService: PlanSummaryService) { }
 
   ngOnInit() {
     this.planSummaryService.getPlanSummaryData().then(data => {
       this.planSummaryData = data;
-      console.log(this.planSummaryData);
-      if (this.planSummaryData && this.isMedicareUser() === false) {
-        // Show Graph
-        const deductible = this.getDeductibleMemberType();
-        if (deductible) {
-          this.constructHeader(deductible);
-          this.planAmount = parseInt(deductible.planAmount, 10);
-          // this.appliedAmount = deductible.appliedAmount;
-          this.appliedAmount = parseInt(deductible.appliedAmountNumeric, 10);
-          this.calculateRemainingAmount(deductible);
+      // Show Graph only for Non-Medicare Users
+      if (this.planSummaryData && !this.isMedicareUser()) {
+        this.getDeductibleMemberType();
+        if (this.deductibleType) {
+          this.constructHeader(this.deductibleType);
+          this.planAmount = parseFloat(this.deductibleType.planAmount).toFixed(2);
+          this.appliedAmount = parseInt(this.deductibleType.appliedAmountNumeric, 10);
+          this.calculateRemainingAmount(this.deductibleType);
         }
       } else {
         // Ignore for now. Until we land on solution for medicare members.
@@ -51,137 +47,84 @@ export class PlanSummaryComponent implements OnInit {
 
   isMedicareUser() {
     if (this.planSummaryData && this.planSummaryData.planSummary) {
-      if (isArray(this.planSummaryData.planSummary)) {
+      if (this.planSummaryData.planSummary.length > 0) {
         return this.planSummaryData.planSummary[0].medicare;
       } else {
-        return this.planSummaryData.planSummary.medicare;
+        // if there is no data for plan summary, then set Medicare=true and ignore to show the graph
+        return true;
       }
     }
     return undefined;
   }
 
   constructHeader(deductible) {
-      let header = '';
+    let header = '';
+    if (deductible && deductible.planType && deductible.planTypeRxDesc) {
+      header = deductible.planTypeRxDesc + ' ' + PLAN_TYPE.DEDUCTIBLE;
+    } else if (deductible && deductible.planType) {
+      header = this.titleCase(deductible.planType) + ' ' + PLAN_TYPE.DEDUCTIBLE;
+    }
 
-      if (deductible && deductible.planType && deductible.planTypeRxDesc) {
-        header = deductible.planTypeRxDesc + ' ' + 'Deductible';
-      } else if (deductible  && deductible.planType) {
-        header = deductible.planType +  ' ' + 'Deductible';
-      }
-
-      if (deductible.drugListProfileDescription !== 'All Drugs') {
-        header = header + deductible.drugListProfileDescription + ' for ' + 'Medications';
-      }
-
-      this.deductibleTitle = header;
-
+    if (deductible.drugListProfileDescription && deductible.drugListProfileDescription.trim() !== PLAN_TYPE.ALL_DRUGS) {
+      header = header + ' for ' + this.titleCase(deductible.drugListProfileDescription) + ' ' + PLAN_TYPE.MEDICATIONS;
+    }
+    this.deductibleTitle = header;
   }
 
-  coverageClick() {  }
-  copayClick() {  }
+  coverageClick() { }
+
+  copayClick() { }
 
   calculateRemainingAmount(deductible) {
     if (deductible && deductible.remainingAmount) {
-      this.remainingAmount = deductible.remainingAmount;
+      const remainingAmountNumeric = deductible.remainingAmount.substr(1, deductible.remainingAmount.length);
+      const remainAmount = remainingAmountNumeric.replace(',', '');
+      this.remainingAmount = parseFloat(remainAmount).toFixed(2);
     } else {
-      this.remainingAmount = (deductible.planAmount - deductible.appliedAmountNumeric).toString();
+      this.remainingAmount = (parseInt(deductible.planAmount, 10) - parseInt(deductible.appliedAmountNumeric, 10)).toFixed(2);
     }
 
-    /*// Extracted this from current plan summary.
-    if (this.remainingAmount < 0) {
-      this.remainingAmount = 0;
-    }*/
+    // Extracted this from current plan summary.
+    if (parseFloat(this.remainingAmount) < 0) {
+      this.remainingAmount = '0';
+    }
   }
 
   getDeductibleMemberType() {
     let planSummary;
-    if ( this.planSummaryData && this.planSummaryData.planSummary) {
-       if (isArray(this.planSummaryData.planSummary)) {
-         planSummary = this.planSummaryData.planSummary[0];
-       } else {
-         planSummary = this.planSummaryData.planSummary[0];
-       }
+    if (this.planSummaryData && this.planSummaryData.planSummary) {
+      if (isArray(this.planSummaryData.planSummary)) {
+        planSummary = this.planSummaryData.planSummary[0];
+      }
     }
     if (planSummary && planSummary.deductible) {
-      for ( const dedType of planSummary.deductible ) {
-        if (dedType.individual) {
-          return dedType.individual;
-        }
-      }
-      for ( const dedType of planSummary.deductible ) {
-        if (dedType.family) {
-          return dedType.family;
-        }
-      }
-    }
-    return undefined;
-  }
-
-  planSummary() {
-    if (environment.production === true) {
-      window.parent.location.href = this.configSvc.planSummaryFastUrl;
-    } else {
-      this.router.navigate([FastWidgetTypes.FAST_PLAN_SUMMARY]);
-    }
-  }
-
-   /* getPersonlizationContent(pznId) {
-      var deferred = $q.defer();
-      if (!personlizationMapped) {
-        if (parseInt(pznId) <= 0) {
-          deferred.resolve();
-        }
-
-        var personalizationData = {
-          personalizationServiceRequest: {
-            tag: config.resourceTag
-          }
-        };
-
-        var userInfo = userSessionData.getLoggedInUserInfo();
-
-        // if (userInfo && userInfo.personalizationId && userInfo.personalizationId !== '0')
-        if (true) {
-          personalizationData.personalizationServiceRequest.pznID = pznId;
-          cdhServices.getPZNByIDandResourcetag({}, personalizationData).then(function (data) {
-            if (help.validateObject(data, 'data.response.header.statusCode') && data.response.header.statusCode === '0000' &&
-              help.validateObject(data, 'data.response.detail.detail.personalizationContent.personalizationContents')) {
-              var personalizationContents = data.response.detail.detail.personalizationContent.personalizationContents;
-              personlizationMapped = {};
-              personalizationContents = help.convertToArray(personalizationContents);
-              angular.forEach(personalizationContents, function (content) {
-                personlizationMapped[content.resourceTagId] = {};
-                if (content.contentText) {
-                  if (content.contentText.__cdata) {
-                    personlizationMapped[content.resourceTagId].contentText = content.contentText.__cdata;
-                  } else if (content.contentText.indexOf('CDATA') !== -1) {
-                    var contentText = serviceFactory.responseTransform('<formatText>' + content.contentText + '</formatText>');
-                    personlizationMapped[content.resourceTagId].contentText = contentText.formatText.__cdata;
-                  } else {
-                    personlizationMapped[content.resourceTagId].contentText = content.contentText;
-                  }
-                }
-
-                if (content.resourceVisibleIndicator) {
-                  personlizationMapped[content.resourceTagId].resourceVisibleIndicator = content.resourceVisibleIndicator;
-                }
-              });
-            }
-
-            deferred.resolve(personlizationMapped);
-          }, function () {
-
-            deferred.resolve(personlizationMapped);
-          });
+      planSummary.deductible.forEach((dedType) => {
+        // Per PO, Consider only Individual, if the response has both individual and family.
+        if (dedType.individual && dedType.family) {
+          this.deductibleType = dedType.individual;
+        } else if (dedType.individual) {
+          this.deductibleType = dedType.individual;
+        } else if (dedType.family) {
+          this.deductibleType = dedType.family;
         } else {
-          deferred.resolve();
+          this.deductibleType = undefined;
         }
-      } else {
-        deferred.resolve(personlizationMapped);
-      }
+      });
+    }
+  }
 
-      return deferred.promise;
+  /*  planSummary() {
+      if (environment.production === true) {
+        window.parent.location.href = this.configSvc.planSummaryFastUrl;
+      } else {
+        this.router.navigate([FastWidgetTypes.FAST_PLAN_SUMMARY]);
+      }
     }*/
 
+  // Helper Methods
+
+  titleCase(title: string) {
+    return _.startCase(_.toLowerCase(title));
+  }
 }
 

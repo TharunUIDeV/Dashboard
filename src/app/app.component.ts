@@ -2,7 +2,6 @@ import {Component, OnInit} from '@angular/core';
 import {ConfigService} from './service/config.service';
 import {TealiumUtagService} from './service/utag.service';
 import {isNullOrUndefined} from 'util';
-import * as _ from 'lodash';
 
 @Component({
   selector: 'app-root',
@@ -10,7 +9,6 @@ import * as _ from 'lodash';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-  title: String;
   loading = false;
   public environment: string;
   public showLatestVersion = true;
@@ -41,18 +39,5 @@ export class AppComponent implements OnInit {
     if (this.configSvc.showLatestVersion === false  || this.configSvc.userProfile === 'ICE') {
       this.showLatestVersion = false;
     }
-  }
-
-  gotoDashboard() {
-    this.analytics.link({
-      key_activity: 'new dashboard view my current dashboard',
-      link_name: 'Custom: New Dashboard view my current dashboard clicked'
-    });
-    window.parent.location.href = this.configSvc.homePageUrl;
-  }
-
-  getTitle() {
-    this.title = 'Hello '.concat(_.upperFirst(_.toLower(this.configSvc.participantFirstName)));
-    return this.title;
   }
 }

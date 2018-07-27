@@ -20,7 +20,5 @@ export class PlanSummaryService {
 
   getPlanSummaryData() {
     return this.caremarkDataService.getPlanSummary();
-
   }
-
 }
