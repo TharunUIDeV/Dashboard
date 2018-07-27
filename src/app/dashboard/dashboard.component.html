@@ -10,13 +10,23 @@
           {{getTitle()}}
         </h1>
       </div>
-      <app-attention></app-attention>
-      <app-refill></app-refill>
-      <app-order-status></app-order-status>
-    </div>
-    <div fxFlex="30%" fsFlexOrder class="side-widgets">
-      <app-plan-summary></app-plan-summary>
+      <div style="margin-right: 10px" class="dashboard-container" fxLayout="column" fxFlexOffset="10px"
+           fxLayoutGap="15px" fxLayoutGap.xs="15px">
+        <div class="header"></div>
+        <div fxLayout="row" fxLayoutGap="15px" fxLayout.xs="column" class="main">
+          <div fxFlex="5%" fsFlexOrder class="nav-menu"></div>
+          <!--app-dashboard-widget-loader *ngFor="let widget of widgets" [widget]="widget">
+          </app-dashboard-widget-loader-->
+          <div fxLayout="column" fxLayoutGap="15px" fxFlex="" fxFlexOrder class="center-widgets">
+            <app-attention></app-attention>
+            <app-refill></app-refill>
+            <app-order-status></app-order-status>
+          </div>
+          <div fxFlex="30%" fsFlexOrder class="side-widgets">
+            <app-plan-summary></app-plan-summary>
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 </div>
-
