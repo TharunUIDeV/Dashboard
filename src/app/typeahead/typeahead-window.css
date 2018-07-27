@@ -1,0 +1,11 @@
+
+:host{
+    max-height: 340px;
+    overflow-y: scroll;
+}
+.dropdown-item.active 
+{
+    background-color : #A9A9A9;
+}
+
+  

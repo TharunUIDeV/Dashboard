@@ -28,7 +28,7 @@ export interface ResultTemplateContext {
       <ngb-highlight [result]="formatter(result)" [term]="term"></ngb-highlight>
     </ng-template>
     <ng-template ngFor [ngForOf]="results" let-result let-idx="index">
-      <button type="button"  style="font-weight: bold; width: 363px; white-space: initial; line-height: 1.5em" class="dropdown-item" role="option"
+      <button type="button"  style="font-weight: bold; width: 100%; white-space: initial; line-height: 1.5em" class="dropdown-item" role="option"
         [id]="id + '-' + idx"
         [class.active]="idx === activeIdx"
         (mouseenter)="markActive(idx)"
@@ -36,12 +36,9 @@ export interface ResultTemplateContext {
           <ng-template [ngTemplateOutlet]="resultTemplate || rt"
           [ngTemplateOutletContext]="{result: result, term: term, errorMessage: errorMessage, formatter: formatter}"></ng-template>
       </button>
-    </ng-template>`, styles: [
-    `:host {
-    max-height: 340px;
-    overflow-y: scroll;
-    }
-  `]
+    </ng-template>`,
+    styleUrls: ['typeahead-window.css'], 
+   
 })
 export class NgbTypeaheadWindow implements OnInit {
   activeIdx = 0;
