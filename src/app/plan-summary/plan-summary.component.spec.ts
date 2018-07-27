@@ -2,6 +2,7 @@ import {async, ComponentFixture, TestBed} from '@angular/core/testing';
 import {CUSTOM_ELEMENTS_SCHEMA} from '@angular/core';
 import {PlanSummaryComponent} from './plan-summary.component';
 import {PlanSummaryService} from '../service/plan-summary.service';
+import {TealiumUtagService} from '../service/utag.service';
 
 xdescribe('PlanSummaryComponent', () => {
   let component: PlanSummaryComponent;
@@ -12,7 +13,8 @@ xdescribe('PlanSummaryComponent', () => {
     TestBed.configureTestingModule({
       declarations: [PlanSummaryComponent],
       providers: [
-        {provide: PlanSummaryService, useValue: mockPlanSummaryService }
+        {provide: PlanSummaryService, useValue: mockPlanSummaryService },
+        TealiumUtagService
       ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })

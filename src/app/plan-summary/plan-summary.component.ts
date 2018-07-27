@@ -2,6 +2,7 @@ import {Component, OnInit} from '@angular/core';
 import {PlanSummaryService} from '../service/plan-summary.service';
 import {isArray} from 'util';
 import * as _ from 'lodash';
+import {TealiumUtagService} from '../service/utag.service';
 
 export enum PLAN_TYPE {
   DEDUCTIBLE = 'Deductible',
@@ -24,7 +25,8 @@ export class PlanSummaryComponent implements OnInit {
   public deductibleTitle;
   public loading = true;
 
-  constructor(private planSummaryService: PlanSummaryService) { }
+  constructor(private planSummaryService: PlanSummaryService,
+              private analytics: TealiumUtagService) { }
 
   ngOnInit() {
     this.planSummaryService.getPlanSummaryData().then(data => {
@@ -71,9 +73,19 @@ export class PlanSummaryComponent implements OnInit {
     this.deductibleTitle = header;
   }
 
-  coverageClick() { }
+  coverageClick() {
+    this.analytics.link({
+      key_activity: 'new dashboard your insurance coverage details',
+      link_name: 'Custom: New Dashboard your insurance coverage details clicked'
+    });
+  }
 
-  copayClick() { }
+  copayClick() {
+    this.analytics.link({
+      key_activity: 'new dashboard your copay details',
+      link_name: 'Custom: New Dashboard your copay details clicked'
+    });
+  }
 
   calculateRemainingAmount(deductible) {
     if (deductible && deductible.remainingAmount) {
