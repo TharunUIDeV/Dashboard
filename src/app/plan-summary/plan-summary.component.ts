@@ -22,6 +22,8 @@ export class PlanSummaryComponent implements OnInit {
   private deductibleType;
   public planAmount: string;
   public remainingAmount: string;
+  public remainingAmountDigits: string;
+  public remainingAmountDecimals: string;
   public deductibleTitle;
   public loading = true;
 
@@ -94,6 +96,11 @@ export class PlanSummaryComponent implements OnInit {
       this.remainingAmount = parseFloat(remainAmount).toFixed(2);
     } else {
       this.remainingAmount = (parseInt(deductible.planAmount, 10) - parseInt(deductible.appliedAmountNumeric, 10)).toFixed(2);
+    }
+
+    if (this.remainingAmount) {
+      this.remainingAmountDigits = this.remainingAmount.split('.')[0];
+      this.remainingAmountDecimals = this.remainingAmount.split('.')[1];
     }
 
     // Extracted this from current plan summary.

@@ -31,6 +31,7 @@ import {DashboardComponent} from './dashboard/dashboard.component';
 import {DashboardWidgetLoaderComponent} from './dashboard/dashboard-widget-loader.component';
 import {FlexLayoutModule} from '@angular/flex-layout';
 import {RoundProgressModule} from 'angular-svg-round-progressbar';
+import {PlanSummaryNumberPipe} from './plan-summary/plan-summary-number-pipe';
 
 @NgModule({
   declarations: [
@@ -46,7 +47,8 @@ import {RoundProgressModule} from 'angular-svg-round-progressbar';
     CdcSearchComponent,
     PlanSummaryComponent,
     DashboardComponent,
-    DashboardWidgetLoaderComponent
+    DashboardWidgetLoaderComponent,
+    PlanSummaryNumberPipe
   ],
   imports: [
     BrowserModule,

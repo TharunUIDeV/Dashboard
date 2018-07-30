@@ -1,7 +1,5 @@
 @import '../../styles.css';
 
-.dashboard-container {
-}
-
-.dashboard-row {
+.side-widgets {
+  margin-top: 50px;
 }
