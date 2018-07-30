@@ -112,6 +112,7 @@ export class CdcSearchComponent implements OnInit {
       key_activity: 'new dashboard find a new medication',
       link_name: 'Custom: New Dashboard find a new medication clicked'
     });
+
     if (environment.production === true) {
       window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
     } else {
