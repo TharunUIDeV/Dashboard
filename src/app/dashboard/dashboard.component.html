@@ -1,5 +1,5 @@
-<div fxLayout="row" fxFlex="62.5%" fxLayoutGap="15px" fxLayout.xs="column" style="margin-right: 15px" class="main">
-  <div fxLayout="column" fxLayoutGap="15px" fxFlex="" fxFlexOrder class="center-widgets">
+<div fxLayout="row" fxLayoutGap="15px" fxLayout.xs="column" style="margin-right: 15px" class="main">
+  <div style="max-width: 625px" fxLayout="column" fxLayoutGap="15px" fxFlex="" fxFlexOrder class="center-widgets">
     <div class="content-wrapper">
       <h1>
         {{getTitle()}}
@@ -9,7 +9,7 @@
     <app-refill></app-refill>
     <app-order-status></app-order-status>
   </div>
-  <div fxFlex="29%" fsFlexOrder class="side-widgets">
+  <div style="max-width: 290px" fsFlexOrder class="side-widgets">
     <a href="#" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
     <app-plan-summary></app-plan-summary>
   </div>
