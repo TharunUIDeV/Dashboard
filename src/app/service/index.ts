@@ -31,7 +31,7 @@ const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmServic
 
 const iceSdkServiceFactory = (httpClient: HttpClient, configService: ConfigService, vordelPbmService: VordelPbmService)  => {
   if (environment.production) {
-    return new MockCaremarkSdkService();
+    return new MockIceSdkService();
     // return new IceSdkService(httpClient, configService, vordelPbmService);
   } else if (environment.mock) {
     return new MockIceSdkService();
