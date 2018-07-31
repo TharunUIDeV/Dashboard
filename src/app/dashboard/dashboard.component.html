@@ -1,6 +1,6 @@
 <div class="main align-main-widget" fxLayout="row" fxLayoutGap="15px" fxLayout.xs="column">
   <div class="widget-width center-widgets" align="left" fxLayout="column" fxLayoutGap="15px" fxFlex="" fxFlexOrder>
-    <a *ngIf="!isDesktop" href="wps/myportal/MY_PRESCRIPTION_PLAN" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
+    <a *ngIf="!isDesktop" href="" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
     <div class="content-wrapper">
       <h1>
         {{getTitle()}}
@@ -11,7 +11,7 @@
     <app-order-status></app-order-status>
   </div>
   <div class="side-widgets plan-summary-width" align="right" fxLayout="column">
-    <a *ngIf="isDesktop" href="wps/myportal/MY_PRESCRIPTION_PLAN" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
+    <a *ngIf="isDesktop" href="" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
     <app-plan-summary></app-plan-summary>
   </div>
 </div>
