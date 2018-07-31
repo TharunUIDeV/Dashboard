@@ -19,7 +19,8 @@ import {PlanSummaryService} from './plan-summary.service';
 
 const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService)  => {
   if (environment.production) {
-    return new CaremarkSdkService(configService, vordelPbmService);
+    return new MockCaremarkSdkService();
+    // return new CaremarkSdkService(configService, vordelPbmService);
   } else if (environment.mock) {
     return new MockCaremarkSdkService();
   } else {
@@ -30,7 +31,8 @@ const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmServic
 
 const iceSdkServiceFactory = (httpClient: HttpClient, configService: ConfigService, vordelPbmService: VordelPbmService)  => {
   if (environment.production) {
-    return new IceSdkService(httpClient, configService, vordelPbmService);
+    return new MockCaremarkSdkService();
+    // return new IceSdkService(httpClient, configService, vordelPbmService);
   } else if (environment.mock) {
     return new MockIceSdkService();
   } else {
