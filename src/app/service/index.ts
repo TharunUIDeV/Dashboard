@@ -17,10 +17,9 @@ import {SessionManager} from './session-manager';
 import {PlanSummaryService} from './plan-summary.service';
 
 
-const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService)  => {
+const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService) => {
   if (environment.production) {
-    return new MockCaremarkSdkService();
-    // return new CaremarkSdkService(configService, vordelPbmService);
+    return new CaremarkSdkService(configService, vordelPbmService);
   } else if (environment.mock) {
     return new MockCaremarkSdkService();
   } else {
@@ -29,10 +28,9 @@ const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmServic
 };
 
 
-const iceSdkServiceFactory = (httpClient: HttpClient, configService: ConfigService, vordelPbmService: VordelPbmService)  => {
+const iceSdkServiceFactory = (httpClient: HttpClient, configService: ConfigService, vordelPbmService: VordelPbmService) => {
   if (environment.production) {
-    return new MockIceSdkService();
-    // return new IceSdkService(httpClient, configService, vordelPbmService);
+    return new IceSdkService(httpClient, configService, vordelPbmService);
   } else if (environment.mock) {
     return new MockIceSdkService();
   } else {
@@ -40,13 +38,16 @@ const iceSdkServiceFactory = (httpClient: HttpClient, configService: ConfigServi
   }
 };
 
-export const CareMarkSdkServiceProvider = { provide: CaremarkSdkService,
-  useFactory: caremarkSdkServiceFactory, deps: [ConfigService, VordelPbmService]};
+export const CareMarkSdkServiceProvider = {
+  provide: CaremarkSdkService,
+  useFactory: caremarkSdkServiceFactory, deps: [ConfigService, VordelPbmService]
+};
 
 
-export const IceSdkServiceProvider = { provide: IceSdkService,
-  useFactory: iceSdkServiceFactory, deps: [HttpClient, ConfigService, VordelPbmService]};
-
+export const IceSdkServiceProvider = {
+  provide: IceSdkService,
+  useFactory: iceSdkServiceFactory, deps: [HttpClient, ConfigService, VordelPbmService]
+};
 
 
 export function configServiceFactory(configSvc: ConfigService) {
@@ -54,8 +55,7 @@ export function configServiceFactory(configSvc: ConfigService) {
 }
 
 
-
-export const services: any[]  = [
+export const services: any[] = [
   {provide: APP_INITIALIZER, useFactory: configServiceFactory, deps: [ConfigService], multi: true},
   ConfigService,
   BrowserService,

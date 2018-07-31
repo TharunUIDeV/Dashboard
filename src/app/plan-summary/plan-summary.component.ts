@@ -16,7 +16,6 @@ export enum PLAN_TYPE {
   styleUrls: ['./plan-summary.component.css']
 })
 export class PlanSummaryComponent implements OnInit {
-
   private planSummaryData;
   public appliedAmount;
   private deductibleType;

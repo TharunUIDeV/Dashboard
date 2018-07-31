@@ -2,20 +2,19 @@
 <section class="block border-box" *ngIf="!loading">
   <h2 align="center" class="block-title">Your Health Plan</h2>
   <div align="center" *ngIf="appliedAmount !== undefined && planAmount !== undefined">
-    <h4 class="block-title">{{deductibleTitle}}</h4>
+    <h4 class="deductible-title">{{deductibleTitle}}</h4>
     <round-progress [current]="appliedAmount" [max]="planAmount" [color]="'rgb(55, 186, 171)'" [background]="'#eaeaea'"
                     [radius]="100"
                     [stroke]="20" [semicircle]="true"
                     [rounded]="false" [clockwise]="true" [responsive]="false" [duration]="800"
                     [animation]="'easeInOutQuart'" [animationDelay]="200">
     </round-progress>
-    <span style="position: absolute; margin-left: -100px; margin-top: 5px; color: grey; font-size: 12px">$0</span>
-    <span style="position: absolute; margin-left: 75px; margin-top: 5px; color: grey; font-size: 12px">{{planAmount | currency:'USD':true:'1.2-2'}}</span>
-    <h5 style="position: relative;top:-40px; font-weight: bold; font-size: 18px">
+    <span class="amount-text min-amount-text">$0</span>
+    <span class="amount-text max-amount-text">{{planAmount | currency:'USD':true:'1.2-2'}}</span>
+    <h5 class="left-over-amount">
       <span>{{remainingAmountDigits | currency:'USD':true:'1.0-0'}}.<sup>{{ remainingAmountDecimals | psDecimalPipe: remainingAmountDecimals}}</sup></span>
       <br/>to go </h5>
-    <p style="font-size: 14px">until your {{ planAmount | currency:'USD':true:'1.2-2' }} deductible is met</p>
+    <p class="plan-amount-size">until your {{ planAmount | currency:'USD':true:'1.2-2' }} deductible is met</p>
   </div>
-  <a href="" style="margin-top: 15px" class="link-red with-caret" (click)="coverageClick($event)">{{"Your insurance coverage details"}}</a> <br/>
-  <a href="" style="margin-top: 15px" class="link-red with-caret" (click)="copayClick($event)">{{"Your copay details"}}</a>
+  <a href="" class="link-red with-caret plan-summary-url" (click)="coverageClick($event)">{{"Your insurance coverage details"}}</a>
 </section>

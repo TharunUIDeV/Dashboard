@@ -1,5 +1,30 @@
 @import '../../styles.css';
 
 .side-widgets {
-  margin-top: 50px;
+  margin-top:0;
+  margin-left: 5px;
+}
+
+@media only screen and (min-device-width: 768px) {
+  .side-widgets {
+    margin-top: 50px;
+  }
+}
+
+.align-main-widget {
+  margin-right: 15px;
+}
+
+.widget-width {
+  max-width: 625px;
+}
+
+.plan-summary-width {
+  max-width: 100%;
+}
+
+@media only screen and (min-device-width: 768px) {
+  .plan-summary-width {
+    max-width: 290px;
+  }
 }

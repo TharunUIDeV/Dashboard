@@ -9,6 +9,7 @@ import {ConfigService} from '../service/config.service';
 import 'rxjs/add/operator/startWith';
 import * as _ from 'lodash';
 import {TealiumUtagService} from '../service/utag.service';
+import {BrowserService} from '../service/browser.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,6 +17,7 @@ import {TealiumUtagService} from '../service/utag.service';
   styleUrls: ['./dashboard.component.css']
 })
 export class DashboardComponent {
+  public isDesktop: boolean;
   title: String;
   widgets: DashboardWidget[] = [];
   cols: Observable<number>;
@@ -24,7 +26,17 @@ export class DashboardComponent {
 
   constructor(private observableMedia: ObservableMedia,
               private configSvc: ConfigService,
-              private analytics: TealiumUtagService) {
+              private analytics: TealiumUtagService,
+              private browserService: BrowserService) {
+    this.getUserAgent();
+  }
+
+  getUserAgent() {
+    if (_.includes(this.browserService.deviceType.toLowerCase(), 'mobile')) {
+      this.isDesktop = false;
+    } else {
+      this.isDesktop = true;
+    }
   }
 
   loadWidgets() {
