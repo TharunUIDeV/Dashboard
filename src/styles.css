@@ -1,5 +1,5 @@
 /*----------------------------------- RESET -------------------------------------*/
-html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
+html, body, div, span, applet, object, iframe, h1, h2, h3, h4, h5, h6, p, blockquote, pre, a, abbr, acronym, address, big, cite, code, del, dfn, em, img, ins, kbd, q, s, samp, small, strike, strong, sub, sup, tt, var, b, u, i, center, dl, dt, dd, ol, ul, li, fieldset, form, label, legend, table, caption, tbody, tfoot, thead, tr, th, td, article, aside, canvas, details, embed, figure, figcaption, footer, header, hgroup, menu, nav, output, ruby, section, summary, time, mark, audio, video {
   margin: 0;
   padding: 0;
   border: 0;
@@ -9,45 +9,55 @@ html, body, div, span, applet, object, iframe,h1, h2, h3, h4, h5, h6, p, blockqu
   line-height: 1;
   vertical-align: baseline;
 }
+
 /* HTML5 display-role reset for older browsers */
 article, aside, details, figcaption, figure,
 footer, header, hgroup, menu, nav, section, address, main {
   box-sizing: border-box;
   display: block;
 }
+
 ol, ul {
   list-style: none;
 }
+
 blockquote, q {
   quotes: none;
 }
+
 table {
   border-collapse: collapse;
   border-spacing: 0;
 }
+
 /*----------------------------------- GENERAL -------------------------------------*/
 body {
-  font-family:'Helvetica', 'Arial', sans-serif;
+  font-family: 'Helvetica', 'Arial', sans-serif;
   font-size: 100%;
   color: #000;
 }
+
 a {
   color: #CC0000;
   font-weight: bold;
 }
+
 b {
   font-weight: bold;
 }
+
 /*----------------------------------- BODY -------------------------------------*/
 .content-wrapper {
   margin: 10px 10px 30px 0;
   max-width: 625px;
 }
-@media only screen and (min-device-width : 768px) {
+
+@media only screen and (min-device-width: 768px) {
   .content-wrapper {
     margin: 30px 15px 30px 0;
   }
 }
+
 .content-wrapper h1 {
   clear: both;
   font-size: 1.75em;
@@ -56,7 +66,8 @@ b {
   padding-right: 0;
   padding-bottom: 15px;
 }
-@media only screen and (min-device-width : 768px) {
+
+@media only screen and (min-device-width: 768px) {
   .content-wrapper h1 {
     clear: none;
     float: left;
@@ -64,6 +75,7 @@ b {
     padding-bottom: 20px;
   }
 }
+
 .view-site {
   font-size: .875em;
   float: right;
@@ -84,11 +96,21 @@ b {
   margin-top: 15px;*/
 }
 
+.align-ps-widget {
+  margin-top: 0;
+}
+
+@media only screen and (min-device-width: 768px) {
+  .align-ps-widget {
+    margin-top: 50px;
+    clear: both;
+  }
+}
+
 .block.border-box {
   border: 2px solid #DEDBDB;
   padding: 15px;
 }
-
 
 .block > a {
   font-size: .875em;
@@ -106,14 +128,14 @@ b {
   color: #a50000;
 }
 
-@media only screen and (min-device-width : 768px) {
+@media only screen and (min-device-width: 768px) {
   .block p {
     font-size: 1em;
   }
 }
 
-.with-caret{
-  background:	url(./assets/images/caret.png) right center no-repeat;
+.with-caret {
+  background: url(./assets/images/caret.png) right center no-repeat;
   background-size: 11px 18px;
   display: inline-block;
   padding: 2px 20px 2px 0;
@@ -121,7 +143,7 @@ b {
 }
 
 .with-caret:hover {
-  background:	url(./assets/images/caret-hover.png) right center no-repeat;
+  background: url(./assets/images/caret-hover.png) right center no-repeat;
   background-size: 11px 18px;
   display: inline-block;
   padding: 2px 20px 2px 0;
@@ -129,13 +151,12 @@ b {
 }
 
 .with-caret:active {
-  background:	url(./assets/images/caret-active.png) right center no-repeat;
+  background: url(./assets/images/caret-active.png) right center no-repeat;
   background-size: 11px 18px;
   display: inline-block;
   padding: 2px 20px 2px 0;
   text-decoration: none;
 }
-
 
 .block-title {
   font-weight: bold;
@@ -143,7 +164,7 @@ b {
   padding-bottom: 15px;
 }
 
-@media only screen and (min-device-width : 768px) {
+@media only screen and (min-device-width: 768px) {
   .block-title {
     font-size: 1.25em;
   }
@@ -155,7 +176,7 @@ b {
   margin-left: 5px;
 }
 
-@media only screen and (min-device-width : 768px) {
+@media only screen and (min-device-width: 768px) {
   .block-item {
     margin-left: 20px;
   }
@@ -171,7 +192,7 @@ b {
 }
 
 .important {
-  background:	url(./assets/images/warning.png) left center no-repeat;
+  background: url(./assets/images/warning.png) left center no-repeat;
   background-size: 20px 20px;
   display: inline-block;
   font-weight: bold;
@@ -179,11 +200,13 @@ b {
   padding: 5px 25px;
   font-size: 16px;
 }
-@media only screen and (min-device-width : 768px) {
+
+@media only screen and (min-device-width: 768px) {
   .hold-order > a {
     float: left;
   }
 }
+
 .hold-order ul {
   overflow: auto;
   border: 2px solid #DEDBDB;
@@ -194,53 +217,63 @@ b {
   padding-top: 10px;
 
 }
+
 .hold-order li {
   padding-top: 5px;
   padding-bottom: 5px;
   width: 100%;
 }
+
 .hold-order li.view-order {
   padding-bottom: 0px;
 }
-@media only screen and (min-device-width : 768px) {
+
+@media only screen and (min-device-width: 768px) {
   .hold-order ul {
     padding-left: 15px;
     padding-right: 15px;
     padding-bottom: 10px;
     padding-top: 10px;
   }
+
   .hold-order li {
     float: left;
     width: 50%;
   }
+
   .hold-order li.view-order {
     margin-left: 0.5px;
   }
 }
 
-
 .recent-order > ul {
   overflow: auto;
 }
+
 .recent-order > ul li {
   margin-bottom: 15px;
   overflow: auto;
 }
+
 .recent-order > ul li span, .recent-order > ul li a {
   padding-top: 5px;
   padding-bottom: 5px;
 }
+
 .recent-order > ul li a, .recent-order > ul li .placed {
   color: #000;
   clear: left;
   float: left;
 }
+
 .recent-order > ul li .rx, .recent-order > ul li .status {
   float: right;
 }
+
 .recent-order > ul li .status {
   font-weight: bold;
 }
+
 .recent-order > ul li .status em {
   color: #CC0000;
 }
@@ -261,29 +294,31 @@ b {
   color: #333333;
 }
 
-@media only screen and (min-device-width : 768px) {
+@media only screen and (min-device-width: 768px) {
   .recent-order > ul li a {
     width: 25%;
     text-decoration: underline;
   }
+
   .recent-order > ul li .placed {
     clear: none;
     width: 45%;
   }
+
   .recent-order > ul li .rx {
     width: 8%;
   }
+
   .recent-order > ul li .status {
     text-align: right;
     width: 20%;
   }
 }
 
-
 .block-item-button {
   background-color: #CC0000;
   border: none;
-  color:white;
+  color: white;
   padding-top: 12px;
   padding-bottom: 12px;
   font-size: 16px;
@@ -304,7 +339,7 @@ b {
   border-color: #a50000;
 }
 
-@media only screen and (min-device-width : 768px) {
+@media only screen and (min-device-width: 768px) {
   .block-item-button {
     width: 215px;
   }

@@ -1,16 +1,19 @@
 <app-spinner [loading]="loading"></app-spinner>
-<section class="block border-box" *ngIf="!loading">
+<section class="block border-box align-ps-widget" *ngIf="!loading">
   <h2 align="center" class="block-title">Your Health Plan</h2>
   <div align="center" *ngIf="appliedAmount !== undefined && planAmount !== undefined">
     <h4 class="deductible-title">{{deductibleTitle}}</h4>
-    <round-progress [current]="appliedAmount" [max]="planAmount" [color]="'rgb(55, 186, 171)'" [background]="'#eaeaea'"
-                    [radius]="100"
-                    [stroke]="20" [semicircle]="true"
-                    [rounded]="false" [clockwise]="true" [responsive]="false" [duration]="800"
-                    [animation]="'easeInOutQuart'" [animationDelay]="200">
-    </round-progress>
-    <span class="amount-text min-amount-text">$0</span>
-    <span class="amount-text max-amount-text">{{planAmount | currency:'USD':true:'1.2-2'}}</span>
+    <div>
+      <round-progress [current]="appliedAmount" [max]="planAmount" [color]="'rgb(55, 186, 171)'"
+                      [background]="'#eaeaea'"
+                      [radius]="100"
+                      [stroke]="20" [semicircle]="true"
+                      [rounded]="false" [clockwise]="true" [responsive]="false" [duration]="800"
+                      [animation]="'easeInOutQuart'" [animationDelay]="200">
+      </round-progress>
+      <span class="amount-text min-amount-text">$0</span>
+      <span class="amount-text max-amount-text">{{planAmount | currency:'USD':true:'1.2-2'}}</span>
+    </div>
     <h5 class="left-over-amount">
       <span>{{remainingAmountDigits | currency:'USD':true:'1.0-0'}}.<sup class="left-over-amount-decimal">{{ remainingAmountDecimals | psDecimalPipe: remainingAmountDecimals}}</sup></span>
       <br/>to go </h5>
