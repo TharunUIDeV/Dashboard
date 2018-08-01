@@ -1,11 +1,14 @@
 
 :host{
     max-height: 340px;
-    overflow-y: scroll;
+    overflow-y: auto;
 }
 .dropdown-item.active 
 {
     background-color : #A9A9A9;
 }
-
+:host.dropdown-menu{
+    width:60%;
+    position: inherit;
+}
   
