@@ -79,7 +79,7 @@ export class PlanSummaryComponent implements OnInit {
       key_activity: 'new dashboard your insurance coverage details',
       link_name: 'Custom: New Dashboard your insurance coverage details clicked'
     });
-    window.parent.location.href = 'wps/myportal/MY_PRESCRIPTION_PLAN';
+    window.parent.location.href = '/wps/myportal/MY_PRESCRIPTION_PLAN';
   }
 
   copayClick() {
