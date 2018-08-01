@@ -58,6 +58,17 @@ b {
   }
 }
 
+/*.content-wrapper {
+  margin: 0 10px;
+  max-width: 625px;
+}
+@media only screen and (min-device-width : 768px) {
+  .content-wrapper {
+    margin-left: 70px;
+    max-width: 625px;
+  }
+}*/
+
 .content-wrapper h1 {
   clear: both;
   font-size: 1.75em;
@@ -84,7 +95,7 @@ b {
 
 @media only screen and (max-width: 415px) {
   .view-site {
-    margin-left: 270px;
+    margin-left: auto;
     margin-bottom: 0 !important;
   }
 }
@@ -102,7 +113,7 @@ b {
 
 @media only screen and (min-device-width: 768px) {
   .align-ps-widget {
-    margin-top: 50px;
+    margin-top: 20px;
     clear: both;
   }
 }
