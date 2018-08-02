@@ -173,7 +173,6 @@ export class TealiumUtagService {
     }
 
     console.log(`Tagging Event: ${JSON.stringify(tealium_event)}`);
-    console.log(data);
 
     if ((<any>window).utag === undefined) {
       this.getScript(this.script_src, function () {
