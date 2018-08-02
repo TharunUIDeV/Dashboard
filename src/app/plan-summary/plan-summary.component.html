@@ -2,8 +2,8 @@
 <section class="block border-box align-ps-widget" *ngIf="!loading">
   <h2 align="center" class="block-title">Your Health Plan</h2>
   <div align="center" *ngIf="appliedAmount !== undefined && planAmount !== undefined">
-    <h4 class="deductible-title">{{deductibleTitle}}</h4>
     <div>
+      <h4 attr.aria-label="{{deductibleTitle}}" class="deductible-title">{{deductibleTitle}}</h4>
       <round-progress [current]="appliedAmount" [max]="planAmount" [color]="'rgb(55, 186, 171)'"
                       [background]="'#eaeaea'"
                       [radius]="100"
@@ -11,13 +11,13 @@
                       [rounded]="false" [clockwise]="true" [responsive]="false" [duration]="800"
                       [animation]="'easeInOutQuart'" [animationDelay]="200">
       </round-progress>
-      <span class="amount-text min-amount-text">$0</span>
-      <span class="amount-text max-amount-text">{{planAmount | currency:'USD':true:'1.0-0'}}</span>
+      <span attr.aria-label="0 to" class="amount-text min-amount-text">$0</span>
+      <span attr.aria-label="{{planAmount | currency:'USD':true:'1.0-0'}}" class="amount-text max-amount-text">{{planAmount | currency:'USD':true:'1.0-0'}}</span>
     </div>
     <h5 class="left-over-amount">
-      <span>{{remainingAmountDigits | currency:'USD':true:'1.0-0'}}.<sup class="left-over-amount-decimal">{{ remainingAmountDecimals | psDecimalPipe: remainingAmountDecimals}}</sup></span>
+      <span style="line-height: 175%">{{remainingAmountDigits | currency:'USD':true:'1.0-0'}}.<sup class="left-over-amount-decimal">{{ remainingAmountDecimals | psDecimalPipe: remainingAmountDecimals}}</sup></span>
       <br/>to go </h5>
     <p class="plan-amount-size">until your {{ planAmount | currency:'USD':true:'1.0-0' }} deductible is met</p>
   </div>
-  <a href="" class="link-red with-caret plan-summary-url" (click)="coverageClick($event)">{{"Your coverage details"}}</a>
+  <a *ngIf="!isMobile" href="" class="link-red with-caret plan-summary-url" (click)="coverageClick($event)">{{"Your coverage details"}}</a>
 </section>

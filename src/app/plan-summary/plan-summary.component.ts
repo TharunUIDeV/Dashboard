@@ -3,6 +3,7 @@ import {PlanSummaryService} from '../service/plan-summary.service';
 import {isArray} from 'util';
 import * as _ from 'lodash';
 import {TealiumUtagService} from '../service/utag.service';
+import {BrowserService} from '../service/browser.service';
 
 export enum PLAN_TYPE {
   DEDUCTIBLE = 'Deductible',
@@ -25,9 +26,13 @@ export class PlanSummaryComponent implements OnInit {
   public remainingAmountDecimals: string;
   public deductibleTitle;
   public loading = true;
+  public isMobile;
 
   constructor(private planSummaryService: PlanSummaryService,
-              private analytics: TealiumUtagService) { }
+              private analytics: TealiumUtagService,
+              private browserService: BrowserService) {
+    this.getUserAgent();
+  }
 
   ngOnInit() {
     this.planSummaryService.getPlanSummaryData().then(data => {
@@ -46,6 +51,14 @@ export class PlanSummaryComponent implements OnInit {
       }
       this.loading = false;
     });
+  }
+
+  getUserAgent() {
+    if (_.includes(this.browserService.deviceType, 'MOBILE')) {
+      this.isMobile = true;
+    } else {
+      this.isMobile = false;
+    }
   }
 
   isMedicareUser() {
