@@ -6,6 +6,13 @@
   padding-right: 60px;
   border: 1px solid #CC0000;
 }
+
+@media only screen and (max-device-width: 415px) {
+  .form-control {
+    width: 100%;
+    margin: 0 12px 15px 12px;
+  }
+}
 .form-control:focus
 {
 box-shadow: 0 0 0 0.1rem #CC0000;
@@ -28,6 +35,14 @@ box-shadow: 0 0 0 0.1rem #CC0000;
   border-radius: 0;
 }
 
+@media only screen and (max-device-width: 415px) {
+  .form-bsubmit {
+    width: 100%;
+    margin-top: 15px;
+    margin-left: 12px;
+  }
+}
+
 .form-bsubmit:hover {
   background-color: #EB0000;
   border-color: #EB0000;
@@ -40,13 +55,19 @@ box-shadow: 0 0 0 0.1rem #CC0000;
 
 input {
   font-weight: bold;
-  font-size: 20px;
+  font-size: 18px;
 }
 
 input::placeholder {
   color: #333;
   font-weight: normal;
-  font-size: 2 rem;
+  font-size: 2rem;
+}
+
+@media only screen and (max-device-width: 415px) {
+  input::placeholder {
+    font-size: 18px;
+  }
 }
 
 input[type=text]::-ms-clear {
@@ -61,6 +82,12 @@ input[type=text]::-ms-clear {
 
 .searchContainer {
   position: relative;
+}
+
+@media only screen and (max-device-width: 415px) {
+  .searchContainer {
+    width: 100%;
+  }
 }
 
 .close_icon_grey {
