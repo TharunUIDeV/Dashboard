@@ -5,6 +5,7 @@
   padding-bottom: 12px;
   padding-right: 60px;
   border: 1px solid #CC0000;
+  border-radius: 0;
 }
 
 @media only screen and (max-device-width: 415px) {
@@ -38,7 +39,7 @@ box-shadow: 0 0 0 0.1rem #CC0000;
 @media only screen and (max-device-width: 415px) {
   .form-bsubmit {
     width: 100%;
-    margin-top: 15px;
+    position: inherit;
     margin-left: 12px;
   }
 }
@@ -61,7 +62,7 @@ input {
 input::placeholder {
   color: #333;
   font-weight: normal;
-  font-size: 2rem;
+  font-size: 18px;
 }
 
 @media only screen and (max-device-width: 415px) {
@@ -102,6 +103,13 @@ input[type=text]::-ms-clear {
   background-image: url(../../assets/images/CVSDesktopIcons.XCloseSearchBar.png);
 }
 
+@media only screen and (max-device-width: 415px) {
+  .close_icon_grey {
+    right: 20px;
+    margin-top: -54px;
+  }
+}
+
 .pull-right {
   float: right!important;
 }
@@ -112,6 +120,13 @@ input[type=text]::-ms-clear {
   margin-left: -4rem;
   position: absolute;
   animation: spin 1000ms infinite linear;
+}
+
+@media only screen and (max-device-width: 415px) {
+  .icon-spinner {
+    right: 45px;
+    margin-top: -54px;
+  }
 }
 
 @keyframes spin {
