@@ -19,5 +19,5 @@
       <br/>to go </h5>
     <p class="plan-amount-size">until your {{ planAmount | currency:'USD':true:'1.0-0' }} deductible is met</p>
   </div>
-  <a *ngIf="!isMobile" href="" class="link-red with-caret plan-summary-url" (click)="coverageClick($event)">{{"Your coverage details"}}</a>
+  <a href="" class="link-red with-caret plan-summary-url" (click)="coverageClick($event)">{{"Your coverage details"}}</a>
 </section>

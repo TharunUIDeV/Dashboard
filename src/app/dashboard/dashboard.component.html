@@ -12,6 +12,6 @@
   </div>
   <div class="side-widgets plan-summary-width" fxLayout="column">
     <a *ngIf="isDesktop" align="right" href="" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
-    <app-plan-summary></app-plan-summary>
+    <app-plan-summary *ngIf="isDesktop"></app-plan-summary>
   </div>
 </div>

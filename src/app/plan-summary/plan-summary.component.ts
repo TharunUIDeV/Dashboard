@@ -26,13 +26,9 @@ export class PlanSummaryComponent implements OnInit {
   public remainingAmountDecimals: string;
   public deductibleTitle;
   public loading = true;
-  public isMobile;
 
   constructor(private planSummaryService: PlanSummaryService,
-              private analytics: TealiumUtagService,
-              private browserService: BrowserService) {
-    this.getUserAgent();
-  }
+              private analytics: TealiumUtagService) { }
 
   ngOnInit() {
     this.planSummaryService.getPlanSummaryData().then(data => {
@@ -51,14 +47,6 @@ export class PlanSummaryComponent implements OnInit {
       }
       this.loading = false;
     });
-  }
-
-  getUserAgent() {
-    if (_.includes(this.browserService.deviceType, 'MOBILE')) {
-      this.isMobile = true;
-    } else {
-      this.isMobile = false;
-    }
   }
 
   isMedicareUser() {
@@ -93,13 +81,6 @@ export class PlanSummaryComponent implements OnInit {
       link_name: 'Custom: New Dashboard your insurance coverage details clicked'
     });
     window.parent.location.href = '/wps/myportal/MY_PRESCRIPTION_PLAN';
-  }
-
-  copayClick() {
-    this.analytics.link({
-      key_activity: 'new dashboard your copay details',
-      link_name: 'Custom: New Dashboard your copay details clicked'
-    });
   }
 
   calculateRemainingAmount(deductible) {
@@ -145,18 +126,17 @@ export class PlanSummaryComponent implements OnInit {
     }
   }
 
-  /*  planSummary() {
-      if (environment.production === true) {
-        window.parent.location.href = this.configSvc.planSummaryFastUrl;
-      } else {
-        this.router.navigate([FastWidgetTypes.FAST_PLAN_SUMMARY]);
-      }
-    }*/
-
   // Helper Methods
 
   titleCase(title: string) {
     return _.startCase(_.toLowerCase(title));
+  }
+
+  copayClick() {
+    this.analytics.link({
+      key_activity: 'new dashboard your copay details',
+      link_name: 'Custom: New Dashboard your copay details clicked'
+    });
   }
 }
 
