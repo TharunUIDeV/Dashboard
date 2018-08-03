@@ -11,8 +11,8 @@
                       [rounded]="false" [clockwise]="true" [responsive]="false" [duration]="800"
                       [animation]="'easeInOutQuart'" [animationDelay]="200">
       </round-progress>
-      <span attr.aria-label="0 to" class="amount-text min-amount-text">$0</span>
-      <span attr.aria-label="{{planAmount | currency:'USD':true:'1.0-0'}}" class="amount-text max-amount-text">{{planAmount | currency:'USD':true:'1.0-0'}}</span>
+      <span attr.aria-label="0 to" ngClass="amount-text {{ minAmountIE }}">$0</span>
+      <span attr.aria-label="{{planAmount | currency:'USD':true:'1.0-0'}}" class="amount-text {{ maxAmountIE }}">{{planAmount | currency:'USD':true:'1.0-0'}}</span>
     </div>
     <h5 class="left-over-amount">
       <span style="line-height: 175%">{{remainingAmountDigits | currency:'USD':true:'1.0-0'}}.<sup class="left-over-amount-decimal">{{ remainingAmountDecimals | psDecimalPipe: remainingAmountDecimals}}</sup></span>

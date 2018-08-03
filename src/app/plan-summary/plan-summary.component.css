@@ -16,8 +16,16 @@
   margin-left: -100px;
 }
 
+.min-amount-text-ie {
+  margin-left: 8px;
+}
+
 .max-amount-text {
   margin-left: 75px;
+}
+
+.max-amount-text-ie {
+  margin-left: 175px;
 }
 
 .left-over-amount {

@@ -27,9 +27,14 @@ export class PlanSummaryComponent implements OnInit {
   public deductibleTitle;
   public loading = true;
   public deductibleExist: boolean;
+  public minAmountIE;
+  public maxAmountIE;
 
   constructor(private planSummaryService: PlanSummaryService,
-              private analytics: TealiumUtagService) { }
+              private analytics: TealiumUtagService,
+              private browserService: BrowserService) {
+    this.getBrowser();
+  }
 
   ngOnInit() {
     this.planSummaryService.getPlanSummaryData().then(data => {
@@ -48,6 +53,16 @@ export class PlanSummaryComponent implements OnInit {
       }
       this.loading = false;
     });
+  }
+
+  getBrowser() {
+    if (this.browserService.which === 'msie') {
+      this.minAmountIE = 'min-amount-text-ie';
+      this.maxAmountIE = 'max-amount-text-ie';
+    } else {
+      this.minAmountIE = 'min-amount-text';
+      this.maxAmountIE = 'max-amount-text';
+    }
   }
 
   isMedicareUser() {
