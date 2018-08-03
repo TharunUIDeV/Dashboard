@@ -5,6 +5,17 @@
   padding-bottom: 12px;
   padding-right: 60px;
   border: 1px solid #CC0000;
+<<<<<<< HEAD
+=======
+  border-radius: 0;
+}
+
+@media only screen and (max-device-width: 415px) {
+  .form-control {
+    width: 100%;
+    margin: 0 12px 15px 12px;
+  }
+>>>>>>> cbc3eed387e72aa3b0976d0363fcba55b6edc35d
 }
 .form-control:focus
 {
@@ -28,6 +39,14 @@ box-shadow: 0 0 0 0.1rem #CC0000;
   border-radius: 0;
 }
 
+@media only screen and (max-device-width: 415px) {
+  .form-bsubmit {
+    width: 100%;
+    position: inherit;
+    margin-left: 12px;
+  }
+}
+
 .form-bsubmit:hover {
   background-color: #EB0000;
   border-color: #EB0000;
@@ -40,13 +59,23 @@ box-shadow: 0 0 0 0.1rem #CC0000;
 
 input {
   font-weight: bold;
+<<<<<<< HEAD
   font-size: 20px;
+=======
+  font-size: 18px;
+>>>>>>> cbc3eed387e72aa3b0976d0363fcba55b6edc35d
 }
 
 input::placeholder {
   color: #333;
   font-weight: normal;
-  font-size: 2 rem;
+  font-size: 18px;
+}
+
+@media only screen and (max-device-width: 415px) {
+  input::placeholder {
+    font-size: 18px;
+  }
 }
 
 input[type=text]::-ms-clear {
@@ -63,6 +92,12 @@ input[type=text]::-ms-clear {
   position: relative;
 }
 
+@media only screen and (max-device-width: 415px) {
+  .searchContainer {
+    width: 100%;
+  }
+}
+
 .close_icon_grey {
   margin-left: -2rem;
   margin-top: 1rem;
@@ -75,6 +110,13 @@ input[type=text]::-ms-clear {
   background-image: url(../../assets/images/CVSDesktopIcons.XCloseSearchBar.png);
 }
 
+@media only screen and (max-device-width: 415px) {
+  .close_icon_grey {
+    right: 20px;
+    margin-top: -54px;
+  }
+}
+
 .pull-right {
   float: right!important;
 }
@@ -85,6 +127,13 @@ input[type=text]::-ms-clear {
   margin-left: -4rem;
   position: absolute;
   animation: spin 1000ms infinite linear;
+}
+
+@media only screen and (max-device-width: 415px) {
+  .icon-spinner {
+    right: 45px;
+    margin-top: -54px;
+  }
 }
 
 @keyframes spin {

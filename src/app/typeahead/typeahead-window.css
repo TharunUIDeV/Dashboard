@@ -1,14 +1,36 @@
 
+<<<<<<< HEAD
 :host{
     max-height: 340px;
     overflow-y: auto;
+=======
+:host {
+  max-height: 340px;
+  overflow-y: auto;
+>>>>>>> cbc3eed387e72aa3b0976d0363fcba55b6edc35d
 }
-.dropdown-item.active 
-{
-    background-color : #A9A9A9;
+
+.dropdown-item.active {
+  background-color: #A9A9A9;
 }
+
+:host.dropdown-menu {
+  width: 60%;
+  position: inherit;
+}
+
+@media only screen and (max-device-width: 415px) {
+  :host.dropdown-menu {
+    width: 100%;
+    margin: -12px 12px 15px 12px;
+  }
+}
+<<<<<<< HEAD
 :host.dropdown-menu{
     width:60%;
     position: inherit;
 }
   
+=======
+
+>>>>>>> cbc3eed387e72aa3b0976d0363fcba55b6edc35d

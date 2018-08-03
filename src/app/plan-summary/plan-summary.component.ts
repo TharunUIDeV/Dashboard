@@ -3,6 +3,7 @@ import {PlanSummaryService} from '../service/plan-summary.service';
 import {isArray} from 'util';
 import * as _ from 'lodash';
 import {TealiumUtagService} from '../service/utag.service';
+import {BrowserService} from '../service/browser.service';
 
 export enum PLAN_TYPE {
   DEDUCTIBLE = 'Deductible',
@@ -82,13 +83,6 @@ export class PlanSummaryComponent implements OnInit {
     window.parent.location.href = '/wps/myportal/MY_PRESCRIPTION_PLAN';
   }
 
-  copayClick() {
-    this.analytics.link({
-      key_activity: 'new dashboard your copay details',
-      link_name: 'Custom: New Dashboard your copay details clicked'
-    });
-  }
-
   calculateRemainingAmount(deductible) {
     if (deductible && deductible.remainingAmount) {
       const remainingAmountNumeric = deductible.remainingAmount.substr(1, deductible.remainingAmount.length);
@@ -132,18 +126,17 @@ export class PlanSummaryComponent implements OnInit {
     }
   }
 
-  /*  planSummary() {
-      if (environment.production === true) {
-        window.parent.location.href = this.configSvc.planSummaryFastUrl;
-      } else {
-        this.router.navigate([FastWidgetTypes.FAST_PLAN_SUMMARY]);
-      }
-    }*/
-
   // Helper Methods
 
   titleCase(title: string) {
     return _.startCase(_.toLowerCase(title));
+  }
+
+  copayClick() {
+    this.analytics.link({
+      key_activity: 'new dashboard your copay details',
+      link_name: 'Custom: New Dashboard your copay details clicked'
+    });
   }
 }
 

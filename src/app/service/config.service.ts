@@ -158,13 +158,6 @@ export class ConfigService {
   }
 
   private validate(): boolean {
-    console.log(`Env => ${this.env}\n
-    Participant Name => ${this.participantFirstName}\n
-    Order_Status_Url => ${this.orderStatusUrl}\n
-    Refill_Rx_Url => ${this.refillRxUrl}\n
-    Home_Page_Url => ${this.homePageUrl}\n
-    User_Profile_Preference => ${this.userProfile}\n
-    PZN_ID => ${this.pznId}`);
     return !(isNullOrUndefined(this.env) || isNullOrUndefined(this.apiKey)
       || isNullOrUndefined(this.apiBaseUrl) || isNullOrUndefined(this.token)) ||
       (!isNullOrUndefined(this.env) && this.env.includes('demo'));
