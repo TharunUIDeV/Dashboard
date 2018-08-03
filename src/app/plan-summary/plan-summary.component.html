@@ -12,12 +12,12 @@
                       [animation]="'easeInOutQuart'" [animationDelay]="200">
       </round-progress>
       <span class="amount-text min-amount-text">$0</span>
-      <span class="amount-text max-amount-text">{{planAmount | currency:'USD':true:'1.2-2'}}</span>
+      <span class="amount-text max-amount-text">{{planAmount | currency:'USD':true:'1.0-0'}}</span>
     </div>
     <h5 class="left-over-amount">
       <span>{{remainingAmountDigits | currency:'USD':true:'1.0-0'}}.<sup class="left-over-amount-decimal">{{ remainingAmountDecimals | psDecimalPipe: remainingAmountDecimals}}</sup></span>
       <br/>to go </h5>
-    <p class="plan-amount-size">until your {{ planAmount | currency:'USD':true:'1.2-2' }} deductible is met</p>
+    <p class="plan-amount-size">until your {{ planAmount | currency:'USD':true:'1.0-0' }} deductible is met</p>
   </div>
   <a href="" class="link-red with-caret plan-summary-url" (click)="coverageClick($event)">{{"Your coverage details"}}</a>
 </section>

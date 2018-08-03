@@ -10,8 +10,8 @@
     <app-refill></app-refill>
     <app-order-status></app-order-status>
   </div>
-  <div class="side-widgets plan-summary-width" align="right" fxLayout="column">
-    <a *ngIf="isDesktop" href="" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
+  <div class="side-widgets plan-summary-width" fxLayout="column">
+    <a *ngIf="isDesktop" align="right" href="" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
     <app-plan-summary></app-plan-summary>
   </div>
 </div>

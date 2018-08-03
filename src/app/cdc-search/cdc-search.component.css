@@ -4,6 +4,11 @@
   padding-top: 12px;
   padding-bottom: 12px;
   padding-right: 60px;
+  border: 1px solid #CC0000;
+}
+.form-control:focus
+{
+box-shadow: 0 0 0 0.1rem #CC0000;
 }
 
 .form-bsubmit {
@@ -36,12 +41,6 @@
 input {
   font-weight: bold;
   font-size: 20px;
-}
-
-@media only screen and (max-width: 600px) {
-  input::placeholder{
-      font-size : 0.7rem;
-  }
 }
 
 input::placeholder {
@@ -81,6 +80,7 @@ input[type=text]::-ms-clear {
 }
 
 .icon-spinner {
+  opacity:0.5;
   margin-top: 1rem;
   margin-left: -4rem;
   position: absolute;
