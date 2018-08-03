@@ -6,32 +6,13 @@ import {FastWidgetsComponent, FastWidgetTypes} from './fast-widgets/fast-widgets
 import {DashboardComponent} from './dashboard/dashboard.component';
 
 
-export let routes: Routes = [];
-/*
-  routes = [
+export let routes: Routes = [
     {
       path: '',
       pathMatch: 'full',
-      redirectTo: 'new-dashboard'
-    },
-    {
-      path: 'new-dashboard',
-      component: DashboardComponent
-    },
-    {
-      path: FastWidgetTypes.FAST_CDC_V4,
-      component: FastWidgetsComponent
-    },
-    {
-      path: FastWidgetTypes.FAST_ORDER_STATUS,
-      component: FastWidgetsComponent
-    },
-    {
-      path: FastWidgetTypes.FAST_PLAN_SUMMARY,
-      component: FastWidgetsComponent
+      redirectTo: ''
     },
   ];
-*/
 
 @NgModule({
   imports: [
