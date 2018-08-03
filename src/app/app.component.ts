@@ -11,12 +11,10 @@ import {isNullOrUndefined} from 'util';
 export class AppComponent implements OnInit {
   loading = false;
   public environment: string;
-  public showLatestVersion = true;
 
   constructor(private configSvc: ConfigService, private analytics: TealiumUtagService) { }
 
   ngOnInit(): void {
-    this.getUserProfilePreference();
     this.environment = this.configSvc.env === 'demo' ? 'sit3' : this.configSvc.env;
     const that = this;
       if (!isNullOrUndefined(this.environment)) {
@@ -33,11 +31,5 @@ export class AppComponent implements OnInit {
       Page_Name: 'new dashboard',
       Page_Category: 'caremark dashboard'
     });
-  }
-
-  getUserProfilePreference() {
-    if (this.configSvc.showLatestVersion === false  || this.configSvc.userProfile === 'ICE') {
-      this.showLatestVersion = false;
-    }
   }
 }

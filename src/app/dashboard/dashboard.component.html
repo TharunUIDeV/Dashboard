@@ -1,5 +1,6 @@
 <div class="main align-main-widget" fxLayout="row" fxLayoutGap="15px" fxLayout.xs="column">
-  <div class="widget-width center-widgets" align="left" fxLayout="column" fxLayoutGap="15px" fxFlex="" fxFlexOrder>
+  <div *ngIf="showLatestVersion" class="widget-width center-widgets" align="left" fxLayout="column" fxLayoutGap="15px"
+       fxFlex="" fxFlexOrder>
     <a *ngIf="!isDesktop" href="" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
     <div class="content-wrapper">
       <h1>
@@ -10,8 +11,23 @@
     <app-refill></app-refill>
     <app-order-status></app-order-status>
   </div>
-  <div class="side-widgets plan-summary-width" fxLayout="column">
-    <a *ngIf="isDesktop" align="right" href="" (click)="gotoDashboard()" class="with-caret view-site">Go to full site</a>
+
+  <div *ngIf="!showLatestVersion" class="content-wrapper-ice">
+    <h1 style="padding-bottom: 50px">
+      {{getTitle()}}
+    </h1>
+    <section class="block-ice">
+      <app-default-refill></app-default-refill>
+    </section>
+    <section class="block-ice">
+      <app-default-order-status></app-default-order-status>
+    </section>
+    <a href="#" (click)="gotoDashboard()" class="with-caret">Go to full site</a>
+  </div>
+
+  <div *ngIf="showLatestVersion" class="side-widgets plan-summary-width" fxLayout="column">
+    <a *ngIf="isDesktop" align="right" href="" (click)="gotoDashboard()" class="with-caret view-site">Go to full
+      site</a>
     <app-plan-summary *ngIf="isDesktop"></app-plan-summary>
   </div>
 </div>

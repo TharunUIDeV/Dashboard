@@ -23,11 +23,14 @@ export class DashboardComponent {
   cols: Observable<number>;
   cols_big: Observable<number>;
   cols_sml: Observable<number>;
+  public showLatestVersion = true;
+
   constructor(private observableMedia: ObservableMedia,
               private configSvc: ConfigService,
               private analytics: TealiumUtagService,
               private browserService: BrowserService) {
     this.getUserAgent();
+    this.getUserProfilePreference();
   }
 
   getUserAgent() {
@@ -35,6 +38,12 @@ export class DashboardComponent {
       this.isDesktop = false;
     } else {
       this.isDesktop = true;
+    }
+  }
+
+  getUserProfilePreference() {
+    if (this.configSvc.showLatestVersion === false  || this.configSvc.userProfile === 'ICE') {
+      this.showLatestVersion = false;
     }
   }
 
