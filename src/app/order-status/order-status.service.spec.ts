@@ -8,7 +8,6 @@ import {IceSdkService} from '../service/ice-sdk.service';
 import {VordelPbmService} from '../service/vordel-pbm.service';
 import {HttpClient, HttpHandler} from '@angular/common/http';
 import {MemberService} from '../service/member.service';
-import {SessionManager} from '../service/session-manager';
 
 describe('OrderStatusService', () => {
   beforeEach(() => {
@@ -23,7 +22,6 @@ describe('OrderStatusService', () => {
         VordelPbmService,
         HttpClient,
         HttpHandler,
-        SessionManager
       ]
     });
   });

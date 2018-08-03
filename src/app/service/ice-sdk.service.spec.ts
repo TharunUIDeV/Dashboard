@@ -4,7 +4,6 @@ import {IceSdkService} from './ice-sdk.service';
 import {HttpClient, HttpHandler} from '@angular/common/http';
 import {ConfigService} from './config.service';
 import {VordelPbmService} from './vordel-pbm.service';
-import {SessionManager} from './session-manager';
 
 describe('IceSdkService', () => {
   beforeEach(() => {
@@ -13,8 +12,7 @@ describe('IceSdkService', () => {
         HttpClient,
         ConfigService,
         VordelPbmService,
-        HttpHandler,
-        SessionManager
+        HttpHandler
       ]
     }).compileComponents();
   });

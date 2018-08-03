@@ -107,6 +107,14 @@ export class RefillComponent implements  OnInit {
     window.parent.location.href = this.configSvc.rxHistoryUrl;
   }
 
+  findNewMedication() {
+    this.analytics.link({
+      key_activity: 'new dashboard find a new medication',
+      link_name: 'Custom: New Dashboard find a new medication clicked'
+    });
+    window.parent.location.href = this.configSvc.checkDrugCostFastUrl;
+  }
+
   getRefillUrlFormatted (refillsCount: string) {
 
     if (refillsCount !== undefined) {

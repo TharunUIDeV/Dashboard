@@ -18,14 +18,6 @@ import { EffectsModule } from '@ngrx/effects';
 import { AppEffects } from './store/app.effects';
 import {RecentOrdersEffects} from './store/recent-orders/recent-orders.effects';
 import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
-import {CdcHelperService} from './cdc-search/cdc-helper.service';
-import { AppRoutingModule } from './app-routing.module';
-import {FastWidgetsComponent} from './fast-widgets/fast-widgets.component';
-import { HeaderComponent } from './header/header.component';
-import { CdcSearchComponent } from './cdc-search/cdc-search.component';
-import {FormsModule, ReactiveFormsModule} from '@angular/forms';
-import {NgbTypeaheadModule} from './typeahead/typeahead.module';
-import {DrugSearchEffects} from './store/drug-search/drug-search.effects';
 
 
 @NgModule({
@@ -36,29 +28,21 @@ import {DrugSearchEffects} from './store/drug-search/drug-search.effects';
     AttentionComponent,
     SpinnerComponent,
     DefaultRefillComponent,
-    DefaultOrderStatusComponent,
-    FastWidgetsComponent,
-    HeaderComponent,
-    CdcSearchComponent,
+    DefaultOrderStatusComponent
   ],
   imports: [
     BrowserModule,
     HttpClientModule,
-    ReactiveFormsModule,
-    FormsModule,
     StoreModule.forRoot(reducers, { metaReducers }),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects,
       RecentOrdersEffects,
-      RefillsCountEffects,
-      DrugSearchEffects]),
-    AppRoutingModule,
-    NgbTypeaheadModule.forRoot()
+      RefillsCountEffects])
   ],
 
   providers: [
     [...fromServices.services,
-    OrderStatusService, CdcHelperService, NgbTypeaheadModule.forRoot().providers],
+    OrderStatusService],
   ],
   bootstrap: [AppComponent]
 })

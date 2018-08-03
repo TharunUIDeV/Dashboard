@@ -5,8 +5,6 @@ import * as MockGetRefillsData from '../../assets/mock-data/mock-get-refills-dat
 import * as MockMemberInfo from '../../assets/mock-data/mock-get-memberinfo.json';
 import * as MockGetRefillsCountData from '../../assets/mock-data/mock-getRefillsCount-data.json';
 import * as MockGetPznByIdAndResource from '../../assets/mock-data/mock-getPznByIdAndResource-data.json';
-import * as MockDrugByName from '../../assets/mock-data/mock-drugByName-data.json';
-import * as MockDefaultPharmacy from '../../assets/mock-data/mock-defaultPharmacy-data.json';
 
 @Injectable()
 export class MockCaremarkSdkService implements CaremarkDataServiceInterface {
@@ -44,18 +42,6 @@ export class MockCaremarkSdkService implements CaremarkDataServiceInterface {
   public getPznByIdAndResource(params: any): Promise<any> {
     return new Promise((resolve, reject) => {
       resolve((<any>MockGetPznByIdAndResource).response.detail.detail.personalizationContent.personalizationContents);
-    });
-  }
-
-  public getDrugByName(searchText): Promise<any> {
-    return new Promise((resolve, reject) => {
-      resolve((<any>MockDrugByName).Details);
-    });
-  }
-
-  public getDefaultPharmacy(): Promise<any> {
-    return new Promise((resolve, reject) => {
-      resolve((<any>MockDefaultPharmacy).Details);
     });
   }
 

@@ -3,7 +3,7 @@
   <h2 class="block-title">Your Prescriptions</h2>
   <section class="block-item">
     <section *ngIf="refillWidgetData.RefillAvailableCount === '0'">
-      <p>You don't have any currently available prescriptions.
+      <p>You don't have any currenlty available prescripitons.
         <a href="#" (click)="rxHistoryClickTag()" class="link-red with-caret">View past prescriptions</a>
       </p>
     </section>
@@ -11,9 +11,9 @@
       <a href="#" (click)="refillClickTag()" class="link-red with-caret">{{refillWidgetData.RefillAvailableCount}}
         {{getRefillUrlFormatted(refillWidgetData.RefillAvailableCount)}}</a>
     </section>
+
   </section>
   <section class="block-item" *ngIf="refillWidgetData.ShowCDC === true">
-    <app-cdc-search></app-cdc-search>
+    <button type="button" class="block-item-button btn" (click)="findNewMedication()">Find a new medication</button>
   </section>
 </section>
-<router-outlet></router-outlet>
