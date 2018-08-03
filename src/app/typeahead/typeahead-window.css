@@ -1,13 +1,7 @@
 
-<<<<<<< HEAD
-:host{
-    max-height: 340px;
-    overflow-y: auto;
-=======
 :host {
   max-height: 340px;
   overflow-y: auto;
->>>>>>> cbc3eed387e72aa3b0976d0363fcba55b6edc35d
 }
 
 .dropdown-item.active {
@@ -26,12 +20,4 @@
     margin: 0 12px 15px 0;
   }
 }
-<<<<<<< HEAD
-:host.dropdown-menu{
-    width:60%;
-    position: inherit;
-}
-  
-=======
 
->>>>>>> cbc3eed387e72aa3b0976d0363fcba55b6edc35d

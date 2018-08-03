@@ -11,13 +11,8 @@
                       [rounded]="false" [clockwise]="true" [responsive]="false" [duration]="800"
                       [animation]="'easeInOutQuart'" [animationDelay]="200">
       </round-progress>
-<<<<<<< HEAD
-      <span class="amount-text min-amount-text">$0</span>
-      <span class="amount-text max-amount-text">{{planAmount | currency:'USD':true:'1.0-0'}}</span>
-=======
       <span attr.aria-label="0 to" class="amount-text min-amount-text">$0</span>
       <span attr.aria-label="{{planAmount | currency:'USD':true:'1.0-0'}}" class="amount-text max-amount-text">{{planAmount | currency:'USD':true:'1.0-0'}}</span>
->>>>>>> cbc3eed387e72aa3b0976d0363fcba55b6edc35d
     </div>
     <h5 class="left-over-amount">
       <span style="line-height: 175%">{{remainingAmountDigits | currency:'USD':true:'1.0-0'}}.<sup class="left-over-amount-decimal">{{ remainingAmountDecimals | psDecimalPipe: remainingAmountDecimals}}</sup></span>

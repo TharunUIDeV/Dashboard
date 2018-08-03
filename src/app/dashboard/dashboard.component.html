@@ -12,7 +12,6 @@
     <app-order-status></app-order-status>
   </div>
 
-
   <div *ngIf="!showLatestVersion" class="content-wrapper-ice">
     <h1 style="padding-bottom: 50px">
       {{getTitle()}}
@@ -25,7 +24,6 @@
     </section>
     <a href="#" (click)="gotoDashboard()" class="with-caret">Go to full site</a>
   </div>
-
 
   <div *ngIf="showLatestVersion" class="side-widgets plan-summary-width" fxLayout="column">
     <a *ngIf="isDesktop" align="right" href="" (click)="gotoDashboard()" class="with-caret view-site">Go to full
