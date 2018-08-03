@@ -5,6 +5,8 @@
   padding-bottom: 12px;
   padding-right: 60px;
   border: 1px solid #CC0000;
+<<<<<<< HEAD
+=======
   border-radius: 0;
 }
 
@@ -13,6 +15,7 @@
     width: 100%;
     margin: 0 12px 15px 12px;
   }
+>>>>>>> cbc3eed387e72aa3b0976d0363fcba55b6edc35d
 }
 .form-control:focus
 {
@@ -59,7 +62,11 @@ box-shadow: 0 0 0 0.1rem #CC0000;
 
 input {
   font-weight: bold;
+<<<<<<< HEAD
+  font-size: 20px;
+=======
   font-size: 18px;
+>>>>>>> cbc3eed387e72aa3b0976d0363fcba55b6edc35d
 }
 
 input::placeholder {
