@@ -26,6 +26,7 @@ export class PlanSummaryComponent implements OnInit {
   public remainingAmountDecimals: string;
   public deductibleTitle;
   public loading = true;
+  public deductibleExist: boolean;
 
   constructor(private planSummaryService: PlanSummaryService,
               private analytics: TealiumUtagService) { }
@@ -122,7 +123,11 @@ export class PlanSummaryComponent implements OnInit {
         } else {
           this.deductibleType = undefined;
         }
+        this.deductibleExist = true;
       });
+    } else {
+      // Suppress for Sprint - 9 until we land on a solution.
+      this.deductibleExist = false;
     }
   }
 
