@@ -6,13 +6,7 @@ import {FastWidgetsComponent, FastWidgetTypes} from './fast-widgets/fast-widgets
 import {DashboardComponent} from './dashboard/dashboard.component';
 
 
-export let routes: Routes = [
-    {
-      path: '',
-      pathMatch: 'full',
-      redirectTo: ''
-    },
-  ];
+export let routes: Routes = [];
 
 @NgModule({
   imports: [
