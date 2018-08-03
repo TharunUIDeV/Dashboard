@@ -10,13 +10,14 @@
 
 :host.dropdown-menu {
   width: 60%;
-  position: inherit;
+  position: absolute;
+  z-index: 9999999;
 }
 
 @media only screen and (max-device-width: 415px) {
   :host.dropdown-menu {
     width: 100%;
-    margin: -12px 12px 15px 12px;
+    margin: 0 12px 15px 0;
   }
 }
 

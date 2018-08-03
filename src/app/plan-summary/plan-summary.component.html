@@ -1,5 +1,5 @@
 <app-spinner [loading]="loading"></app-spinner>
-<section class="block border-box align-ps-widget" *ngIf="!loading">
+<section class="block border-box align-ps-widget" *ngIf="!loading && deductibleExist">
   <h2 align="center" class="block-title">Your Health Plan</h2>
   <div align="center" *ngIf="appliedAmount !== undefined && planAmount !== undefined">
     <div>

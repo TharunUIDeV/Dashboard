@@ -23,7 +23,6 @@ export class DashboardComponent {
   cols: Observable<number>;
   cols_big: Observable<number>;
   cols_sml: Observable<number>;
-
   constructor(private observableMedia: ObservableMedia,
               private configSvc: ConfigService,
               private analytics: TealiumUtagService,

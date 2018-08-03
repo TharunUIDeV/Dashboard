@@ -1,7 +1,7 @@
 <app-spinner [loading]="loading"></app-spinner>
   <section *ngIf="!loading && setDefaultPharmacy; else findMedication">
     <form (ngSubmit)="onSubmit(drugSearchForm)" #drugSearchForm="ngForm">
-      <div class="SearchContainer">
+      <div class="searchContainer">
         <label class="SearchLabel">Find a new medication</label><br/>
         <input class="SearchInput form-control" (selectItem)="selectedItem($event)" type="text"
                placeholder="Enter drug name"
