@@ -13,16 +13,20 @@ import {RecentOrdersReducer, RecentOrdersState} from './recent-orders/recent-ord
  */
 import {storeFreeze} from 'ngrx-store-freeze';
 import {RefillsCountReducer, RefillsCountState} from './refills-count/refills-count.reducer';
+import {DrugSearchReducer, DrugSearchState} from './drug-search/drug-search.reducer';
 
 export interface AppState {
   recentOrdersState: RecentOrdersState;
   refillsCountState: RefillsCountState;
+  drugSearchState: DrugSearchState;
+  drugSearchDefaultPharmacy: DrugSearchState;
 }
 
 export const reducers: ActionReducerMap<AppState> = {
   recentOrdersState: RecentOrdersReducer,
   refillsCountState: RefillsCountReducer,
-
+  drugSearchState: DrugSearchReducer,
+  drugSearchDefaultPharmacy: DrugSearchReducer,
 };
 
 // console.log all actions

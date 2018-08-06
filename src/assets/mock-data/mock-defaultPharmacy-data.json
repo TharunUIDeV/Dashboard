@@ -1,0 +1,44 @@
+{
+  "Header": {
+    "StatusDescription": "Success",
+    "StatusCode": "0000"
+  },
+  "Details": {
+    "pharmacyNumber": "4505434",
+    "pharmacyName": "CAREPOINT PARTNERS",
+    "npiNumber": "1689742173",
+    "storeId": "00",
+    "address": "661 NORTH PLANO RD STE 300",
+    "city": "RICHARDSON",
+    "state": "TX",
+    "zipCode": "75081",
+    "phoneNumber": "972-641-3232",
+    "distance": "0.87",
+    "latitude": "32.95767",
+    "longitude": "-96.700036",
+    "preferred": "true",
+    "maintenanceChoice": "false",
+    "nintyDayRetail": "false",
+    "vaccineNetwork": "false",
+    "prefPharmInd": "N",
+    "proximityNetworkInd": "false",
+    "pharmacyHoursOfOperation": {
+      "open24hours": "false",
+      "sunday": "0000",
+      "monday": "0917",
+      "tuesday": "0917",
+      "wednesday": "0917",
+      "thursday": "0917",
+      "friday": "0917",
+      "saturday": "0000"
+    },
+    "pharmacyAdditionalDetails": {
+      "spokenLanguages": "SPANISH",
+      "websiteURL": "BIOSCRIP.COM",
+      "stateLicense": "23743",
+      "physicalDisabilityInd": "Y",
+      "cctInd": "N",
+      "dispenseType": "CHAIN IV INFUSION"
+    }
+  }
+}

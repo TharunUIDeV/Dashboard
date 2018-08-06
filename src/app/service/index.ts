@@ -17,7 +17,7 @@ import {SessionManager} from './session-manager';
 import {PlanSummaryService} from './plan-summary.service';
 
 
-const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService)  => {
+const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService) => {
   if (environment.production) {
     return new CaremarkSdkService(configService, vordelPbmService);
   } else if (environment.mock) {
@@ -28,7 +28,7 @@ const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmServic
 };
 
 
-const iceSdkServiceFactory = (httpClient: HttpClient, configService: ConfigService, vordelPbmService: VordelPbmService)  => {
+const iceSdkServiceFactory = (httpClient: HttpClient, configService: ConfigService, vordelPbmService: VordelPbmService) => {
   if (environment.production) {
     return new IceSdkService(httpClient, configService, vordelPbmService);
   } else if (environment.mock) {
@@ -55,7 +55,7 @@ export function configServiceFactory(configSvc: ConfigService) {
 }
 
 
-export const services: any[]  = [
+export const services: any[] = [
   {provide: APP_INITIALIZER, useFactory: configServiceFactory, deps: [ConfigService], multi: true},
   ConfigService,
   BrowserService,

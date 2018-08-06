@@ -32,6 +32,7 @@ export class ConfigService {
   public checkDrugCostFastUrl: string;
   public portalSessionId: string;
   public clientChannelId: string;
+  public fastBaseUrl: string;
 
   ready = new BehaviorSubject(false);
 
@@ -57,20 +58,30 @@ export class ConfigService {
     if (this.env && this.userProfile === 'PBM') {
       if (_.includes(this.env, 'sit')) {
         this.apiBaseUrl = `https://${this.env}pbmservices.caremark.com/`;
+        this.fastBaseUrl = `https://${this.env}fast.caremark.com/`;
+        // this.fastBaseUrl = `https://localhost:8089/`;
       } else if (_.includes(this.env, 'dev')) {
-        this.apiBaseUrl = `https://devservices-west.caremark.com:11101/`;
+        this.apiBaseUrl = `https://devservices-west.caremark.com:11103/`;
+        this.fastBaseUrl = `https://${this.env}fast.caremark.com/`;
+        // this.fastBaseUrl = `https://localhost:8089/`;
       } else if (_.includes(this.env, 'stp')) {
         this.apiBaseUrl = `https://stpservices.caremark.com:11101/`;
+        this.fastBaseUrl = `https://stpfast.caremark.com/`;
+        // this.fastBaseUrl = `https://localhost:8089/`;
       } else if (_.includes(this.env, 'prod')) {
         this.apiBaseUrl = `https://pbmservices.caremark.com/`;
+        this.fastBaseUrl = `https://fast.caremark.com/`;
       }
     } else if (this.env && this.userProfile === 'ICE') {
       if (_.includes(this.env, 'sit')) {
         this.iceApiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
+        this.fastBaseUrl = `https://${this.env}fast.caremark.com/`;
       } else if (_.includes(this.env, 'dev')) {
         this.iceApiBaseUrl = `https://icet-${this.env}.caremark.com/Services/icet/`;
+        this.fastBaseUrl = `https://${this.env}fast.caremark.com`;
       } else if (_.includes(this.env, 'prod')) {
         this.iceApiBaseUrl = `https://t.caremark.com/Services/icet/`;
+        this.fastBaseUrl = `https://fast.caremark.com/`;
       }
     }
   }

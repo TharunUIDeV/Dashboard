@@ -10,12 +10,12 @@ import {SpinnerComponent} from './spinner/spinner.component';
 import {OrderStatusService} from './order-status/order-status.service';
 import {DefaultRefillComponent} from './default-refill/default-refill.component';
 import {DefaultOrderStatusComponent} from './default-order-status/default-order-status.component';
-import { StoreModule } from '@ngrx/store';
-import { reducers, metaReducers } from './store/app.reducer';
-import { StoreDevtoolsModule } from '@ngrx/store-devtools';
-import { environment } from '../environments/environment';
-import { EffectsModule } from '@ngrx/effects';
-import { AppEffects } from './store/app.effects';
+import {StoreModule} from '@ngrx/store';
+import {reducers, metaReducers} from './store/app.reducer';
+import {StoreDevtoolsModule} from '@ngrx/store-devtools';
+import {environment} from '../environments/environment';
+import {EffectsModule} from '@ngrx/effects';
+import {AppEffects} from './store/app.effects';
 import {RecentOrdersEffects} from './store/recent-orders/recent-orders.effects';
 import {RefillsCountEffects} from './store/refills-count/refills-count.effects';
 import {CdcHelperService} from './cdc-search/cdc-helper.service';
@@ -53,7 +53,9 @@ import {PlanSummaryNumberPipe} from './plan-summary/plan-summary-number-pipe';
   imports: [
     BrowserModule,
     HttpClientModule,
-    StoreModule.forRoot(reducers, { metaReducers }),
+    ReactiveFormsModule,
+    FormsModule,
+    StoreModule.forRoot(reducers, {metaReducers}),
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects,
       RecentOrdersEffects,
@@ -67,7 +69,7 @@ import {PlanSummaryNumberPipe} from './plan-summary/plan-summary-number-pipe';
 
   providers: [
     [...fromServices.services,
-    OrderStatusService],
+      OrderStatusService, CdcHelperService, NgbTypeaheadModule.forRoot().providers],
   ],
   bootstrap: [AppComponent,
     /*PlanSummaryComponent,

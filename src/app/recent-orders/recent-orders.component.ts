@@ -10,12 +10,14 @@ import {initialRecentOrderState, RecentOrdersState} from '../store/recent-orders
 import {Store} from '@ngrx/store';
 import {RecentOrdersFetch} from '../store/recent-orders/recent-orders.actions';
 import {HOLD_ORDER_INTERACTION} from '../attention/attention.component';
+import {caremarksdk} from '../types/caremarksdk';
+import Order = caremarksdk.Order;
 
 export enum RECENT_ORDER_INTERACTION {
   TYPE = 3226,
   NAME = 'Hold View Order',
   RESULT_COMPLETED = 'Completed',
-  RESULT_FAIL = 'Fail'
+  ORDER_CLICK_TYPE = 3243
 }
 
 @Component({
@@ -84,12 +86,27 @@ export class RecentOrdersComponent implements OnInit {
       this.generateAdditionalDataforEccr(), this.getTransactionDataForECCR(), null);
   }
 
-  orderNumberClick(OrderNumber) {
+  orderNumberClick(order, e) {
+    e.stopPropagation();
+    e.preventDefault();
     this.analytics.link({
       key_activity: 'new dashboard individual order',
       link_name: 'Custom: New Dashboard individual order clicked'
     });
-    window.parent.location.href = this.configSvc.orderStatusUrl + '?scrollId=' + OrderNumber;
+    this.eccrService.log(RECENT_ORDER_INTERACTION.ORDER_CLICK_TYPE, RECENT_ORDER_INTERACTION.RESULT_COMPLETED,
+      this.generateAdditionalDataforOrderClickEccr(order), null, order.OrderNumber);
+  }
+
+  generateAdditionalDataforOrderClickEccr(order) {
+    const additionalData = [
+      {key: 'ORDER_NUM', value: order.OrderNumber},
+      {key: 'ORDER_STATUS', value: order.OrderStatus},
+      {key: 'NUMBER_OF_RX', value: order.RxList.length},
+      {key: 'FAST_STYLE', value: 'FASTINT'},
+      {key: 'FAST_INDICATOR', value: 'YES'}
+    ];
+    return additionalData;
+
   }
 
   generateAdditionalDataforEccr() {
