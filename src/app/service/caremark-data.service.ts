@@ -70,5 +70,9 @@ export class CaremarkDataService implements CaremarkDataServiceInterface {
     return this._serviceInstance.getPznByIdAndResource(params);
   }
 
+  getPlanSummary(): Promise<any> {
+    return this._serviceInstance.getPlanSummary();
+  }
+
 
 }

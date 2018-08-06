@@ -1,0 +1,48 @@
+.deductible-title {
+  font-size: 1em;
+  font-weight: bold;
+  padding-bottom: 15px;
+  color: rgb(68, 68, 68);
+}
+
+.amount-text {
+  position: absolute;
+  margin-top: 5px;
+  color: grey;
+  font-size: 12px;
+}
+
+.min-amount-text {
+  margin-left: -100px;
+}
+
+.min-amount-text-ie {
+  margin-left: 8px;
+}
+
+.max-amount-text {
+  margin-left: 75px;
+}
+
+.max-amount-text-ie {
+  margin-left: 175px;
+}
+
+.left-over-amount {
+  position: relative;
+  top: -40px;
+  font-weight: bold;
+  font-size: 18px;
+}
+
+.plan-amount-size {
+  font-size: 14px;
+}
+
+.plan-summary-url {
+  margin-top: 15px;
+}
+
+.left-over-amount-decimal {
+  font-size: 14px;
+}

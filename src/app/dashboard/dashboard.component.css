@@ -1,0 +1,34 @@
+@import '../../styles.css';
+
+.center-widgets {
+  padding: 0 15px;
+}
+.side-widgets {
+  margin-top:0;
+  padding: 0 15px;
+}
+
+@media only screen and (min-device-width: 768px) {
+  .side-widgets {
+    margin-top: 30px;
+    padding: 0 15px
+  }
+}
+
+.align-main-widget {
+  margin-right: 15px;
+}
+
+.widget-width {
+  max-width: 625px;
+}
+
+.plan-summary-width {
+  max-width: 100%;
+}
+
+@media only screen and (min-device-width: 768px) {
+  .plan-summary-width {
+    max-width: 290px;
+  }
+}

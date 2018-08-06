@@ -1,0 +1,23 @@
+
+:host {
+  max-height: 340px;
+  overflow-y: auto;
+}
+
+.dropdown-item.active {
+  background-color: #A9A9A9;
+}
+
+:host.dropdown-menu {
+  width: 60%;
+  position: absolute;
+  z-index: 9999999;
+}
+
+@media only screen and (max-device-width: 415px) {
+  :host.dropdown-menu {
+    width: 100%;
+    margin: 0 12px 15px 0;
+  }
+}
+

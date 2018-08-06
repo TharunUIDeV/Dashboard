@@ -13,8 +13,11 @@ import {MemberService} from './member.service';
 import {HttpClient} from '@angular/common/http';
 import {MockIceSdkService} from './mock-ice-sdk.service';
 import {EccrService} from './eccr.service';
+<<<<<<< HEAD
+=======
 import {SessionManager} from './session-manager';
 import {PlanSummaryService} from './plan-summary.service';
+>>>>>>> POD_MW_2018_08_03
 
 
 const caremarkSdkServiceFactory = (configService: ConfigService, vordelPbmService: VordelPbmService)  => {
@@ -66,8 +69,12 @@ export const services: any[]  = [
   IceSdkServiceProvider,
   VordelPbmService,
   MemberService,
+<<<<<<< HEAD
+  EccrService
+=======
   EccrService,
   SessionManager,
   PlanSummaryService
+>>>>>>> POD_MW_2018_08_03
 ];
 

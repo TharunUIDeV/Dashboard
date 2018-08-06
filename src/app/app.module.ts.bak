@@ -57,12 +57,16 @@ import {PlanSummaryNumberPipe} from './plan-summary/plan-summary-number-pipe';
     !environment.production ? StoreDevtoolsModule.instrument() : [],
     EffectsModule.forRoot([AppEffects,
       RecentOrdersEffects,
+<<<<<<< HEAD
+      RefillsCountEffects])
+=======
       RefillsCountEffects,
       DrugSearchEffects]),
     AppRoutingModule,
     NgbTypeaheadModule.forRoot(),
     FlexLayoutModule,
     RoundProgressModule
+>>>>>>> POD_MW_2018_08_03
   ],
 
   providers: [
